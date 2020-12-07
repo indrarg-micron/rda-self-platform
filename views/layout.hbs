@@ -11,22 +11,43 @@
     <link rel="icon" type="image/x-icon" href="/images/logo-dark.svg">
 
     <link rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.12.1/css/all.css"
+      crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css">
+    <link rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
       crossorigin="anonymous">
-    <link rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.12.1/css/all.css"
-      crossorigin="anonymous">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css">
   </head>
 
   <body>
-    <nav class="navbar navbar-dark bg-dark fixed-top">
-      <div class="container-lg">
+    <nav id="navbar-menu"class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <div class="container">
         <a class="navbar-brand" href="/">
           <img src="/images/logo-light.svg" width="30" height="30" class="d-inline-block align-top" alt="">
           RDA Self 2.0
         </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a href="/people" class="nav-link {{#if active.people}}active{{/if}}">People</a>
+            </li>
+            {{!--
+            <li class="nav-item">
+              <a href="/checklist" class="nav-link {{#if active.checklist}}active{{/if}}">Checklist</a>
+            </li>
+            <li class="nav-item">
+              <a href="/score" class="nav-link {{#if active.score}}active{{/if}}">Score</a>
+            </li>
+            --}}
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -34,10 +55,7 @@
       {{{body}}}
     </main>
 
-  <script
-    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
     integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
@@ -46,5 +64,8 @@
     src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
     integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
     crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+  <script type="text/javascript" src="/javascripts/script.js"></script>
   </body>
 </html>
