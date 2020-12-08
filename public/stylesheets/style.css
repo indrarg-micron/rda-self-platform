@@ -1,18 +1,42 @@
 /* compensate for fixed-top navbar */
-body {
-  padding-top: 4.5rem;
-}
-
 a.anchor {
   display: block;
   position: relative;
-  top: -4.5rem;
   visibility: hidden;
+}
+
+/* make the heading above table sticky */
+#first-heading {
+  position: sticky;
+  z-index: 1;
+  background-color: white;
+}
+
+/* colour for the icons */
+.fa-plus {
+  color: #fd7e14;
+}
+
+.fa-pencil-alt {
+  color: #15aabf;
+}
+
+.fa-trash-alt {
+  color: #be4bdb;
+}
+
+/* hover colour */
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th{
+  background-color: aliceblue;
 }
 
 /* highlight selected row*/
 .selected {
   background-color: lavender !important;
+}
+
+.highlighted {
+  background-color: lavenderblush !important;
 }
 
 /* cut padding on table */

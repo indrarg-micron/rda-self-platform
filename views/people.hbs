@@ -1,7 +1,16 @@
-<h1>{{title}}</h1>
+<div id="first-heading" class="d-flex justify-content-between p-0">
+  <div class="d-flex">
+    <h1>{{title}}</h1>
+  </div>
+  <div class="d-flex justify-content-end">
+    <button id="people-add" class="btn"><i class="fas fa-plus fa-lg"></i></button>
+    <button class="btn"><i class="fas fa-pencil-alt fa-lg"></i></button>
+    <button class="btn"><i class="fas fa-trash-alt fa-lg"></i></button>
+  </div>
+</div>
 
 
-<table id="the-table" class="table table-bordered table-hover table-sm table-responsive-lg">
+<table id="the-table" class="table table-bordered table-hover table-sm">
   <thead class="thead-light">
     <tr>
       <th scope="col">Worker No</th>
@@ -28,7 +37,7 @@
         <td>{{this.gjs}}</td>
         <td>{{this.status}}</td>
         <td>{{this.permission}}</td>
-        <td><a href="#{{this.manager_id}}">{{this.manager_first_name}}</a></td>
+        <td><a class="bookmark-link" href="#{{this.manager_id}}">{{this.manager_first_name}}</a></td>
       </tr>
     {{/each}}
   </tbody>
