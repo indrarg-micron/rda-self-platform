@@ -30,4 +30,34 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.post('/', async (req, res) => {
+  try {
+    const body = JSON.parse(JSON.stringify(req.body))
+    let content = "("
+      + body.id + ", '"
+      + body.first_name + "', '"
+      + body.username + "', '"
+      + body.area + "', '"
+      + body.section + "', '"
+      + body.shift + "', '"
+      + body.gjs + "', '"
+      + body.status + "', '"
+      + body.permission + "', "
+      + body.manager_id + ")"
+
+    let query = fs.readFileSync(path.join(sqlPath, 'people-add.sql')).toString()
+    query = query.replace('###INSERT_VALUE_STRING_HERE###', content)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
+    console.log(result)
+    res.send(result)
+  
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+})
+
 module.exports = router
