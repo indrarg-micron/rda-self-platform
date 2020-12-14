@@ -53,18 +53,22 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      
       <div class="modal-body pb-1">
+        <div id="throw-alert"></div>
         <p>
           Add or edit records in the columns below<br>
           <small class="text-muted">
             <ul>
               <li>Worker No is Micron worker number, all numeric character</li>
               <li>Username is Micron username</li>
+              <li>Area defaults to "RDA"</li>
               <li>Shift is 4-character Micron shift code</li>
               <li>GJS is 2-character Micron GJS code</li>
               <li>Status should be either <b>"active"</b> or <b>"inactive"</b></li>
-              <li>Permission is either <b>"admin"</b>, <b>"section"</b>, or <b>"user"</b></li>
+              <li>Permission should be either <b>"admin"</b>, <b>"section"</b>, or <b>"user"</b>. Defaults to "user"</li>
               <li>Manager No is the user's manager's <b>Worker No</b>, not username</li>
+              <li>Each column should have the same number of rows of input</li>
               <li>Recommended to use excel first before pasting per column here</li>
             </ul>
           </small>

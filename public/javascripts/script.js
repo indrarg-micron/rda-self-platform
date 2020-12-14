@@ -43,4 +43,16 @@ $(document).ready(function() {
   $('.linked').scroll(function(){
     $('.linked').scrollTop($(this).scrollTop()) 
   })
+
+  // clear all input type on any modal exit
+  // currently only need textarea, the rest are extras
+  $('.modal').on('hidden.bs.modal', function (e) {
+    $(this)
+      .find("input,textarea,select")
+         .val('')
+         .end()
+      .find("input[type=checkbox], input[type=radio]")
+         .prop("checked", "")
+         .end();
+  })
 })

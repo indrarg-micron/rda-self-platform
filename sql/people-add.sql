@@ -1,3 +1,5 @@
+BEGIN TRANSACTION
+
 INSERT INTO [dbo].[employee]
            ([id]
            ,[first_name]
@@ -11,3 +13,5 @@ INSERT INTO [dbo].[employee]
            ,[manager_id])
      VALUES
            ###INSERT_VALUE_STRING_HERE###
+
+COMMIT TRANSACTION
