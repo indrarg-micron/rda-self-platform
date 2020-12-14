@@ -8,15 +8,14 @@ $(document).ready(function() {
 
   // initiate data table
   var table = $('#the-table').DataTable({
-      fixedHeader: {
-        headerOffset: navHeight * 2
-      },
+      fixedHeader: { headerOffset: navHeight * 2 },
       stateSave: false,
       paging: false,
       info: false,
       searching: false,
       autoWidth: true,
       order: [],
+      select: { style: 'multi' },
 
       // highlight bookmarked row upon page and table load
       initComplete: function(settings, json) {
@@ -40,14 +39,8 @@ $(document).ready(function() {
     }, 1500);
   })
 
-  // select one table row only, on click
-  $('#the-table tbody').on( 'click', 'tr', function () {
-    if ( $(this).hasClass('selected') ) {
-        $(this).removeClass('selected')
-    }
-    else {
-        table.$('tr.selected').removeClass('selected')
-        $(this).addClass('selected')
-    }
+  // link scrolling of textarea in modal box
+  $('.linked').scroll(function(){
+    $('.linked').scrollTop($(this).scrollTop()) 
   })
 })

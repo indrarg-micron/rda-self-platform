@@ -1,9 +1,9 @@
-<div id="first-heading" class="d-flex justify-content-between p-0">
+<div id="first-heading" class="d-flex justify-content-md-between p-0">
   <div class="d-flex">
     <h1>{{title}}</h1>
   </div>
   <div class="d-flex justify-content-end">
-    <button id="people-add" class="btn"><i class="fas fa-plus fa-lg"></i></button>
+    <button id="people-add-modal" class="btn" data-toggle="modal" data-target="#add-edit-modal"><i class="fas fa-plus fa-lg"></i></button>
     <button class="btn"><i class="fas fa-pencil-alt fa-lg"></i></button>
     <button class="btn"><i class="fas fa-trash-alt fa-lg"></i></button>
   </div>
@@ -42,3 +42,89 @@
     {{/each}}
   </tbody>
 </table>
+
+{{!-- modal for add --}} 
+<div class="modal fade" id="add-edit-modal" tabindex="-1" role="dialog" aria-labelledby="addEditModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-edit-modal-label">Add/Edit record(s) of People</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pb-1">
+        <p>
+          Add or edit records in the columns below<br>
+          <small class="text-muted">
+            <ul>
+              <li>Worker No is Micron worker number, all numeric character</li>
+              <li>Username is Micron username</li>
+              <li>Shift is 4-character Micron shift code</li>
+              <li>GJS is 2-character Micron GJS code</li>
+              <li>Status should be either <b>"active"</b> or <b>"inactive"</b></li>
+              <li>Permission is either <b>"admin"</b>, <b>"section"</b>, or <b>"user"</b></li>
+              <li>Manager No is the user's manager's <b>Worker No</b>, not username</li>
+              <li>Recommended to use excel first before pasting per column here</li>
+            </ul>
+          </small>
+        </p>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-2">
+              <label for="people-workerNo">Worker No</label>
+              <textarea class="form-control linked" id="people-workerNo" rows="10"></textarea>
+            </div>
+            <div class="col-lg-10 overflow-auto">
+              <div class="form-group">
+                <div class="row flex-row flex-nowrap">
+                  <div class="col-lg-3">
+                    <label for="people-firstName">First Name</label>
+                    <textarea class="form-control linked" id="people-firstName" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-3">
+                    <label for="people-username">Username</label>   
+                    <textarea class="form-control linked" id="people-username" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="people-area">Area</label>
+                    <textarea class="form-control linked" id="people-area" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="people-section">Section</label>
+                    <textarea class="form-control linked" id="people-section" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="people-shift">Shift</label>
+                    <textarea class="form-control linked" id="people-shift" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="people-gjs">GJS</label>
+                    <textarea class="form-control linked" id="people-gjs" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="people-status">Status</label>
+                    <textarea class="form-control linked" id="people-status" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="people-permission">Permission</label>
+                    <textarea class="form-control linked" id="people-permission" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="people-managerNo">Manager No</label>
+                    <textarea class="form-control linked" id="people-managerNo" rows="10"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="people-add" class="btn btn-primary">Add new</button>
+        <button type="button" id="people-edit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,8 @@
+/* remove margin top for list after paragraph*/
+p + ul {
+  margin-top: -1em;
+}
+
 /* compensate for fixed-top navbar */
 a.anchor {
   display: block;
