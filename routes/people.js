@@ -33,17 +33,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
-    let content = "("
-      + body.id + ", '"
-      + body.first_name + "', '"
-      + body.username + "', '"
-      + body.area + "', '"
-      + body.section + "', '"
-      + body.shift + "', '"
-      + body.gjs + "', '"
-      + body.status + "', '"
-      + body.permission + "', "
-      + body.manager_id + ")"
+    let content = body.valueString
 
     let query = fs.readFileSync(path.join(sqlPath, 'people-add.sql')).toString()
     query = query.replace('###INSERT_VALUE_STRING_HERE###', content)

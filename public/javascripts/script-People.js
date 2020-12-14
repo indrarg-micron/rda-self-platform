@@ -28,25 +28,41 @@ $('#people-add').click(function() {
   if ( !(inputLength.every( (val, i, arr) => val === arr[0] )) ) {
     alert('Error:\r\n' + 'Inputs are not of the same length')
   }
-/*
-  // pls check for empty string, || null
-  var data = {
-    id: 1207444,
-    first_name: 'Zhicong',
-    username: 'zhicong',
-    area: 'RDA',
-    section: 'Eng Proc',
-    shift: '1DAY',
-    gjs: 'E2',
-    status: 'active',
-    permission: 'section',
-    manager_id: 1038891
+
+  // iterate through every row and check for input sanity
+  // then concatenate to sql value string
+  var valueString = ""
+  for (var i = 0; i < workerNo.length; i++) {
+    var dataId = workerNo[i]
+    var dataFirstName = firstName[i]
+    var dataUsername = username[i]
+    var dataArea = area[i]
+    var dataSection = section[i]
+    var dataShift = shift[i]
+    var dataGjs = gjs[i]
+    var dataStatus = status[i]
+    var dataPermission = permission[i]
+    var dataManagerId = managerNo[i]
+
+    valueString = valueString + "("
+    + dataId + ", '"
+    + dataFirstName + "', '"
+    + dataUsername + "', '"
+    + dataArea + "', '"
+    + dataSection + "', '"
+    + dataShift + "', '"
+    + dataGjs + "', '"
+    + dataStatus + "', '"
+    + dataPermission + "', "
+    + dataManagerId + "), "
   }
+  valueString = valueString.slice(0, -2)
+  valueString = valueString + ";"
 
   $.ajax({
     url:'/people',
     type: 'POST',
-    data: data,
+    data: {valueString},
 
     success: function(msg) {
       if ( !alert('Success:\r\n' + msg.rowsAffected + ' row(s) affected') ) {
@@ -57,7 +73,7 @@ $('#people-add').click(function() {
     error: function(err) {
       alert('Error:\r\n' + err.responseText)
     }
-  })*/
+  })
 })
 
 // parse input from textarea
