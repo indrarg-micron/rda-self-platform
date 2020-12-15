@@ -15,7 +15,7 @@ $(document).ready(function() {
       searching: false,
       autoWidth: true,
       order: [],
-      select: { style: 'multi' },
+      select: true,
 
       // highlight bookmarked row upon page and table load
       initComplete: function(settings, json) {
@@ -44,15 +44,18 @@ $(document).ready(function() {
     $('.linked').scrollTop($(this).scrollTop()) 
   })
 
-  // clear all input type on any modal exit
-  // currently only need textarea, the rest are extras
+  // clear all input type and alerts on any modal exit
+  // currently only need textarea and alert, the rest are extras
   $('.modal').on('hidden.bs.modal', function (e) {
     $(this)
-      .find("input,textarea,select")
-         .val('')
-         .end()
-      .find("input[type=checkbox], input[type=radio]")
-         .prop("checked", "")
-         .end();
+      .find('input,textarea,select')
+        .val('')
+        .end()
+      .find('input[type=checkbox], input[type=radio]')
+        .prop('checked', '')
+        .end()
+      .find('.alert')
+        .alert('close')
+        .end()
   })
 })

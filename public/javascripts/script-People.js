@@ -4,8 +4,78 @@ $('#people-add-modal').click(function() {
   $('#people-add').show()
 })
 
+// edit button - show modal and fill in textarea
+$('#people-edit-modal').click(function() {
+  $('#people-add').hide()
+  $('#people-edit').show()
+  
+  var random = $('#the-table').DataTable().rows( { selected: true } ).data()
+  if (random.length == 0) {
+    $('#people-edit').hide()
+    return throwAlert('Error', 'Please select the rows to edit')
+  }
+
+  // fill in the selected rows to textarea
+  for ( var i=0; i < random.length; i++) {
+    var txt = random[i][0].substring(
+      random[i][0].lastIndexOf('>') + 1, )
+    $('#people-workerNo').val($('#people-workerNo').val() + txt + '\n')
+    
+    var txt = random[i][1]
+    $('#people-firstName').val($('#people-firstName').val() + txt + '\n')
+
+    var txt = random[i][2]
+    $('#people-username').val($('#people-username').val() + txt + '\n')
+
+    var txt = random[i][3]
+    $('#people-area').val($('#people-area').val() + txt + '\n')
+
+    var txt = random[i][4]
+    $('#people-section').val($('#people-section').val() + txt + '\n')
+
+    var txt = random[i][5]
+    $('#people-shift').val($('#people-shift').val() + txt + '\n')
+
+    var txt = random[i][6]
+    $('#people-gjs').val($('#people-gjs').val() + txt + '\n')
+
+    var txt = random[i][7]
+    $('#people-status').val($('#people-status').val() + txt + '\n')
+
+    var txt = random[i][8]
+    $('#people-permission').val($('#people-permission').val() + txt + '\n')
+
+    var txt = random[i][9].substring(
+      random[i][9].indexOf('#') + 1, 
+      random[i][9].lastIndexOf('"'))
+    $('#people-managerNo').val($('#people-managerNo').val() + txt + '\n')
+  }
+})
+
 // add button - sql execution
 $('#people-add').click(function() {
+
+  // the main function outside
+  var valueString = bulkOfFunction()
+  if (!valueString) { return }
+
+  $.ajax({
+    url:'/people',
+    type: 'POST',
+    data: {valueString},
+
+    success: function(msg) {
+      throwAlert('Success', msg.rowsAffected + ' row(s) affected')
+      setTimeout(window.location.reload(), 750)
+    },
+
+    error: function(err) {
+      throwAlert('Error', err.responseText)
+    }
+  })
+})
+
+function bulkOfFunction() {
   // abstract data from form
   var workerNo = parser($('#people-workerNo').val())
   var firstName = parser($('#people-firstName').val())
@@ -31,8 +101,14 @@ $('#people-add').click(function() {
   inputLength.push(permission.length)
   inputLength.push(managerNo.length)
 
+  if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
+    throwAlert('Error', 'No input detected, please try again')
+    return false
+  }
+
   if ( !(inputLength.every( (val, i, arr) => val === arr[0] )) ) {
-    return throwAlert('Error', 'Inputs are not of the same length')
+    throwAlert('Error', 'Inputs are not of the same length')
+    return false
   }
 
   // iterate through every row and check for input sanity
@@ -42,7 +118,8 @@ $('#people-add').click(function() {
     if ( $.isNumeric(workerNo[i]) ) {
       var dataId = workerNo[i]
     } else {
-      return throwAlert('Error', 'Worker No should be numeric')
+      throwAlert('Error', 'Worker No should be numeric')
+      return false
     }
 
     var dataFirstName = firstName[i]
@@ -50,7 +127,8 @@ $('#people-add').click(function() {
     if ( !/[^a-z]/.test(username[i]) ) {
       var dataUsername = username[i]
     } else {
-      return throwAlert('Error', 'Username should only contain letters')
+      throwAlert('Error', 'Username should only contain letters')
+      return false
     }
     
     var dataArea = area[i] ? area[i] : 'RDA'
@@ -59,19 +137,22 @@ $('#people-add').click(function() {
     if ( shift[i].length === 4) {
       var dataShift = shift[i]
     } else {
-      return throwAlert('Error', 'Shift code should contain exactly 4 characters')
+      throwAlert('Error', 'Shift code should contain exactly 4 characters')
+      return false
     }
     
     if ( gjs[i].length === 2) {
       var dataGjs = gjs[i]
     } else {
-      return throwAlert('Error', 'GJS code should contain exactly 2 characters')
+      throwAlert('Error', 'GJS code should contain exactly 2 characters')
+      return false
     }
     
     if ( status[i] === 'active' || status[i] === 'inactive') {
       var dataStatus = status[i]
     } else {
-      return throwAlert('Error', 'Status should be either "active" or "inactive"')
+      throwAlert('Error', 'Status should be either "active" or "inactive"')
+      return false
     }
     
     if ( permission[i] === 'admin' || permission[i] === 'section' || permission[i] === 'user') {
@@ -83,7 +164,8 @@ $('#people-add').click(function() {
     if ( $.isNumeric(managerNo[i]) ) {
       var dataManagerId = managerNo[i]
     } else {
-      return throwAlert('Error', 'Manager No should be numeric')
+      throwAlert('Error', 'Manager No should be numeric')
+      return false
     }
     
     valueString = valueString + "("
@@ -101,23 +183,8 @@ $('#people-add').click(function() {
   valueString = valueString.slice(0, -2)
   valueString = valueString + ";"
 
-  console.log(valueString)
-
-  $.ajax({
-    url:'/people',
-    type: 'POST',
-    data: {valueString},
-
-    success: function(msg) {
-      throwAlert('Success', msg.rowsAffected + ' row(s) affected')
-      setTimeout(window.location.reload(), 750)
-    },
-
-    error: function(err) {
-      throwAlert('Error', err.responseText)
-    }
-  })
-})
+  return valueString
+}
 
 // parse input from textarea
 function parser(input) {
