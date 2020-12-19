@@ -50,3 +50,8 @@ table.dataTable thead th,
 table.dataTable thead td {
   padding: .3rem;
 }
+
+/* Hide DataTable native search bar */
+#the-table_filter { 
+  display: none; 
+}

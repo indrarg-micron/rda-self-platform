@@ -1,18 +1,19 @@
 $(document).ready(function() {
   // offset for navbar
   var navHeight = $('#navbar-menu').outerHeight()
+  var firstHeight = $('#first-heading').outerHeight()
   var theadHeight = $('thead tr').outerHeight() 
   $('body').css('padding-top', navHeight)
   $('#first-heading').css('top', navHeight)
-  $('a.anchor').css('top', (navHeight * 2 + theadHeight) * -1.05)
+  $('a.anchor').css('top', (navHeight + firstHeight + theadHeight) * -1.05)
 
   // initiate data table
   var table = $('#the-table').DataTable({
-      fixedHeader: { headerOffset: navHeight * 2 },
+      fixedHeader: { headerOffset: navHeight + firstHeight },
       stateSave: false,
       paging: false,
       info: false,
-      searching: false,
+      searching: true,
       autoWidth: true,
       order: [],
       select: true,
@@ -25,7 +26,7 @@ $(document).ready(function() {
           $(bookmark).parent().parent().addClass('highlighted')
           setTimeout(function () {
             $(bookmark).parent().parent().removeClass('highlighted')
-          }, 1500);
+          }, 1500)
       }}
   })
 
@@ -36,7 +37,12 @@ $(document).ready(function() {
     $(bookmark).parent().parent().addClass('highlighted')
     setTimeout(function () {
       $(bookmark).parent().parent().removeClass('highlighted')
-    }, 1500);
+    }, 1500)
+  })
+
+  // custom searchbar casts to datatable searchbar
+  $('#custom-search').on('input', function(){
+    table.search($(this).val()).draw()
   })
 
   // link scrolling of textarea in modal box
