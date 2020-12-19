@@ -75,6 +75,29 @@ $('#people-add').click(function() {
   })
 })
 
+// edit button - sql execution
+$('#people-edit').click(function() {
+
+  // the main function outside
+  var valueString = bulkOfFunction()
+  if (!valueString) { return }
+
+  $.ajax({
+    url:'/people',
+    type: 'PATCH',
+    data: {valueString},
+
+    success: function(msg) {
+      throwAlert('Success', msg.rowsAffected + ' row(s) affected')
+      setTimeout(window.location.reload(), 750)
+    },
+
+    error: function(err) {
+      throwAlert('Error', err.responseText)
+    }
+  })
+})
+
 function bulkOfFunction() {
   // abstract data from form
   var workerNo = parser($('#people-workerNo').val())

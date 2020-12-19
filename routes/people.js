@@ -42,7 +42,25 @@ router.post('/', async (req, res) => {
     const result = await pool.request()
         .query(query)      
     
-    console.log(result)
+    res.send(result)
+  
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+})
+
+router.patch('/', async (req, res) => {
+  try {
+    const body = JSON.parse(JSON.stringify(req.body))
+    let content = body.valueString
+
+    let query = fs.readFileSync(path.join(sqlPath, 'people-edit.sql')).toString()
+    query = query.replace('###INSERT_VALUE_STRING_HERE###', content)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
     res.send(result)
   
   } catch (err) {
