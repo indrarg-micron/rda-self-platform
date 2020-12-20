@@ -12,7 +12,7 @@ $('#people-edit-modal').click(function() {
   var random = $('#the-table').DataTable().rows( { selected: true } ).data()
   if (random.length == 0) {
     $('#people-edit').hide()
-    return throwAlert('Error', 'Please select the rows to edit')
+    return throwAlert('#add-edit-throw-alert', 'Warning', 'Please select the rows to edit')
   }
 
   // fill in the selected rows to textarea
@@ -52,6 +52,46 @@ $('#people-edit-modal').click(function() {
   }
 })
 
+// delete button - show modal and fill in list
+$('#people-delete-modal').click(function() {
+  $('#people-delete').show()
+  
+  var random = $('#the-table').DataTable().rows( { selected: true } ).data()
+  if (random.length == 0) {
+    $('#people-delete').hide()
+    return throwAlert('#delete-throw-alert', 'Warning', 'Please select the rows to delete')
+  }
+
+  // fill in the selected rows to the delete list
+  $('#delete-content').append(`
+    <table class="table table-bordered table-hover table-sm">
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="allcb" onchange="allcb()" checked></th>
+          <th>Worker No</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  `)
+
+  for ( var i=0; i < random.length; i++) {
+    var id = random[i][0].substring(
+      random[i][0].lastIndexOf('>') + 1, )
+    var username = random[i][2]
+
+    $('#delete-content > table > tbody:last-child').append(`
+      <tr>
+        <td><input type="checkbox" value="${id}" checked></td>
+        <td>${id}</td>
+        <td>${username}</td>
+      </tr>
+    `)
+  }
+})
+
 // add button - sql execution
 $('#people-add').click(function() {
 
@@ -65,12 +105,12 @@ $('#people-add').click(function() {
     data: {valueString},
 
     success: function(msg) {
-      throwAlert('Success', msg.rowsAffected + ' row(s) affected')
+      throwAlert('#add-edit-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
-      throwAlert('Error', err.responseText)
+      throwAlert('#add-edit-throw-alert', 'Error', err.responseText)
     }
   })
 })
@@ -88,16 +128,51 @@ $('#people-edit').click(function() {
     data: {valueString},
 
     success: function(msg) {
-      throwAlert('Success', msg.rowsAffected + ' row(s) affected')
+      throwAlert('#add-edit-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
-      throwAlert('Error', err.responseText)
+      throwAlert('#add-edit-throw-alert', 'Error', err.responseText)
     }
   })
 })
 
+// delete button - sql execution
+$('#people-delete').click(function() {
+  // get the list of IDs for deletion in an array
+  var deleteIDs = $('#delete-content > table > tbody input:checkbox:checked').map(function(){
+    return $(this).val()
+  }).get() // <-- to transform into true array
+
+  if (deleteIDs.length == 0) {
+    return throwAlert('#delete-throw-alert', 'Warning', 'Please select the rows to delete')
+  }
+
+  var valueString = ""
+  deleteIDs.forEach(id => {
+    valueString = valueString + "(" + id + "), "
+  })
+  valueString = valueString.slice(0, -2)
+  valueString = valueString + ";"
+
+  $.ajax({
+    url:'/people',
+    type: 'DELETE',
+    data: {valueString},
+
+    success: function(msg) {
+      throwAlert('#delete-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
+      setTimeout(window.location.reload(), 750)
+    },
+
+    error: function(err) {
+      throwAlert('#delete-throw-alert', 'Error', err.responseText)
+    }
+  })
+})
+
+// bulk of the function for add and edit
 function bulkOfFunction() {
   // abstract data from form
   var workerNo = parser($('#people-workerNo').val())
@@ -125,12 +200,12 @@ function bulkOfFunction() {
   inputLength.push(managerNo.length)
 
   if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
-    throwAlert('Error', 'No input detected, please try again')
+    throwAlert('#add-edit-throw-alert', 'Error', 'No input detected, please try again')
     return false
   }
 
   if ( !(inputLength.every( (val, i, arr) => val === arr[0] )) ) {
-    throwAlert('Error', 'Inputs are not of the same length')
+    throwAlert('#add-edit-throw-alert', 'Error', 'Inputs are not of the same length')
     return false
   }
 
@@ -141,7 +216,7 @@ function bulkOfFunction() {
     if ( $.isNumeric(workerNo[i]) ) {
       var dataId = workerNo[i]
     } else {
-      throwAlert('Error', 'Worker No should be numeric')
+      throwAlert('#add-edit-throw-alert', 'Error', 'Worker No should be numeric')
       return false
     }
 
@@ -150,7 +225,7 @@ function bulkOfFunction() {
     if ( !/[^a-z]/.test(username[i]) ) {
       var dataUsername = username[i]
     } else {
-      throwAlert('Error', 'Username should only contain letters')
+      throwAlert('#add-edit-throw-alert', 'Error', 'Username should only contain letters')
       return false
     }
     
@@ -160,21 +235,21 @@ function bulkOfFunction() {
     if ( shift[i].length === 4) {
       var dataShift = shift[i]
     } else {
-      throwAlert('Error', 'Shift code should contain exactly 4 characters')
+      throwAlert('#add-edit-throw-alert', 'Error', 'Shift code should contain exactly 4 characters')
       return false
     }
     
     if ( gjs[i].length === 2) {
       var dataGjs = gjs[i]
     } else {
-      throwAlert('Error', 'GJS code should contain exactly 2 characters')
+      throwAlert('#add-edit-throw-alert', 'Error', 'GJS code should contain exactly 2 characters')
       return false
     }
     
     if ( status[i] === 'active' || status[i] === 'inactive') {
       var dataStatus = status[i]
     } else {
-      throwAlert('Error', 'Status should be either "active" or "inactive"')
+      throwAlert('#add-edit-throw-alert', 'Error', 'Status should be either "active" or "inactive"')
       return false
     }
     
@@ -187,7 +262,7 @@ function bulkOfFunction() {
     if ( $.isNumeric(managerNo[i]) ) {
       var dataManagerId = managerNo[i]
     } else {
-      throwAlert('Error', 'Manager No should be numeric')
+      throwAlert('#add-edit-throw-alert', 'Error', 'Manager No should be numeric')
       return false
     }
     
@@ -226,13 +301,14 @@ function parser(input) {
 }
 
 // display alert
-function throwAlert(type, msg) {
+function throwAlert(loc, type, msg) {
   switch(type) {
     case 'Error': alertClass = 'danger'; break;
     case 'Success': alertClass = 'success'; break;
+    case 'Warning': alertClass = 'warning'; break;
   }
 
-  $('#throw-alert').html(
+  $(loc).html(
     `<div class="alert alert-${alertClass} alert-dismissible fade show" role="alert">
       <strong>${type}</strong>: ${msg}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -240,4 +316,13 @@ function throwAlert(type, msg) {
       </button>
     </div>`
   )
+}
+
+// check or uncheck all checkbox
+function allcb() {
+  if ($('#allcb').prop('checked')) {
+    $('#allcb').closest('table').find('input[type="checkbox"]').prop('checked', true)
+  } else {
+    $('#allcb').closest('table').find('input[type="checkbox"]').prop('checked', false)
+  }
 }

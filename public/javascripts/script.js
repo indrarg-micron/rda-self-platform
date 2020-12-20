@@ -30,6 +30,9 @@ $(document).ready(function() {
       }}
   })
 
+  // hide columns with a class of '.hide-this' (in the header)
+  table.columns( '.hide-this' ).visible( false );
+
   // highlight bookmarked row upon click
   $('.bookmark-link').click(function() {
     var url = $(this).attr("href")
@@ -51,7 +54,8 @@ $(document).ready(function() {
   })
 
   // clear all input type and alerts on any modal exit
-  // currently only need textarea and alert, the rest are extras
+  // also clear delete list inside delete-content
+  // extras are clear input, select, checkbox and radio
   $('.modal').on('hidden.bs.modal', function (e) {
     $(this)
       .find('input,textarea,select')
@@ -63,5 +67,7 @@ $(document).ready(function() {
       .find('.alert')
         .alert('close')
         .end()
+      .find('#delete-content')
+        .empty()
   })
 })

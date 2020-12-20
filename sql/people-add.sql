@@ -1,6 +1,6 @@
 BEGIN TRANSACTION
 
-INSERT INTO [dbo].[employee]
+INSERT INTO [RDA_IMP_INFO].[dbo].[employee]
            ([id]
            ,[first_name]
            ,[username]
