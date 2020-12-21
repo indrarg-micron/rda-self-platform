@@ -20,21 +20,20 @@ VALUES ###INSERT_VALUE_STRING_HERE###
 
 
 -- Update existing and add missing
-MERGE INTO [RDA_IMP_INFO].[dbo].[employee] AS T1    -- Target
-USING #temp_employee AS T2					                -- Source
-   ON T1.id = T2.id
+MERGE INTO [RDA_IMP_INFO].[dbo].[employee] AS t1    -- Target
+USING #temp_employee AS t2					                -- Source
+   ON t1.id = t2.id
 
 WHEN MATCHED THEN									                  -- On match update
-     UPDATE SET T1.[id] = T2.[id]
-           ,T1.[first_name] = T2.[first_name]
-           ,T1.[username] = T2.[username]
-           ,T1.[area] = T2.[area]
-           ,T1.[section] = T2.[section]
-           ,T1.[shift] = T2.[shift]
-           ,T1.[gjs] = T2.[gjs]
-           ,T1.[status] = T2.[status]
-           ,T1.[permission] = T2.[permission]
-           ,T1.[manager_id] = T2.[manager_id]
+     UPDATE SET t1.[first_name] = t2.[first_name]
+           ,t1.[username] = t2.[username]
+           ,t1.[area] = t2.[area]
+           ,t1.[section] = t2.[section]
+           ,t1.[shift] = t2.[shift]
+           ,t1.[gjs] = t2.[gjs]
+           ,t1.[status] = t2.[status]
+           ,t1.[permission] = t2.[permission]
+           ,t1.[manager_id] = t2.[manager_id]
 
 WHEN NOT MATCHED THEN								                 -- Add missing
      INSERT ([id]
@@ -47,16 +46,16 @@ WHEN NOT MATCHED THEN								                 -- Add missing
            ,[status]
            ,[permission]
            ,[manager_id])
-     VALUES (T2.[id]
-           ,T2.[first_name]
-           ,T2.[username]
-           ,T2.[area]
-           ,T2.[section]
-           ,T2.[shift]
-           ,T2.[gjs]
-           ,T2.[status]
-           ,T2.[permission]
-           ,T2.[manager_id]);
+     VALUES (t2.[id]
+           ,t2.[first_name]
+           ,t2.[username]
+           ,t2.[area]
+           ,t2.[section]
+           ,t2.[shift]
+           ,t2.[gjs]
+           ,t2.[status]
+           ,t2.[permission]
+           ,t2.[manager_id]);
 
 DROP TABLE #temp_employee
 

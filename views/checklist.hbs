@@ -5,9 +5,9 @@
   <div class="d-flex flex-column my-0">
     <div class="d-flex justify-content-end">
       <div id="datatables-buttons" class="d-flex align-items-center m-0 p-0"></div>
-      <button id="people-add-modal" class="btn" data-toggle="modal" data-target="#add-edit-modal" title="Add"><i class="fas fa-plus fa-lg"></i></button>
-      <button id="people-edit-modal" class="btn" data-toggle="modal" data-target="#add-edit-modal" title="Edit"><i class="fas fa-pencil-alt fa-lg"></i></button>
-      <button id="people-delete-modal" class="btn" data-toggle="modal" data-target="#delete-modal" title="Delete"><i class="fas fa-trash-alt fa-lg"></i></button>
+      <button id="checklist-add-modal" class="btn" data-toggle="modal" data-target="#add-edit-modal" title="Add"><i class="fas fa-plus fa-lg"></i></button>
+      <button id="checklist-edit-modal" class="btn" data-toggle="modal" data-target="#add-edit-modal" title="Edit"><i class="fas fa-pencil-alt fa-lg"></i></button>
+      <button id="checklist-delete-modal" class="btn" data-toggle="modal" data-target="#delete-modal" title="Delete"><i class="fas fa-trash-alt fa-lg"></i></button>
     </div>
     {{!-- Custom rounded search bars with input group --}}
     <div class="bg-light rounded rounded-pill shadow-sm mb-2">
@@ -27,31 +27,25 @@
 <table id="the-table" class="table table-bordered table-hover table-sm">
   <thead class="thead-light">
     <tr>
-      <th scope="col">Worker No</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Username</th>
+      <th scope="col">ID</th>
       <th scope="col">Area</th>
       <th scope="col">Section</th>
-      <th scope="col">Shift</th>
-      <th scope="col">GJS</th>
+      <th scope="col">Level</th>
+      <th scope="col">Category</th>
+      <th scope="col">Item</th>
       <th scope="col">Status</th>
-      <th scope="col">Permission</th>
-      <th scope="col">Manager</th>
     </tr>
   </thead>
   <tbody>
     {{#each data}}
       <tr>
         <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
-        <td>{{this.first_name}}</td>
-        <td>{{this.username}}</td>
         <td>{{this.area}}</td>
         <td>{{this.section}}</td>
-        <td>{{this.shift}}</td>
-        <td>{{this.gjs}}</td>
+        <td>{{this.level}}</td>
+        <td>{{this.category}}</td>
+        <td>{{this.item}}</td>
         <td>{{this.status}}</td>
-        <td>{{this.permission}}</td>
-        <td><a class="bookmark-link" href="#{{this.manager_id}}">{{this.manager_first_name}}</a></td>
       </tr>
     {{/each}}
   </tbody>
@@ -74,15 +68,12 @@
           Add or edit records in the columns below<br>
           <small class="text-muted">
             <ul>
-              <li>Username is Micron username</li>
-              <li>Worker No is Micron worker number, all numeric character, an integer</li>
+              <li>ID is automatically generated</li>
               <li>Area defaults to "RDA"</li>
-              <li>Shift is 4-character Micron shift code</li>
-              <li>GJS is 2-character Micron GJS code</li>
+              <li>Level should be integer</li>
+              <li>Category for Ops will be "Jobrole" - "Category"</li>
               <li>Status should be either <b>"active"</b> or <b>"inactive"</b></li>
-              <li>Permission should be either <b>"admin"</b>, <b>"section"</b>, or <b>"user"</b>. Defaults to "user"</li>
-              <li>Manager No is the user's manager's <b>Worker No</b>, not username</li>
-              <li>Each column should have the same number of rows of input</li>
+              <li>Each column should have the same number of rows of input (ignore ID)</li>
               <li>Recommended to use excel first before pasting per column here</li>
             </ul>
           </small>
@@ -90,48 +81,36 @@
 
         <div class="container">
           <div class="row">
-            <div class="col-lg-2">
-              <label for="people-username">Username</label>   
-              <textarea class="form-control linked" id="people-username" rows="10"></textarea>
-            </div>
-            <div class="col-lg-10 overflow-auto">
+            <div class="col-lg-12 overflow-auto">
               <div class="form-group">
                 <div class="row flex-row flex-nowrap">
+                  <div class="col-lg-1">
+                    <label for="checklist-id">ID</label>
+                    <textarea class="form-control linked" id="checklist-id" rows="10" disabled></textarea>
+                  </div>
                   <div class="col-lg-2">
-                    <label for="people-workerNo">Worker No</label>
-                    <textarea class="form-control linked" id="people-workerNo" rows="10"></textarea>
+                    <label for="checklist-area">Area</label>
+                    <textarea class="form-control linked" id="checklist-area" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="checklist-section">Section</label>
+                    <textarea class="form-control linked" id="checklist-section" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-1">
+                    <label for="checklist-level">Level</label>
+                    <textarea class="form-control linked" id="checklist-level" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="checklist-category">Category</label>
+                    <textarea class="form-control linked" id="checklist-category" rows="10"></textarea>
                   </div>
                   <div class="col-lg-3">
-                    <label for="people-firstName">First Name</label>
-                    <textarea class="form-control linked" id="people-firstName" rows="10"></textarea>
+                    <label for="checklist-item">Item</label>
+                    <textarea class="form-control linked" id="checklist-item" rows="10"></textarea>
                   </div>
-                  <div class="col-lg-2">
-                    <label for="people-area">Area</label>
-                    <textarea class="form-control linked" id="people-area" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2">
-                    <label for="people-section">Section</label>
-                    <textarea class="form-control linked" id="people-section" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2">
-                    <label for="people-shift">Shift</label>
-                    <textarea class="form-control linked" id="people-shift" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2">
-                    <label for="people-gjs">GJS</label>
-                    <textarea class="form-control linked" id="people-gjs" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2">
-                    <label for="people-status">Status</label>
-                    <textarea class="form-control linked" id="people-status" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2">
-                    <label for="people-permission">Permission</label>
-                    <textarea class="form-control linked" id="people-permission" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2">
-                    <label for="people-managerNo">Manager No</label>
-                    <textarea class="form-control linked" id="people-managerNo" rows="10"></textarea>
+                  <div class="col-lg-1">
+                    <label for="checklist-status">Status</label>
+                    <textarea class="form-control linked" id="checklist-status" rows="10"></textarea>
                   </div>
                 </div>
               </div>
@@ -140,7 +119,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="people-add-edit" class="btn btn-primary">Save changes</button>
+        <button type="button" id="checklist-add-edit" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
@@ -165,7 +144,7 @@
         <div id="delete-content"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="people-delete" class="btn btn-danger">Delete</button>
+        <button type="button" id="checklist-delete" class="btn btn-danger">Delete</button>
       </div>
     </div>
   </div>
