@@ -10,6 +10,13 @@ a.anchor {
   visibility: hidden;
 }
 
+/* textarea no wrap */
+textarea {
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+
 /* make the heading above table sticky */
 #first-heading {
   position: sticky;
@@ -28,6 +35,14 @@ a.anchor {
 
 .fa-trash-alt {
   color: #be4bdb;
+}
+
+.fa-copy {
+  color: #f783ac;
+}
+
+.fa-file-excel {
+  color: #82c91e;
 }
 
 /* hover colour */

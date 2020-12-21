@@ -48,6 +48,30 @@ $(document).ready(function() {
     table.search($(this).val()).draw()
   })
 
+  // append export button to specified location, with export options
+  var buttons = new $.fn.dataTable.Buttons(table, {
+    buttons: [
+        {
+            extend: 'copyHtml5',
+            text: '<i class="fas fa-copy fa-lg"></i>',
+            titleAttr: 'Copy',
+            className: 'btn',
+            exportOptions: {
+                columns: ':visible'
+            }
+        },
+        {
+            extend: 'excelHtml5',
+            text: '<i class="fas fa-file-excel fa-lg"></i>',
+            titleAttr: 'Excel',
+            className: 'btn',
+            exportOptions: {
+                columns: ':visible'
+            }
+        }
+  ]
+  }).container().appendTo($('#datatables-buttons'));
+
   // link scrolling of textarea in modal box
   $('.linked').scroll(function(){
     $('.linked').scrollTop($(this).scrollTop()) 
