@@ -8,10 +8,10 @@ const sqlPath = path.join(__dirname, 'sql')
 // for server, need to put the fully qualified domain name to connect in OpenShift
 // can ping the server in cmd to check the full domain name
 const configProd535 = {
-    user: process.env.PROD535_USERNAME,
-    password: process.env.PROD535_PASSWORD,
-    server: 'fsmssprod535.imfs.micron.com',
-    database: 'RDA_IMP_INFO',
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    server: process.env.DB_SERVER,
+    database: process.env.DB_DATABASE,
     options: {
         enableArithAbort: true, // needed to silence tedious
     }
