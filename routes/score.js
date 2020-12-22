@@ -29,13 +29,13 @@ router.get('/', async (req, res) => {
     res.render('error', { title: 'Error'})
   }
 })
-/*
+
 router.post('/', async (req, res) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
 
-    let query = fs.readFileSync(path.join(sqlPath, 'checklist-add-edit.sql')).toString()
+    let query = fs.readFileSync(path.join(sqlPath, 'score-add-edit-id.sql')).toString()
     query = query.replace('###INSERT_VALUE_STRING_HERE###', content)
 
     const pool = await poolProd535
@@ -48,7 +48,26 @@ router.post('/', async (req, res) => {
     res.status(500).send(err.message)
   }
 })
-*/
+
+router.patch('/', async (req, res) => {
+  try {
+    const body = JSON.parse(JSON.stringify(req.body))
+    let content = body.valueString
+
+    let query = fs.readFileSync(path.join(sqlPath, 'score-add-edit-content.sql')).toString()
+    query = query.replace('###INSERT_VALUE_STRING_HERE###', content)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
+    res.send(result)
+  
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+})
+
 router.delete('/', async (req, res) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))

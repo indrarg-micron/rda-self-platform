@@ -126,30 +126,53 @@ $('#score-delete-modal').click(function() {
     `)
   }
 })
-/*
-// add-edit button - sql execution
-$('#checklist-add-edit').click(function() {
+
+// add-edit button - sql execution by id
+$('#score-add-edit-id').click(function() {
 
   // the main function outside
-  var valueString = bulkOfFunction()
+  var valueString = bulkOfFunctionById()
   if (!valueString) { return }
 
   $.ajax({
-    url:'/checklist',
+    url:'/score',
     type: 'POST',
     data: {valueString},
 
     success: function(msg) {
-      throwAlert('#add-edit-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
+      throwAlert('#add-edit-id-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
-      throwAlert('#add-edit-throw-alert', 'Error', err.responseText)
+      throwAlert('#add-edit-id-throw-alert', 'Error', err.responseText)
     }
   })
 })
-*/
+
+// add-edit button - sql execution by content
+$('#score-add-edit-content').click(function() {
+
+  // the main function outside
+  var valueString = bulkOfFunctionByContent()
+  if (!valueString) { return }
+
+  $.ajax({
+    url:'/score',
+    type: 'PATCH',
+    data: {valueString},
+
+    success: function(msg) {
+      throwAlert('#add-edit-content-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
+      setTimeout(window.location.reload(), 750)
+    },
+
+    error: function(err) {
+      throwAlert('#add-edit-content-throw-alert', 'Error', err.responseText)
+    }
+  })
+})
+
 // delete button - sql execution
 $('#score-delete').click(function() {
   // get the list of IDs for deletion in an array
@@ -183,34 +206,28 @@ $('#score-delete').click(function() {
     }
   })
 })
-/*
-// bulk of the function for add and edit
-function bulkOfFunction() {
+
+// bulk of the function for add and edit by id
+function bulkOfFunctionById() {
   // abstract data from form
-  var id = parser($('#checklist-id').val())
-  var area = parser($('#checklist-area').val().toUpperCase())
-  var section = parser($('#checklist-section').val())
-  var level = parser($('#checklist-level').val())
-  var category = parser($('#checklist-category').val())
-  var item = parser($('#checklist-item').val())
-  var status = parser($('#checklist-status').val())
+  var id = parser($('#score-id-id').val())
+  var userId = parser($('#score-userId').val())
+  var checklistId = parser($('#score-checklistId').val())
+  var score = parser($('#score-score-id').val())
 
   // check input length
   var inputLength = []
-  inputLength.push(area.length)
-  inputLength.push(section.length)
-  inputLength.push(level.length)
-  inputLength.push(category.length)
-  inputLength.push(item.length)
-  inputLength.push(status.length)
+  inputLength.push(userId.length)
+  inputLength.push(checklistId.length)
+  inputLength.push(score.length)
 
   if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
-    throwAlert('#add-edit-throw-alert', 'Error', 'No input detected, please try again')
+    throwAlert('#add-edit-id-throw-alert', 'Error', 'No input detected, please try again')
     return false
   }
 
   if ( !(inputLength.every( (val, i, arr) => val === arr[0] )) ) {
-    throwAlert('#add-edit-throw-alert', 'Error', 'Inputs are not of the same length')
+    throwAlert('#add-edit-id-throw-alert', 'Error', 'Inputs are not of the same length')
     return false
   }
 
@@ -219,40 +236,116 @@ function bulkOfFunction() {
   var valueString = ""
   for (var i = 0; i < inputLength[0]; i++) {
     var dataId = id[i] ? id[i] : null
-    var dataArea = area[i] ? area[i] : 'RDA'
+
+    if ( Number.isInteger(parseInt(userId[i])) ) {
+      var dataUserId = userId[i]
+    } else {
+      throwAlert('#add-edit-id-throw-alert', 'Error', 'Worker No should be an integer, please check people page')
+      return false
+    }
+
+    if ( Number.isInteger(parseInt(checklistId[i])) ) {
+      var dataChecklistId = checklistId[i]
+    } else {
+      throwAlert('#add-edit-id-throw-alert', 'Error', 'Checklist ID should be an integer, please check checklist page')
+      return false
+    }
+
+    if ( Number.isInteger(parseInt(score[i])) ) {
+      var dataScore = score[i]
+    } else {
+      throwAlert('#add-edit-id-throw-alert', 'Error', 'Score should be an integer')
+      return false
+    }
+        
+    valueString = valueString + "("
+    + dataId + ", "
+    + dataUserId + ", "
+    + dataChecklistId + ", "
+    + dataScore + "), "
+  }
+  valueString = valueString.slice(0, -2)
+  valueString = valueString + ";"
+
+  return valueString
+}
+
+// bulk of the function for add and edit by content
+function bulkOfFunctionByContent() {
+  // abstract data from form
+  var id = parser($('#score-id-content').val())
+  var username = parser($('#score-username').val().toLowerCase())
+  var section = parser($('#score-section').val())
+  var level = parser($('#score-level').val())
+  var category = parser($('#score-category').val())
+  var item = parser($('#score-item').val())
+  var score = parser($('#score-score-content').val())
+
+  // check input length
+  var inputLength = []
+  inputLength.push(username.length)
+  inputLength.push(section.length)
+  inputLength.push(level.length)
+  inputLength.push(category.length)
+  inputLength.push(item.length)
+  inputLength.push(score.length)
+
+  if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
+    throwAlert('#add-edit-content-throw-alert', 'Error', 'No input detected, please try again')
+    return false
+  }
+
+  if ( !(inputLength.every( (val, i, arr) => val === arr[0] )) ) {
+    throwAlert('#add-edit-content-throw-alert', 'Error', 'Inputs are not of the same length')
+    return false
+  }
+
+  // iterate through every row and check for input sanity
+  // then concatenate to sql value string
+  var valueString = ""
+  for (var i = 0; i < inputLength[0]; i++) {
+    var dataId = id[i] ? id[i] : null
+    
+    if ( !/[^a-z]/.test(username[i]) ) {
+      var dataUsername = username[i]
+    } else {
+      throwAlert('#add-edit-content-throw-alert', 'Error', 'Username should only contain letters, please check people page')
+      return false
+    }
+
     var dataSection = section[i]
 
-    if ( Number.isInteger(level[i]) ) {
+    if ( Number.isInteger(parseInt(level[i])) ) {
       var dataLevel = level[i]
     } else {
-      throwAlert('#add-edit-throw-alert', 'Error', 'Level should be an integer')
+      throwAlert('#add-edit-content-throw-alert', 'Error', 'Level should be an integer')
       return false
     }
 
     var dataCategory = category[i]
     var dataItem = item[i]
     
-    if ( status[i] === 'active' || status[i] === 'inactive') {
-      var dataStatus = status[i]
+    if ( Number.isInteger(parseInt(score[i])) ) {
+      var dataScore = score[i]
     } else {
-      throwAlert('#add-edit-throw-alert', 'Error', 'Status should be either "active" or "inactive"')
+      throwAlert('#add-edit-content-throw-alert', 'Error', 'Score should be an integer')
       return false
     }
         
     valueString = valueString + "("
     + dataId + ", '"
-    + dataArea + "', '"
+    + dataUsername + "', '"
     + dataSection + "', "
     + dataLevel + ", '"
     + dataCategory + "', '"
-    + dataItem + "', '"
-    + dataStatus + "'), "
+    + dataItem + "', "
+    + dataScore + "), "
   }
   valueString = valueString.slice(0, -2)
   valueString = valueString + ";"
 
   return valueString
-}*/
+}
 
 // parse input from textarea
 function parser(input) {
