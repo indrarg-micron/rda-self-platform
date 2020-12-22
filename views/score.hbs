@@ -1,0 +1,223 @@
+<div id="first-heading" class="d-flex justify-content-md-between p-0">
+  <div class="d-flex align-items-center">
+    <h1>{{title}}</h1>
+  </div>
+  <div class="d-flex flex-column my-0">
+    <div class="d-flex justify-content-end">
+      <div id="datatables-buttons" class="d-flex align-items-center m-0 p-0"></div>
+      <div class="dropdown">
+        <button id="score-add-modal" class="btn" data-toggle="dropdown" title="Add"><i class="fas fa-plus fa-lg"></i></button>
+        <div class="dropdown-menu" aria-labelledby="score-add-modal">
+          <a id="score-add-modal-id" class="dropdown-item" data-toggle="modal" data-target="#add-edit-modal-id">Add by ID</a>
+          <a id="score-add-modal-content" class="dropdown-item" data-toggle="modal" data-target="#add-edit-modal-content">Add by Content</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button id="score-edit-modal" class="btn" data-toggle="dropdown" title="Edit"><i class="fas fa-pencil-alt fa-lg"></i></button>
+        <div class="dropdown-menu" aria-labelledby="score-edit-modal">
+          <a id="score-edit-modal-id" class="dropdown-item" data-toggle="modal" data-target="#add-edit-modal-id">Edit by ID</a>
+          <a id="score-edit-modal-content" class="dropdown-item" data-toggle="modal" data-target="#add-edit-modal-content">Edit by Content</a>
+        </div>
+      </div>
+      <button id="score-delete-modal" class="btn" data-toggle="modal" data-target="#delete-modal" title="Delete"><i class="fas fa-trash-alt fa-lg"></i></button>
+    </div>
+    {{!-- Custom rounded search bars with input group --}}
+    <div class="bg-light rounded rounded-pill shadow-sm mb-2">
+      <div class="input-group">
+        <input id="custom-search" type="search" placeholder="What're you searching for?" class="form-control input-sm border-0 bg-light">
+        <div class="input-group-append">
+          <button class="btn btn-link text-primary" title="Search"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+    {{!-- End --}}
+  </div>
+</div>
+
+
+
+<table id="the-table" class="table table-bordered table-hover table-sm">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Username</th>
+      <th scope="col">Item Section</th>
+      <th scope="col">Level</th>
+      <th scope="col">Category</th>
+      <th scope="col">Item</th>
+      <th scope="col">Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each data}}
+      <tr>
+        <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
+        <td><a class="bookmark-link" target="_blank" href="/people#{{this.user_id}}">{{this.username}}</a></td>
+        <td>{{this.section}}</td>
+        <td>{{this.level}}</td>
+        <td>{{this.category}}</td>
+        <td><a class="bookmark-link" target="_blank" href="/checklist#{{this.checklist_id}}">{{this.item}}</a></td>
+        <td>{{this.score}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{!-- modal for add/edit by id --}}
+<div class="modal fade" id="add-edit-modal-id" tabindex="-1" role="dialog" aria-labelledby="addEditModalId" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-primary">
+        <h5 class="modal-title" id="add-edit-modal-id-label">Add/Edit record(s) of {{title}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body pb-1">
+        <div id="add-edit-id-throw-alert"></div>
+        <p>
+          Add or edit records in the columns below<br>
+          <small class="text-muted">
+            <ul>
+              <li>ID is automatically generated</li>
+              <li>Worker No is TM's Micron worker number, see the <a href="/people" target="_blank">people</a> table</li>
+              <li>Checklist ID can be found in the <a href="/checklist" target="_blank">checklist</a> table</li>
+              <li>Score should be an integer</li>
+              <li>Each column should have the same number of rows of input (ignore ID)</li>
+              <li>Recommended to use excel first before pasting per column here</li>
+            </ul>
+          </small>
+        </p>
+
+        <div class="container">
+          <div class="row ">
+            <div class="col-lg-12 overflow-auto">
+              <div class="form-group">
+                <div class="row flex-row flex-nowrap justify-content-center">
+                  <div class="col-lg-2">
+                    <label for="score-id-id">ID</label>
+                    <textarea class="form-control linked" id="score-id-id" rows="10" disabled></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="score-userId">Worker No</label>
+                    <textarea class="form-control linked" id="score-userId" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="score-checklistId">Checklist ID</label>
+                    <textarea class="form-control linked" id="score-checklistId" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="score-score-id">Score</label>
+                    <textarea class="form-control linked" id="score-score-id" rows="10"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="score-add-edit-id" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- modal for add/edit by content --}} 
+<div class="modal fade" id="add-edit-modal-content" tabindex="-1" role="dialog" aria-labelledby="addEditModalContent" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-primary">
+        <h5 class="modal-title" id="add-edit-modal-content-label">Add/Edit record(s) of {{title}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body pb-1">
+        <div id="add-edit-content-throw-alert"></div>
+        <p>
+          Add or edit records in the columns below<br>
+          <small class="text-muted">
+            <ul>
+              <li>ID is automatically generated</li>
+              <li>Username is TM's Micron username, see the <a href="/people" target="_blank">people</a> table</li>
+              <li>The contents of Item Section, Level, Category, and Item should exist in the <a href="/checklist" target="_blank">checklist</a> table</li>
+              <li>Score should be an integer</li>
+              <li>Each column should have the same number of rows of input (ignore ID)</li>
+              <li>Recommended to use excel first before pasting per column here</li>
+            </ul>
+          </small>
+        </p>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 overflow-auto">
+              <div class="form-group">
+                <div class="row flex-row flex-nowrap">
+                  <div class="col-lg-1">
+                    <label for="score-id-content">ID</label>
+                    <textarea class="form-control linked" id="score-id-content" rows="10" disabled></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="score-username">Username</label>
+                    <textarea class="form-control linked" id="score-username" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="score-section">Item Section</label>
+                    <textarea class="form-control linked" id="score-section" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-1">
+                    <label for="score-level">Level</label>
+                    <textarea class="form-control linked" id="score-level" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2">
+                    <label for="score-category">Category</label>
+                    <textarea class="form-control linked" id="score-category" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-3">
+                    <label for="score-item">Item</label>
+                    <textarea class="form-control linked" id="score-item" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-1">
+                    <label for="score-score-content">Score</label>
+                    <textarea class="form-control linked" id="score-score-content" rows="10"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="score-add-edit-content" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- modal for delete --}} 
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header alert-danger">
+        <h5 class="modal-title" id="delete-modal-label">Delete record(s) of {{title}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body pb-1">
+        <div id="delete-throw-alert"></div>
+        <p>
+          Are you sure you want to delete the following record(s)?
+        </p>
+        <div id="delete-content"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="score-delete" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

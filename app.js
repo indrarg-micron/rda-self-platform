@@ -7,6 +7,7 @@ const logger = require('morgan')
 const indexRouter = require('./routes/index')
 const peopleRouter = require('./routes/people')
 const checklistRouter = require('./routes/checklist')
+const scoreRouter = require('./routes/score')
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/people', peopleRouter)
 app.use('/checklist', checklistRouter)
+app.use('/score', scoreRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

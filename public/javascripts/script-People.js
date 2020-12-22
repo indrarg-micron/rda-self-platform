@@ -15,8 +15,7 @@ $('#people-edit-modal').click(function() {
 
   // fill in the selected rows to textarea
   for ( var i=0; i < random.length; i++) {
-    var txt = random[i][0].substring(
-      random[i][0].lastIndexOf('>') + 1, )
+    var txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
     $('#people-workerNo').val($('#people-workerNo').val() + txt + '\n')
     
     var txt = random[i][1]
@@ -76,8 +75,7 @@ $('#people-delete-modal').click(function() {
   `)
 
   for ( var i=0; i < random.length; i++) {
-    var id = random[i][0].substring(
-      random[i][0].lastIndexOf('>') + 1, )
+    var id = $('<div>').html(random[i][0]).text() // to get innerHTML text
     var username = random[i][2]
 
     $('#delete-content > table > tbody:last-child').append(`
@@ -188,7 +186,7 @@ function bulkOfFunction() {
   // then concatenate to sql value string
   var valueString = ""
   for (var i = 0; i < inputLength[0]; i++) {
-    if ( Number.isInteger(workerNo[i]) ) {
+    if ( Number.isInteger(parseInt(workerNo[i])) ) {
       var dataId = workerNo[i]
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Worker No should be an integer')
@@ -234,7 +232,7 @@ function bulkOfFunction() {
       var dataPermission = 'user'
     }
     
-    if ( managerNo[i] == '' || Number.isInteger(managerNo[i]) ) {
+    if ( managerNo[i] == '' || Number.isInteger(parseInt(managerNo[i])) ) {
       var dataManagerId = managerNo[i] || null
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Manager No should be an integer')
