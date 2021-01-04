@@ -3,6 +3,11 @@ p + ul {
   margin-top: -1em;
 }
 
+/* lowercase */
+.lowercase {
+  text-transform: lowercase;
+}
+
 /* compensate for fixed-top navbar */
 a.anchor {
   display: block;

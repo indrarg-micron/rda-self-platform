@@ -45,6 +45,14 @@
               <a href="/score" class="nav-link {{#if active.score}}active{{/if}}">Score</a>
             </li>
           </ul>
+
+          {{#if ntlm.UserName}}
+            <ul class="navbar-nav navbar-right">
+              <li class="nav-item">
+                <span class="nav-link lowercase"><i class="fas fa-user"></i> {{ntlm.UserName}}</span>
+              </li>
+            </ul>
+          {{/if}}
         </div>
       </div>
     </nav>

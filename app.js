@@ -3,6 +3,7 @@ const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const ntlm = require('express-ntlm')
 
 const indexRouter = require('./routes/index')
 const peopleRouter = require('./routes/people')
@@ -10,6 +11,7 @@ const checklistRouter = require('./routes/checklist')
 const scoreRouter = require('./routes/score')
 
 const app = express()
+app.use( ntlm() )
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
