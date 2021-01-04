@@ -14,7 +14,7 @@ $(document).ready(function() {
       paging: false,
       info: false,
       searching: true,
-      autoWidth: true,
+      autoWidth: false,
       order: [],
       select: true,
 
@@ -31,7 +31,10 @@ $(document).ready(function() {
   })
 
   // hide columns with a class of '.hide-this' (in the header)
-  table.columns( '.hide-this' ).visible( false );
+  table.columns( '.hide-this' ).visible( false )
+
+  // adjust table on window resize
+  //$(window).bind('resize', table.columns.adjust().draw())
 
   // highlight bookmarked row upon click
   $('.bookmark-link').click(function() {

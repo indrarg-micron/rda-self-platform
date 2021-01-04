@@ -76,7 +76,11 @@ table.dataTable thead td {
   display: none; 
 }
 
-/* remove box-sizing */
-*, *::before, *::after{
-  box-sizing: revert !important;
+/* force dt-buttons to be inline */
+.dt-buttons {
+  white-space: nowrap;
+}
+
+.search-bar {
+  max-width: 350px;
 }
