@@ -35,33 +35,34 @@
 </div>
 
 
-
-<table id="the-table" class="table table-bordered table-hover table-sm">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Username</th>
-      <th scope="col">Item Section</th>
-      <th scope="col">Level</th>
-      <th scope="col">Category</th>
-      <th scope="col">Item</th>
-      <th scope="col">Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each data}}
+<div class="container m-0 p-0 overflow-auto">
+  <table id="the-table" class="table table-bordered table-hover table-sm">
+    <thead class="thead-light">
       <tr>
-        <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
-        <td><a class="bookmark-link" target="_blank" href="/people#{{this.user_id}}">{{this.username}}</a></td>
-        <td>{{this.section}}</td>
-        <td>{{this.level}}</td>
-        <td>{{this.category}}</td>
-        <td><a class="bookmark-link" target="_blank" href="/checklist#{{this.checklist_id}}">{{this.item}}</a></td>
-        <td>{{this.score}}</td>
+        <th scope="col">ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Item Section</th>
+        <th scope="col">Level</th>
+        <th scope="col">Category</th>
+        <th scope="col">Item</th>
+        <th scope="col">Score</th>
       </tr>
-    {{/each}}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {{#each data}}
+        <tr>
+          <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
+          <td><a class="bookmark-link" target="_blank" href="/people#{{this.user_id}}">{{this.username}}</a></td>
+          <td>{{this.section}}</td>
+          <td>{{this.level}}</td>
+          <td>{{this.category}}</td>
+          <td><a class="bookmark-link" target="_blank" href="/checklist#{{this.checklist_id}}">{{this.item}}</a></td>
+          <td>{{this.score}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
 
 {{!-- modal for add/edit by id --}}
 <div class="modal fade" id="add-edit-modal-id" tabindex="-1" role="dialog" aria-labelledby="addEditModalId" aria-hidden="true">

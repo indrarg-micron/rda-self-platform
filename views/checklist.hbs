@@ -23,33 +23,34 @@
 </div>
 
 
-
-<table id="the-table" class="table table-bordered table-hover table-sm">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Area</th>
-      <th scope="col">Section</th>
-      <th scope="col">Level</th>
-      <th scope="col">Category</th>
-      <th scope="col">Item</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each data}}
+<div class="container m-0 p-0 overflow-auto">
+  <table id="the-table" class="table table-bordered table-hover table-sm">
+    <thead class="thead-light">
       <tr>
-        <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
-        <td>{{this.area}}</td>
-        <td>{{this.section}}</td>
-        <td>{{this.level}}</td>
-        <td>{{this.category}}</td>
-        <td>{{this.item}}</td>
-        <td>{{this.status}}</td>
+        <th scope="col">ID</th>
+        <th scope="col">Area</th>
+        <th scope="col">Section</th>
+        <th scope="col">Level</th>
+        <th scope="col">Category</th>
+        <th scope="col">Item</th>
+        <th scope="col">Status</th>
       </tr>
-    {{/each}}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {{#each data}}
+        <tr>
+          <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
+          <td>{{this.area}}</td>
+          <td>{{this.section}}</td>
+          <td>{{this.level}}</td>
+          <td>{{this.category}}</td>
+          <td>{{this.item}}</td>
+          <td>{{this.status}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
 
 {{!-- modal for add/edit --}} 
 <div class="modal fade" id="add-edit-modal" tabindex="-1" role="dialog" aria-labelledby="addEditModal" aria-hidden="true">

@@ -71,7 +71,12 @@ table.dataTable thead td {
   padding: .3rem;
 }
 
-/* Hide DataTable native search bar */
+/* hide DataTable native search bar */
 #the-table_filter { 
   display: none; 
+}
+
+/* remove box-sizing */
+*, *::before, *::after{
+  box-sizing: revert !important;
 }
