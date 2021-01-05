@@ -3,11 +3,6 @@ p + ul {
   margin-top: -1em;
 }
 
-/* lowercase */
-.lowercase {
-  text-transform: lowercase;
-}
-
 /* compensate for fixed-top navbar */
 a.anchor {
   display: block;
@@ -81,6 +76,25 @@ table.dataTable thead td {
   white-space: nowrap;
 }
 
+/* limit the size of the search bar */
 .search-bar {
   max-width: 350px;
+}
+
+/* to stick the footer to the bottom only when content is short */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
 }
