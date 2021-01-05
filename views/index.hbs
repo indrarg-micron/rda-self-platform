@@ -1,15 +1,25 @@
 <div class="jumbotron mt-4">
-  <h1>Hello, <span class="lowercase">{{ntlm.UserName}}</span></h1>
-  <h2>Welcome to {{title}}</h2>
-  <p>This is the landing page for RDA Self 2.0</p>
+  <h1>Hello, <span class="text-lowercase">{{ntlm.UserName}}!</span></h1>
+  <h4>Welcome to RDA Self 2.0 landing page</h4>
   <hr>
-  <p>Database schema:</p>
-  <img src="images/schema.png" class="rounded mx-auto d-block" alt="Database Schema">
+  <li>This site is best viewed in desktop with chromium-based browser</li>
+  <li>Minimum display width for proper viewing is 1000px</li>
+  <hr>
+  <p>Your account details:</p>
+  <ul>
+    <li>Username: {{user.name}}</li>
+    <li>Section: {{user.section}}</li>
+    <li>Permission: {{user.permission}}</li>
+  </ul>
 </div>
+
+
 
 <div id="line-container"></div>
 
 <p>Some random content to fill up the page:</p>
+
+<hr>
 
 <div id="Inner">
 
@@ -19,9 +29,11 @@
   <h5>"There is no one who loves pain itself, who seeks after it and wants to have it, simply because it is pain..."
   </h5>
 
+  <img src="https://drscdn.500px.org/photo/1026186880/q%3D80_m%3D2000/v2?sig=55e5816da635cc71aa730a83f74cc547d8f2d87989fc81660af90ba9f1091b9f" class="img-fluid" alt="Responsive image">
 
   <hr>
 
+  
   <div id="Content">
 
     <div class="boxed">

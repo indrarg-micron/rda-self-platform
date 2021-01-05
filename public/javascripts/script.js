@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  // offset for navbar
+  // offset for navbar - ideally should recalculate on window resize
   var navHeight = $('#navbar-menu').outerHeight()
   var firstHeight = $('#first-heading').outerHeight()
   var theadHeight = $('thead tr').outerHeight() 
@@ -32,9 +32,6 @@ $(document).ready(function() {
 
   // hide columns with a class of '.hide-this' (in the header)
   table.columns( '.hide-this' ).visible( false )
-
-  // adjust table on window resize
-  //$(window).bind('resize', table.columns.adjust().draw())
 
   // highlight bookmarked row upon click
   $('.bookmark-link').click(function() {
