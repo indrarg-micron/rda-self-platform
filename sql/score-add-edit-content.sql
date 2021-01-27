@@ -9,6 +9,7 @@ CREATE TABLE #temp_score (
 	category NVARCHAR(50),
 	item NVARCHAR(255),
 	score INT,
+  fy_quarter CHAR(6)
 );
 
 -- Insert edited/new data into temp table
@@ -23,6 +24,7 @@ SELECT s.[id],
 	s.[category],
 	s.[item],
 	s.[score],
+  s.[fy_quarter],
 	e.[id] as [employee_id],
 	c.[id] as [checklist_id]
 INTO #temp_score_final
@@ -44,14 +46,17 @@ WHEN MATCHED THEN									                  -- On match update
      UPDATE SET t1.[employee_id] = t2.[employee_id]
            ,t1.[checklist_id] = t2.[checklist_id]
            ,t1.[score] = t2.[score]
+           ,t1.[fy_quarter] = t2.[fy_quarter]
 
 WHEN NOT MATCHED THEN								                 -- Add missing
      INSERT ([employee_id]
            ,[checklist_id]
-           ,[score])
+           ,[score]
+           ,[fy_quarter])
      VALUES (t2.[employee_id]
            ,t2.[checklist_id]
-           ,t2.[score]);
+           ,t2.[score]
+           ,t2.[fy_quarter]);
 
 DROP TABLE #temp_score, #temp_score_final
 

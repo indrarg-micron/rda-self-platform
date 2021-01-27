@@ -35,6 +35,9 @@ $('#score-edit-modal-id').click(function() {
 
     var txt = random[i][6]
     $('#score-score-id').val($('#score-score-id').val() + txt + '\n')
+
+    var txt = random[i][7]
+    $('#score-quarter-id').val($('#score-quarter-id').val() + txt + '\n')
   }
 })
 
@@ -70,6 +73,9 @@ $('#score-edit-modal-content').click(function() {
 
     var txt = random[i][6]
     $('#score-score-content').val($('#score-score-content').val() + txt + '\n')
+
+    var txt = random[i][7]
+    $('#score-quarter-content').val($('#score-quarter-content').val() + txt + '\n')
   }
 })
 
@@ -96,6 +102,7 @@ $('#score-delete-modal').click(function() {
           <th>Category</th>
           <th>Item</th>
           <th>Score</th>
+          <th>FY Quarter</th>
         </tr>
       </thead>
       <tbody>
@@ -111,6 +118,7 @@ $('#score-delete-modal').click(function() {
     var category = random[i][4]
     var item = random[i][5]
     var score = random[i][6]
+    var quarter = random[i][7]
 
     $('#delete-content > table > tbody:last-child').append(`
       <tr>
@@ -122,6 +130,7 @@ $('#score-delete-modal').click(function() {
         <td>${category}</td>
         <td>${item}</td>
         <td>${score}</td>
+        <td>${quarter}</td>
       </tr>
     `)
   }
@@ -214,12 +223,14 @@ function bulkOfFunctionById() {
   var userId = parser($('#score-userId').val())
   var checklistId = parser($('#score-checklistId').val())
   var score = parser($('#score-score-id').val())
+  var quarter = parser($('#score-quarter-id').val())
 
   // check input length
   var inputLength = []
   inputLength.push(userId.length)
   inputLength.push(checklistId.length)
   inputLength.push(score.length)
+  inputLength.push(quarter.length)
 
   if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
     throwAlert('#add-edit-id-throw-alert', 'Error', 'No input detected, please try again')
@@ -257,12 +268,20 @@ function bulkOfFunctionById() {
       throwAlert('#add-edit-id-throw-alert', 'Error', 'Score should be an integer')
       return false
     }
+
+    if ( quarter[i].length === 6) {
+      var dataQuarter = quarter[i]
+    } else {
+      throwAlert('#add-edit-id-throw-alert', 'Error', 'FY Quarter should contain exactly 6 characters')
+      return false
+    }
         
     valueString = valueString + "("
     + dataId + ", "
     + dataUserId + ", "
     + dataChecklistId + ", "
-    + dataScore + "), "
+    + dataScore + ", '"
+    + dataQuarter + "'), "
   }
   valueString = valueString.slice(0, -2)
   valueString = valueString + ";"
@@ -280,6 +299,7 @@ function bulkOfFunctionByContent() {
   var category = parser($('#score-category').val())
   var item = parser($('#score-item').val())
   var score = parser($('#score-score-content').val())
+  var quarter = parser($('#score-quarter-content').val().toUpperCase())
 
   // check input length
   var inputLength = []
@@ -289,6 +309,7 @@ function bulkOfFunctionByContent() {
   inputLength.push(category.length)
   inputLength.push(item.length)
   inputLength.push(score.length)
+  inputLength.push(quarter.length)
 
   if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
     throwAlert('#add-edit-content-throw-alert', 'Error', 'No input detected, please try again')
@@ -331,6 +352,13 @@ function bulkOfFunctionByContent() {
       throwAlert('#add-edit-content-throw-alert', 'Error', 'Score should be an integer')
       return false
     }
+
+    if ( quarter[i].length === 6) {
+      var dataQuarter = quarter[i]
+    } else {
+      throwAlert('#add-edit-content-throw-alert', 'Error', 'FY Quarter should contain exactly 6 characters')
+      return false
+    }
         
     valueString = valueString + "("
     + dataId + ", '"
@@ -339,7 +367,8 @@ function bulkOfFunctionByContent() {
     + dataLevel + ", '"
     + dataCategory + "', '"
     + dataItem + "', "
-    + dataScore + "), "
+    + dataScore + ", '"
+    + dataQuarter + "'), "
   }
   valueString = valueString.slice(0, -2)
   valueString = valueString + ";"

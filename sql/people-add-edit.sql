@@ -5,7 +5,6 @@ CREATE TABLE #temp_employee (
 	id INT NOT NULL UNIQUE,
 	first_name NVARCHAR(50) NOT NULL,
 	username NVARCHAR(50) NOT NULL UNIQUE,
-	area NVARCHAR(50),
 	section NVARCHAR(50),
 	shift CHAR(4),
 	gjs CHAR(2),
@@ -27,7 +26,6 @@ USING #temp_employee AS t2					                -- Source
 WHEN MATCHED THEN									                  -- On match update
      UPDATE SET t1.[first_name] = t2.[first_name]
            ,t1.[username] = t2.[username]
-           ,t1.[area] = t2.[area]
            ,t1.[section] = t2.[section]
            ,t1.[shift] = t2.[shift]
            ,t1.[gjs] = t2.[gjs]
@@ -39,7 +37,6 @@ WHEN NOT MATCHED THEN								                 -- Add missing
      INSERT ([id]
            ,[first_name]
            ,[username]
-           ,[area]
            ,[section]
            ,[shift]
            ,[gjs]
@@ -49,7 +46,6 @@ WHEN NOT MATCHED THEN								                 -- Add missing
      VALUES (t2.[id]
            ,t2.[first_name]
            ,t2.[username]
-           ,t2.[area]
            ,t2.[section]
            ,t2.[shift]
            ,t2.[gjs]

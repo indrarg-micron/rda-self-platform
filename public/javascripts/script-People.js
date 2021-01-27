@@ -25,26 +25,23 @@ $('#people-edit-modal').click(function() {
     $('#people-username').val($('#people-username').val() + txt + '\n')
 
     var txt = random[i][3]
-    $('#people-area').val($('#people-area').val() + txt + '\n')
-
-    var txt = random[i][4]
     $('#people-section').val($('#people-section').val() + txt + '\n')
 
-    var txt = random[i][5]
+    var txt = random[i][4]
     $('#people-shift').val($('#people-shift').val() + txt + '\n')
 
-    var txt = random[i][6]
+    var txt = random[i][5]
     $('#people-gjs').val($('#people-gjs').val() + txt + '\n')
 
-    var txt = random[i][7]
+    var txt = random[i][6]
     $('#people-status').val($('#people-status').val() + txt + '\n')
 
-    var txt = random[i][8]
+    var txt = random[i][7]
     $('#people-permission').val($('#people-permission').val() + txt + '\n')
 
-    var txt = random[i][9].substring(
-      random[i][9].indexOf('#') + 1, 
-      random[i][9].lastIndexOf('"'))
+    var txt = random[i][8].substring(
+      random[i][8].indexOf('#') + 1, 
+      random[i][8].lastIndexOf('"'))
     $('#people-managerNo').val($('#people-managerNo').val() + txt + '\n')
   }
 })
@@ -151,7 +148,6 @@ function bulkOfFunction() {
   var workerNo = parser($('#people-workerNo').val())
   var firstName = parser($('#people-firstName').val())
   var username = parser($('#people-username').val().toLowerCase())
-  var area = parser($('#people-area').val().toUpperCase())
   var section = parser($('#people-section').val())
   var shift = parser($('#people-shift').val().toUpperCase())
   var gjs = parser($('#people-gjs').val().toUpperCase())
@@ -164,13 +160,14 @@ function bulkOfFunction() {
   inputLength.push(workerNo.length)
   inputLength.push(firstName.length)
   inputLength.push(username.length)
-  inputLength.push(area.length)
-  inputLength.push(section.length)
   inputLength.push(shift.length)
   inputLength.push(gjs.length)
   inputLength.push(status.length)
-  inputLength.push(permission.length)
   inputLength.push(managerNo.length)
+  if (user.name == 'admin') {
+    inputLength.push(section.length)
+    inputLength.push(permission.length)
+  }  
 
   if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
     throwAlert('#add-edit-throw-alert', 'Error', 'No input detected, please try again')
@@ -201,9 +198,8 @@ function bulkOfFunction() {
       throwAlert('#add-edit-throw-alert', 'Error', 'Username should only contain letters')
       return false
     }
-    
-    var dataArea = area[i] ? area[i] : 'RDA'
-    var dataSection = section[i]
+
+    var dataSection = section[i] ? section[i] : user.section
 
     if ( shift[i].length === 4) {
       var dataShift = shift[i]
@@ -243,7 +239,6 @@ function bulkOfFunction() {
     + dataId + ", '"
     + dataFirstName + "', '"
     + dataUsername + "', '"
-    + dataArea + "', '"
     + dataSection + "', '"
     + dataShift + "', '"
     + dataGjs + "', '"

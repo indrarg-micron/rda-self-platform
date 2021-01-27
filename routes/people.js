@@ -7,6 +7,14 @@ const { poolProd535, sqlPath } = require('../db')
 router.get('/', async (req, res) => {
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'people-view.sql')).toString()
+
+    if (res.locals.user.permission == 'admin') {
+      var content = ""
+    } else if (res.locals.user.permission == 'section'){
+      var content = "WHERE e.[section] = '" + res.locals.user.section + "'"
+    }
+    query = query.replace('###PERMISSION_FILTER_HERE###', content)
+
     const pool = await poolProd535
     const result = await pool.request()
         .query(query)      

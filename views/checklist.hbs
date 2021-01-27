@@ -28,7 +28,6 @@
     <thead class="thead-light">
       <tr>
         <th scope="col">ID</th>
-        <th scope="col">Area</th>
         <th scope="col">Section</th>
         <th scope="col">Level</th>
         <th scope="col">Category</th>
@@ -40,7 +39,6 @@
       {{#each data}}
         <tr>
           <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
-          <td>{{this.area}}</td>
           <td>{{this.section}}</td>
           <td>{{this.level}}</td>
           <td>{{this.category}}</td>
@@ -70,7 +68,10 @@
           <small class="text-muted">
             <ul>
               <li>ID is automatically generated</li>
-              <li>Area defaults to "RDA"</li>
+              {{#if elevation.section}}
+                <li>Section is automatically set to your section, i.e. <b>"{{user.section}}"</b></li>
+                <li>You can only edit checklist item(s) belonging to your section</li>
+              {{/if}}
               <li>Level should be integer</li>
               <li>Category for Ops will be "Jobrole" - "Category"</li>
               <li>Status should be either <b>"active"</b> or <b>"inactive"</b></li>
@@ -90,22 +91,18 @@
                     <textarea class="form-control linked px-1" id="checklist-id" rows="10" disabled></textarea>
                   </div>
                   <div class="col-lg-2 px-1">
-                    <label for="checklist-area">Area</label>
-                    <textarea class="form-control linked px-1" id="checklist-area" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2 px-1">
                     <label for="checklist-section">Section</label>
-                    <textarea class="form-control linked px-1" id="checklist-section" rows="10"></textarea>
+                    <textarea class="form-control linked px-1" id="checklist-section" rows="10" {{#if elevation.section}}disabled{{/if}}></textarea>
                   </div>
                   <div class="col-lg-1 px-1">
                     <label for="checklist-level">Level</label>
                     <textarea class="form-control linked px-1" id="checklist-level" rows="10"></textarea>
                   </div>
-                  <div class="col-lg-2 px-1">
+                  <div class="col-lg-3 px-1">
                     <label for="checklist-category">Category</label>
                     <textarea class="form-control linked px-1" id="checklist-category" rows="10"></textarea>
                   </div>
-                  <div class="col-lg-3 px-1">
+                  <div class="col-lg-4 px-1">
                     <label for="checklist-item">Item</label>
                     <textarea class="form-control linked px-1" id="checklist-item" rows="10"></textarea>
                   </div>

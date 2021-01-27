@@ -6,6 +6,7 @@ CREATE TABLE #temp_score (
 	employee_id INT,
 	checklist_id INT,
 	score INT,
+  fy_quarter CHAR(6)
 );
 
 -- Insert edited/new data into temp table
@@ -22,14 +23,17 @@ WHEN MATCHED THEN									                                  -- On match update
      UPDATE SET t1.[employee_id] = t2.[employee_id]
            ,t1.[checklist_id] = t2.[checklist_id]
            ,t1.[score] = t2.[score]
+           ,t1.[fy_quarter] = t2.[fy_quarter]
 
 WHEN NOT MATCHED THEN								                                -- Add missing
      INSERT ([employee_id]
            ,[checklist_id]
-           ,[score])
+           ,[score]
+           ,[fy_quarter])
      VALUES (t2.[employee_id]
            ,t2.[checklist_id]
-           ,t2.[score]);
+           ,t2.[score]
+           ,t2.[fy_quarter]);
 
 DROP TABLE #temp_score
 

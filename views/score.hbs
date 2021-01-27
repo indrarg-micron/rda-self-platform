@@ -46,6 +46,7 @@
         <th scope="col">Category</th>
         <th scope="col">Item</th>
         <th scope="col">Score</th>
+        <th scope="col">FY Quarter</th>
       </tr>
     </thead>
     <tbody>
@@ -58,6 +59,7 @@
           <td>{{this.category}}</td>
           <td><a class="bookmark-link" target="_blank" href="/checklist#{{this.checklist_id}}">{{this.item}}</a></td>
           <td>{{this.score}}</td>
+          <td>{{this.fy_quarter}}</td>
         </tr>
       {{/each}}
     </tbody>
@@ -85,6 +87,7 @@
               <li>Worker No is TM's Micron worker number, see the <a href="/people" target="_blank">people</a> table</li>
               <li>Checklist ID can be found in the <a href="/checklist" target="_blank">checklist</a> table</li>
               <li>Score should be an integer</li>
+              <li>FY Quarter format is "FY##Q$" where ## is 2-digit year and $ is 1-digit quarter</li>
               <li>Each column should have the same number of rows of input (ignore ID)</li>
               <li>Recommended to use excel first before pasting per column here</li>
             </ul>
@@ -111,6 +114,10 @@
                   <div class="col-lg-2 px-1">
                     <label for="score-score-id">Score</label>
                     <textarea class="form-control linked px-1" id="score-score-id" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2 px-1">
+                    <label for="score-quarter-id" class="text-nowrap">FY Quarter</label>
+                    <textarea class="form-control linked px-1" id="score-quarter-id" rows="10"></textarea>
                   </div>
                 </div>
               </div>
@@ -146,6 +153,7 @@
               <li>Username is TM's Micron username, see the <a href="/people" target="_blank">people</a> table</li>
               <li>The contents of Item Section, Level, Category, and Item should exist in the <a href="/checklist" target="_blank">checklist</a> table</li>
               <li>Score should be an integer</li>
+              <li>FY Quarter format is "FY##Q$" where ## is 2-digit year and $ is 1-digit quarter</li>
               <li>Each column should have the same number of rows of input (ignore ID)</li>
               <li>Recommended to use excel first before pasting per column here</li>
             </ul>
@@ -184,6 +192,10 @@
                   <div class="col-lg-1 px-1">
                     <label for="score-score-content">Score</label>
                     <textarea class="form-control linked px-1" id="score-score-content" rows="10"></textarea>
+                  </div>
+                  <div class="col-lg-2 px-1">
+                    <label for="score-quarter-content" class="text-nowrap">FY Quarter</label>
+                    <textarea class="form-control linked px-1" id="score-quarter-content" rows="10"></textarea>
                   </div>
                 </div>
               </div>

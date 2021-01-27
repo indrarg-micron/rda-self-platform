@@ -14,26 +14,34 @@ $('#checklist-edit-modal').click(function() {
   }
 
   // fill in the selected rows to textarea
+  var skipCount = 0 // for section checking
   for ( var i=0; i < random.length; i++) {
+
+    // check if checklist item is their section's
+    if ( user.permission == 'section' && random[i][1] != user.section ) {
+      skipCount++
+      if (skipCount == random.length) {
+        return throwAlert('#add-edit-throw-alert', 'Warning', 'Please select items of your section to edit')
+      }
+      continue
+    }
+
     var txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
     $('#checklist-id').val($('#checklist-id').val() + txt + '\n')
 
     var txt = random[i][1]
-    $('#checklist-area').val($('#checklist-area').val() + txt + '\n')
-
-    var txt = random[i][2]
     $('#checklist-section').val($('#checklist-section').val() + txt + '\n')
 
-    var txt = random[i][3]
+    var txt = random[i][2]
     $('#checklist-level').val($('#checklist-level').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][4]).text() // to get special char like '&' instead of '&amp;'
+    var txt = $('<div>').html(random[i][3]).text() // to get special char like '&' instead of '&amp;'
     $('#checklist-category').val($('#checklist-category').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][5]).text() // to get special char like '&' instead of '&amp;'
+    var txt = $('<div>').html(random[i][4]).text() // to get special char like '&' instead of '&amp;'
     $('#checklist-item').val($('#checklist-item').val() + txt + '\n')
 
-    var txt = random[i][6]
+    var txt = random[i][5]
     $('#checklist-status').val($('#checklist-status').val() + txt + '\n')
   }
 })
@@ -68,10 +76,10 @@ $('#checklist-delete-modal').click(function() {
 
   for ( var i=0; i < random.length; i++) {
     var id = $('<div>').html(random[i][0]).text() // to get innerHTML text
-    var section = random[i][2]
-    var level = random[i][3]
-    var category = random[i][4]
-    var item = random[i][5]
+    var section = random[i][1]
+    var level = random[i][2]
+    var category = random[i][3]
+    var item = random[i][4]
 
     $('#delete-content > table > tbody:last-child').append(`
       <tr>
@@ -147,7 +155,6 @@ $('#checklist-delete').click(function() {
 function bulkOfFunction() {
   // abstract data from form
   var id = parser($('#checklist-id').val())
-  var area = parser($('#checklist-area').val().toUpperCase())
   var section = parser($('#checklist-section').val())
   var level = parser($('#checklist-level').val())
   var category = parser($('#checklist-category').val())
@@ -156,12 +163,13 @@ function bulkOfFunction() {
 
   // check input length
   var inputLength = []
-  inputLength.push(area.length)
-  inputLength.push(section.length)
   inputLength.push(level.length)
   inputLength.push(category.length)
   inputLength.push(item.length)
   inputLength.push(status.length)
+  if (user.name == 'admin') {
+    inputLength.push(section.length)
+  }
 
   if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
     throwAlert('#add-edit-throw-alert', 'Error', 'No input detected, please try again')
@@ -178,8 +186,7 @@ function bulkOfFunction() {
   var valueString = ""
   for (var i = 0; i < inputLength[0]; i++) {
     var dataId = id[i] ? id[i] : null
-    var dataArea = area[i] ? area[i] : 'RDA'
-    var dataSection = section[i]
+    var dataSection = section[i] ? section[i] : user.section
 
     if ( Number.isInteger(parseInt(level[i])) ) {
       var dataLevel = level[i]
@@ -200,7 +207,6 @@ function bulkOfFunction() {
         
     valueString = valueString + "("
     + dataId + ", '"
-    + dataArea + "', '"
     + dataSection + "', "
     + dataLevel + ", '"
     + dataCategory + "', '"

@@ -30,7 +30,6 @@
         <th scope="col">Worker No</th>
         <th scope="col">First Name</th>
         <th scope="col">Username</th>
-        <th scope="col">Area</th>
         <th scope="col">Section</th>
         <th scope="col">Shift</th>
         <th scope="col">GJS</th>
@@ -45,7 +44,6 @@
           <td><a class="anchor" id="{{this.id}}"></a>{{this.id}}</td>
           <td>{{this.first_name}}</td>
           <td>{{this.username}}</td>
-          <td>{{this.area}}</td>
           <td>{{this.section}}</td>
           <td>{{this.shift}}</td>
           <td>{{this.gjs}}</td>
@@ -77,11 +75,12 @@
             <ul>
               <li>Username is Micron username</li>
               <li>Worker No is Micron worker number, all numeric character, an integer</li>
-              <li>Area defaults to "RDA"</li>
+              {{#if elevation.section}}<li>Section is automatically set to your section, i.e. <b>"{{user.section}}"</b></li>{{/if}}
               <li>Shift is 4-character Micron shift code</li>
               <li>GJS is 2-character Micron GJS code</li>
               <li>Status should be either <b>"active"</b> or <b>"inactive"</b></li>
-              <li>Permission should be either <b>"admin"</b>, <b>"section"</b>, or <b>"user"</b>. Defaults to "user"</li>
+              {{#if elevation.admin}}<li>Permission should be either <b>"admin"</b>, <b>"section"</b>, or <b>"user"</b>. Defaults to "user"</li>{{/if}}
+              {{#if elevation.section}}<li>Permission is automatically set to <b>"user"</b></li>{{/if}}
               <li>Manager No is the user's manager's <b>Worker No</b>, not username</li>
               <li>Each column should have the same number of rows of input</li>
               <li>Recommended to use excel first before pasting per column here</li>
@@ -107,12 +106,8 @@
                     <textarea class="form-control linked px-1" id="people-firstName" rows="10"></textarea>
                   </div>
                   <div class="col-lg-2 px-1">
-                    <label for="people-area">Area</label>
-                    <textarea class="form-control linked px-1" id="people-area" rows="10"></textarea>
-                  </div>
-                  <div class="col-lg-2 px-1">
                     <label for="people-section">Section</label>
-                    <textarea class="form-control linked px-1" id="people-section" rows="10"></textarea>
+                    <textarea class="form-control linked px-1" id="people-section" rows="10" {{#if elevation.section}}disabled{{/if}}></textarea>
                   </div>
                   <div class="col-lg-2 px-1">
                     <label for="people-shift">Shift</label>
@@ -128,7 +123,7 @@
                   </div>
                   <div class="col-lg-2 px-1">
                     <label for="people-permission">Permission</label>
-                    <textarea class="form-control linked px-1" id="people-permission" rows="10"></textarea>
+                    <textarea class="form-control linked px-1" id="people-permission" rows="10" {{#if elevation.section}}disabled{{/if}}></textarea>
                   </div>
                   <div class="col-lg-2 px-1">
                     <label for="people-managerNo" class="text-nowrap">Manager No</label>

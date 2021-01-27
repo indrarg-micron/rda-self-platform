@@ -1,7 +1,6 @@
 SELECT e.[id]
       ,e.[first_name]
       ,e.[username]
-      ,e.[area]
       ,e.[section]
       ,e.[shift]
       ,e.[gjs]
@@ -12,4 +11,5 @@ SELECT e.[id]
   FROM [RDA_IMP_INFO].[dbo].[employee] e
   LEFT JOIN [RDA_IMP_INFO].[dbo].[employee] m
   ON e.manager_id = m.id
+  ###PERMISSION_FILTER_HERE###
   ORDER BY e.section, e.manager_id

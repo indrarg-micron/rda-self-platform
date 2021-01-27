@@ -60,8 +60,10 @@ async function authHome(req, res, next) {
         permission: result.recordset[0].permission
       }
 
-      if (res.locals.user.permission == 'admin' || res.locals.user.permission == 'section') {
-        res.locals.deepView = true
+      if (res.locals.user.permission == 'admin') {
+        res.locals.elevation = { admin: true }
+      } else if (res.locals.user.permission == 'section') {
+        res.locals.elevation = { section: true }
       }
     }
   
