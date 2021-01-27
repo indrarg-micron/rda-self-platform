@@ -31,7 +31,7 @@ app.use('/people', authInner, peopleRouter)
 app.use('/checklist', authInner, checklistRouter)
 app.use('/score', authInner, scoreRouter)
 
-// authentication process to root (all routes)
+// pseudo-authentication process to root (all routes)
 async function authHome(req, res, next) {
   let username = res.locals.ntlm.UserName.toLowerCase()
 
@@ -80,7 +80,7 @@ async function authHome(req, res, next) {
   next()
 }
 
-// authentication process for inner links, after authHome has been performed
+// pseudo-authentication process for inner links, after authHome has been performed
 function authInner(req, res, next) {
   if (res.locals.user.permission != 'admin' && res.locals.user.permission != 'section') {
     return res.redirect('/')
