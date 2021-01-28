@@ -8,5 +8,7 @@ SELECT e.[username]
   ON s.[checklist_id] = c.[id]
   WHERE e.[section] = '###YOUR_SECTION_HERE###'
   AND s.[fy_quarter] = '###DESIRED_FQ_HERE###'
+  AND e.[status] = 'active'
+  and c.[status] = 'active'
   GROUP BY e.[username], e.[gjs]
   ORDER BY e.[username]

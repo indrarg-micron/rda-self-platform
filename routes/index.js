@@ -18,8 +18,30 @@ let quarters = [ -4, -1, 2, 5 ].map(i =>
 router.get('/', function(req, res) {
   let params = {
     title: 'Home',
-    active: { home: true }
+    active: { home: true },
+    show: {}
   }
+
+  if (res.locals.user.gjs[0] == 'T') {
+    params.show = Object.assign(params.show, {indiv: true})
+  }
+
+  if (res.locals.user.permission == 'admin' || (res.locals.user.permission == 'section' && res.locals.user.section == 'Ops')) {
+    params.show = Object.assign(params.show, {ops: true})
+  }
+
+  if (res.locals.user.permission == 'admin' || (res.locals.user.permission == 'section' && res.locals.user.section == 'Process')) {
+    params.show = Object.assign(params.show, {proc: true})
+  }
+
+  if (res.locals.user.permission == 'admin' || (res.locals.user.permission == 'section' && res.locals.user.section == 'Equipment')) {
+    params.show = Object.assign(params.show, {equip: true})
+  }
+
+  if (res.locals.user.permission == 'admin' || (res.locals.user.permission == 'section' && res.locals.user.section == 'Eng Proc')) {
+    params.show = Object.assign(params.show, {engproc: true})
+  }
+
   res.render('index', params)
 })
 

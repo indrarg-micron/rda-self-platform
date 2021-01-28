@@ -9,16 +9,31 @@
   <ul>
     <li>Username: {{user.name}}</li>
     <li>Section: {{user.section}}</li>
+    <li>GJS: {{user.gjs}}</li>
     <li>Permission: {{user.permission}}</li>
   </ul>
 </div>
 
-
-
-<div class="my-4" id="engproc-container"></div>
-<div class="my-4" id="equip-container"></div>
-<div class="my-4" id="proc-container"></div>
-<div class="my-4" id="ops-container"></div>
+{{#if show.indiv}}
+  <h4>Your checklist progress:</h4>
+  <div class="my-4" id="indiv-table-container"></div>
+{{/if}}
+{{#if show.engproc}}
+  <h4>Eng Proc overall status:</h4>
+  <div class="my-4" id="engproc-container"></div>
+{{/if}}
+{{#if show.equip}}
+  <h4>Equipment overall status:</h4>
+  <div class="my-4" id="equip-container"></div>
+{{/if}}
+{{#if show.proc}}
+  <h4>Process overall status:</h4>
+  <div class="my-4" id="proc-container"></div>
+{{/if}}
+{{#if show.ops}}
+  <h4>Ops overall status:</h4>
+  <div class="my-4" id="ops-container"></div>
+{{/if}}
 
 <hr>
 

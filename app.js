@@ -57,6 +57,7 @@ async function authHome(req, res, next) {
       res.locals.user = {
         name: result.recordset[0].username,
         section: result.recordset[0].section,
+        gjs: result.recordset[0].gjs,
         permission: result.recordset[0].permission
       }
 
