@@ -3,6 +3,42 @@ $(document).ready(function () {
   var navHeight = $('#navbar-menu').outerHeight()
   $('body').css('padding-top', navHeight)
 
+  // individual
+  if ( user.gjs[0] == 'T' ) {
+    $.ajax({
+      url:'/api/indiv-table',
+      type: 'POST',
+      data: {
+        username: user.name
+      },
+  
+      success: function(msg) {
+        $('#indiv-table-container').html(msg)
+      },
+  
+      error: function(err) {
+        throwAlert('#indiv-table-container', 'Unable to load table')
+      }
+    })
+
+    $.ajax({
+      url:'/api/indiv-chart',
+      type: 'POST',
+      data: {
+        username: user.name
+      },
+  
+      success: function(msg) {
+        chartIndiv(msg, 'indiv-chart-container', 'Q-on-Q Progress')
+      },
+  
+      error: function(err) {
+        throwAlert('#indiv-chart-container', 'Unable to load chart')
+      }
+    })
+  }
+
+/*
   if ( user.permission == 'admin' || user.section == 'Ops') {
     $.ajax({
       url:'/',
@@ -41,8 +77,59 @@ $(document).ready(function () {
   generateChart(example, 'engproc-container', 'Eng Process Overall')
   generateChart(example, 'equip-container', 'Equipment Overall')
 
-  
+  */
 })
+
+// Generate column chart
+function chartIndiv(data, location, title) {
+
+  Highcharts.chart(location, {
+
+    chart: {
+      type: 'column',
+      borderColor: '#39CCCC',
+      borderRadius: 5,
+      borderWidth: 1,
+      height: (9 / 16 * 100) + '%' // 16:9 ratio
+    },
+    
+    title: {
+      text: title
+    },
+
+    credits: {
+      enabled: false
+    },
+
+    legend: {
+      enabled: false
+    },
+
+    xAxis: {
+      categories: data.xValues
+    },
+
+    yAxis: {
+      title: {
+        text: 'Total Score'
+      }
+    },
+
+    plotOptions: {
+      series: {
+          dataLabels: {
+              enabled: true
+          }
+      }
+    },
+
+    series: [{
+      name: 'Total score',
+      data: data.yValues
+    }]
+  })
+
+}
 
 // Generate chart
 function generateChart(data, location, title) {
@@ -89,8 +176,20 @@ function generateChart(data, location, title) {
         label: {
           connectorAllowed: false
         },
-        pointStart: 2010
-      }
+        pointStart: 2010,
+        marker: {
+          enabled: false,
+          states: {
+            hover: {
+              enabled: false
+            }
+          }
+        },  
+      },
+    },
+
+    tooltip: {
+      enabled: false
     },
 
     series: data,

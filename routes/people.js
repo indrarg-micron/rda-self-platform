@@ -22,6 +22,7 @@ router.get('/', async (req, res) => {
     let params = {
       title: 'People',
       data: result.recordset,
+      keys: Object.keys(data[0]),
       active: { people: true }
     }
 

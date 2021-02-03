@@ -75,7 +75,7 @@ table.dataTable thead td {
 }
 
 /* hide DataTable native search bar */
-#the-table_filter { 
+*[id*="the-table_filter"] { 
   display: none; 
 }
 

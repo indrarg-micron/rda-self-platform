@@ -70,7 +70,7 @@ $(document).ready(function() {
             }
         }
   ]
-  }).container().appendTo($('#datatables-buttons'));
+  }).container().appendTo($('#datatables-buttons'))
 
   // link scrolling of textarea in modal box
   $('.linked').scroll(function(){

@@ -13,6 +13,8 @@ moment.tz.setDefault('Asia/Singapore')
 let quarters = [ -4, -1, 2, 5 ].map(i => 
   moment().subtract(i, 'M').format('[FY]YY[Q]Q')
 )
+let quarterList = `('${quarters[3]}', '${quarters[2]}', '${quarters[1]}', '${quarters[0]}')`
+let quarterColumn = `([${quarters[3]}], [${quarters[2]}], [${quarters[1]}], [${quarters[0]}])`
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -44,7 +46,7 @@ router.get('/', function(req, res) {
 
   res.render('index', params)
 })
-
+/*
 router.post('/', async (req, res) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
@@ -60,6 +62,66 @@ router.post('/', async (req, res) => {
     
     res.send(result)
   
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+})
+*/
+router.post('/api/indiv-table', async (req, res) => {
+  try {
+    const body = JSON.parse(JSON.stringify(req.body))
+    let username = `'${body.username}'`
+
+    let query = fs.readFileSync(path.join(sqlPath, 'home-indiv-table.sql')).toString()
+    query = query.replace('###YOUR_USERNAME_HERE###', username)
+    query = query.replace('###FY_QUARTER_LIST_HERE###', quarterList)
+    query = query.replace('###FY_QUARTER_COLUMN_HERE###', quarterColumn)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
+    let data = result.recordset
+    let keys = Object.keys(data[0])
+    let params = {
+      table: 'indiv',
+      data: data,
+      keys: keys,
+      layout: false
+    }
+    res.render('table-template', params)
+  
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+})
+
+router.post('/api/indiv-chart', async (req, res) => {
+  try {
+    const body = JSON.parse(JSON.stringify(req.body))
+    let filter = `AND e.[username] = '${body.username}'
+                  AND s.[fy_quarter] IN ${quarterList}`
+
+    let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()
+    query = query.replace('###ADDITIONAL_FILTER_HERE###', filter)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
+    let data = result.recordset
+    let xValues = [], yValues = []
+    data.forEach( a => {
+      xValues.push(a.fy_quarter)
+      yValues.push(a.total_score)
+    })
+
+    let final = {
+      xValues: xValues,
+      yValues: yValues
+    }
+    res.send(final)
+
   } catch (err) {
     res.status(500).send(err.message)
   }

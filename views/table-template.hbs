@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-md-between p-0">
+  <div id="datatables-buttons-{{tablename}}" class="d-flex align-items-center m-0 p-0"></div>
+  {{!-- Custom rounded search bars with input group --}}
+  <div class="col search-bar bg-light rounded rounded-pill shadow-sm mb-2 align-self-end">
+    <div class="input-group">
+      <input id="custom-search-{{tablename}}" type="search" placeholder="What're you searching for?" class="form-control input-sm border-0 bg-light">
+      <div class="input-group-append">
+        <button class="btn btn-link text-primary" title="Search"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+  </div>
+  {{!-- End --}}
+</div>
+
+
+<div class="container m-0 p-0 overflow-auto">
+  <table id="{{tablename}}-the-table" class="table table-bordered table-hover table-sm">
+    <thead class="thead-light">
+      <tr>
+        {{#each keys}}
+          <th class="text-capitalize" scope="col">{{this}}</th>
+        {{/each}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data}}
+        <tr>
+          {{#each this}}
+            <td>{{this}}</td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  var tablename = "{{tablename}}"
+</script>
+<script type="text/javascript" src="/javascripts/script-template.js"></script>
