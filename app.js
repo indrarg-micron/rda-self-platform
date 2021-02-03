@@ -2,6 +2,8 @@ const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const hbs = require('express-handlebars')
+const helpers = require('handlebars-helpers')()
 const logger = require('morgan')
 const ntlm = require('express-ntlm')
 const fs = require('fs')
@@ -16,7 +18,17 @@ const app = express()
 app.use( ntlm() ) // to get windows username
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'))
+// app.set('views', path.join(__dirname, 'views'))
+app.engine(
+  "hbs",
+  hbs({
+    helpers: helpers,
+    partialsDir: ["views/partials"],
+    extname: ".hbs",
+    layoutsDir: "views",
+    defaultLayout: "layout"
+  })
+)
 app.set('view engine', 'hbs')
 
 app.use(logger('dev')) // logger for dev purposes
@@ -33,7 +45,7 @@ app.use('/score', authInner, scoreRouter)
 
 // pseudo-authentication process to root (all routes)
 async function authHome(req, res, next) {
-  let username = res.locals.ntlm.UserName.toLowerCase()
+  let username = 'benny'//res.locals.ntlm.UserName.toLowerCase()
 
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'auth-home.sql')).toString()

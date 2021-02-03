@@ -26,7 +26,8 @@
       {{#each data}}
         <tr>
           {{#each this}}
-            <td>{{this}}</td>
+            {{#eq @key 'section'}}<td>{{this}}</td>
+            {{else}}<td class="bg-info">{{this}}</td>{{/eq}}
           {{/each}}
         </tr>
       {{/each}}
