@@ -32,6 +32,17 @@ textarea {
   background-color: white;
 }
 
+/* make column sticky */
+.head-col {
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+tbody tr td.head-col {
+  background-color: white;
+}
+
 /* colour for the icons */
 .fa-plus {
   color: #fd7e14;

@@ -18,7 +18,7 @@
     <thead class="thead-light">
       <tr>
         {{#each keys}}
-          <th class="text-capitalize" scope="col">{{this}}</th>
+          <th class="text-capitalize {{#eq this 'item'}}head-col{{/eq}}" scope="col">{{this}}</th>
         {{/each}}
       </tr>
     </thead>
@@ -27,7 +27,7 @@
         <tr>
           {{#each this}}
             {{#contains @root.skip @key}}
-              <td>
+              <td{{#eq @key 'item'}} class="head-col"{{/eq}}>
             {{else unlessEq this null}}
               <td class="traffic-{{this}}">
             {{/contains}}
