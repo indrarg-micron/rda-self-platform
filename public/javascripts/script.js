@@ -17,6 +17,7 @@ $(document).ready(function() {
       autoWidth: false,
       order: [],
       select: true,
+      // scrollX: true,
 
       // highlight bookmarked row upon page and table load
       initComplete: function(settings, json) {

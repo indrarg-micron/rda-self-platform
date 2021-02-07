@@ -151,7 +151,7 @@ function bulkOfFunction() {
   var section = parser($('#people-section').val())
   var shift = parser($('#people-shift').val().toUpperCase())
   var gjs = parser($('#people-gjs').val().toUpperCase())
-  var status = parser($('#people-status').val())
+  var status = parser($('#people-status').val().toLowerCase())
   var permission = parser($('#people-permission').val())
   var managerNo = parser($('#people-managerNo').val())
 

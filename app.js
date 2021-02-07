@@ -17,7 +17,7 @@ const scoreRouter = require('./routes/score')
 const app = express()
 app.use( ntlm() ) // to get windows username
 
-// view engine setup
+// view engine setup, with helpers
 // app.set('views', path.join(__dirname, 'views'))
 app.engine(
   "hbs",
@@ -45,7 +45,7 @@ app.use('/score', authInner, scoreRouter)
 
 // pseudo-authentication process to root (all routes)
 async function authHome(req, res, next) {
-  let username = 'benny'//res.locals.ntlm.UserName.toLowerCase()
+  let username = res.locals.ntlm.UserName.toLowerCase()
 
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'auth-home.sql')).toString()
@@ -56,7 +56,7 @@ async function authHome(req, res, next) {
         .query(query)      
     
     if (result.rowsAffected == 0) {
-      // set locals, only providing error in development
+      // set locals
       res.locals.message = 'Forbidden'
       res.locals.error = {stack: 'You are not authorized to view this page.\nPlease contact the site administrator.'}
 

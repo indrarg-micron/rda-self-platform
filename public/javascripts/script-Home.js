@@ -5,15 +5,18 @@ $(document).ready(function () {
 
   // individual
   if ( user.gjs[0] == 'T' ) {
+    let tablename = 'Individual'
     $.ajax({
       url:'/api/indiv-table',
       type: 'POST',
       data: {
-        username: user.name
+        username: user.name,
+        tablename: tablename
       },
   
       success: function(msg) {
         $('#indiv-table-container').html(msg)
+        tableInit(tablename)
       },
   
       error: function(err) {
@@ -38,26 +41,96 @@ $(document).ready(function () {
     })
   }
 
-/*
-  if ( user.permission == 'admin' || user.section == 'Ops') {
+  // section - eng proc
+  if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Eng Proc') ) {
+    let tablename = 'EngProc'
     $.ajax({
-      url:'/',
+      url:'/api/section-table',
       type: 'POST',
-      data: {section: 'Ops'},
+      data: {
+        section: 'Eng Proc',
+        tablename: tablename
+      },
   
       success: function(msg) {
-        // generateChart(msg, 'ops-container', 'Ops Overall')
-        $('#ops-container').val(msg.recordset)
-        console.log(msg)
+        $('#engproc-table-container').html(msg)
+        tableInit(tablename)
       },
   
       error: function(err) {
-        throwAlert('#ops-container', ' Ops Overall chart failed to load')
+        throwAlert('#engoroc-table-container', 'Unable to load table')
+      }
+    })
+  }
+
+  // section - equipment
+  if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Equipment') ) {
+    let tablename = 'Equipment'
+    $.ajax({
+      url:'/api/section-table',
+      type: 'POST',
+      data: {
+        section: 'Equipment',
+        tablename: tablename
+      },
+  
+      success: function(msg) {
+        $('#equip-table-container').html(msg)
+        tableInit(tablename)
+      },
+  
+      error: function(err) {
+        throwAlert('#equip-table-container', 'Unable to load table')
+      }
+    })
+  }
+
+  // section - process
+  if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Process') ) {
+    let tablename = 'Process'
+    $.ajax({
+      url:'/api/section-table',
+      type: 'POST',
+      data: {
+        section: 'Process',
+        tablename: tablename
+      },
+  
+      success: function(msg) {
+        $('#proc-table-container').html(msg)
+        tableInit(tablename)
+      },
+  
+      error: function(err) {
+        throwAlert('#proc-table-container', 'Unable to load table')
+      }
+    })
+  }
+
+  // section - ops
+  if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Ops') ) {
+    let tablename = 'Ops'
+    $.ajax({
+      url:'/api/section-table',
+      type: 'POST',
+      data: {
+        section: 'Ops',
+        tablename: tablename
+      },
+  
+      success: function(msg) {
+        $('#ops-table-container').html(msg)
+        tableInit(tablename)
+      },
+  
+      error: function(err) {
+        throwAlert('#ops-table-container', 'Unable to load table')
       }
     })
   }
 
 
+  /*
   var example = [{
     name: 'Installation',
     data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
@@ -131,6 +204,7 @@ function chartIndiv(data, location, title) {
 
 }
 
+/*
 // Generate chart
 function generateChart(data, location, title) {
   // prepare the data
@@ -210,6 +284,7 @@ function generateChart(data, location, title) {
     }
   })
 }
+*/
 
 // display alert
 function throwAlert(loc, msg) {

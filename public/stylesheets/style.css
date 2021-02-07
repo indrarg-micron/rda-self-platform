@@ -67,6 +67,21 @@ textarea {
   background-color: lavenderblush !important;
 }
 
+/* traffic light */
+.traffic-0, .traffic-1 {
+  color: white;
+  background-color: deeppink !important;
+}
+
+.traffic-2 {
+  background-color: navajowhite !important;
+}
+
+.traffic-3 {
+  background-color: springgreen !important;
+}
+
+
 /* cut padding on table */
 table.dataTable tbody td,
 table.dataTable thead th,

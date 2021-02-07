@@ -46,31 +46,13 @@ router.get('/', function(req, res) {
 
   res.render('index', params)
 })
-/*
-router.post('/', async (req, res) => {
-  try {
-    const body = JSON.parse(JSON.stringify(req.body))
-    let content = body.section
 
-    let query = fs.readFileSync(path.join(sqlPath, 'home-overall.sql')).toString()
-    query = query.replace('###YOUR_SECTION_HERE###', content)
-    query = query.replace('###DESIRED_FQ_HERE###', quarters[0])
-
-    const pool = await poolProd535
-    const result = await pool.request()
-        .query(query)      
-    
-    res.send(result)
-  
-  } catch (err) {
-    res.status(500).send(err.message)
-  }
-})
-*/
+// indiv
 router.post('/api/indiv-table', async (req, res) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let username = `'${body.username}'`
+    let tablename = body.tablename
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-indiv-table.sql')).toString()
     query = query.replace('###YOUR_USERNAME_HERE###', username)
@@ -84,9 +66,10 @@ router.post('/api/indiv-table', async (req, res) => {
     let data = result.recordset
     let keys = Object.keys(data[0])
     let params = {
-      table: 'indiv',
+      tablename: tablename,
       data: data,
       keys: keys,
+      skip: ['section', 'level', 'category', 'item'],
       layout: false
     }
     res.render('table-template', params)
@@ -127,4 +110,34 @@ router.post('/api/indiv-chart', async (req, res) => {
   }
 })
 
+// section
+router.post('/api/section-table', async (req, res) => {
+  try {
+    const body = JSON.parse(JSON.stringify(req.body))
+    let section = body.section
+    let tablename = body.tablename
+
+    let query = fs.readFileSync(path.join(sqlPath, 'home-section-table.sql')).toString()
+    query = query.replace('###CURRENT_QUARTER_HERE###', quarters[0])
+    query = query.replace('###YOUR_SECTION_HERE###', section)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
+    let data = result.recordset
+    let keys = Object.keys(data[0])
+    let params = {
+      tablename: tablename,
+      data: data,
+      keys: keys,
+      skip: ['section', 'level', 'category', 'item'],
+      layout: false
+    }
+    res.render('table-template', params)
+  
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+})
 module.exports = router

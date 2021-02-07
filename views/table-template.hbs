@@ -26,16 +26,15 @@
       {{#each data}}
         <tr>
           {{#each this}}
-            {{#eq @key 'section'}}<td>{{this}}</td>
-            {{else}}<td class="bg-info">{{this}}</td>{{/eq}}
+            {{#contains @root.skip @key}}
+              <td>
+            {{else unlessEq this null}}
+              <td class="traffic-{{this}}">
+            {{/contains}}
+            {{this}}</td>
           {{/each}}
         </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
-
-<script type="text/javascript">
-  var tablename = "{{tablename}}"
-</script>
-<script type="text/javascript" src="/javascripts/script-template.js"></script>

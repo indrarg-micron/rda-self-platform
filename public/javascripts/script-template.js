@@ -1,4 +1,4 @@
-$(document).ready(function() {
+function tableInit(tablename) {
   // initiate data table
   var table = $(`#${tablename}-the-table`).DataTable({
       stateSave: false,
@@ -8,8 +8,12 @@ $(document).ready(function() {
       autoWidth: false,
       order: [],
       select: true,
+      scrollX: true,
       scrollY: '60vh',
-      scrollCollapse: true
+      scrollCollapse: true,
+      /* fixedColumns:   {
+        leftColumns: 3
+      } */
   })
 
   // hide columns with a class of '.hide-this' (in the header)
@@ -26,6 +30,7 @@ $(document).ready(function() {
         {
             extend: 'copyHtml5',
             text: '<i class="fas fa-copy fa-lg"></i>',
+            title: tablename + ' - RDA Self 2.0',
             titleAttr: 'Copy',
             className: 'btn',
             exportOptions: {
@@ -35,6 +40,7 @@ $(document).ready(function() {
         {
             extend: 'excelHtml5',
             text: '<i class="fas fa-file-excel fa-lg"></i>',
+            title: tablename + ' - RDA Self 2.0',
             titleAttr: 'Excel',
             className: 'btn',
             exportOptions: {
@@ -44,4 +50,4 @@ $(document).ready(function() {
   ]
   }).container().appendTo($(`#datatables-buttons-${tablename}`))
 
-})
+}

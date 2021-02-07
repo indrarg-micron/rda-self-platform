@@ -159,7 +159,7 @@ function bulkOfFunction() {
   var level = parser($('#checklist-level').val())
   var category = parser($('#checklist-category').val())
   var item = parser($('#checklist-item').val())
-  var status = parser($('#checklist-status').val())
+  var status = parser($('#checklist-status').val().toLowerCase())
 
   // check input length
   var inputLength = []
