@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const moment = require('moment-timezone')
+const gaussian = require('gaussian')
 const fs = require('fs')
 const path = require('path')
 const { poolProd535, sqlPath } = require('../db')
@@ -140,4 +141,74 @@ router.post('/api/section-table', async (req, res) => {
     res.status(500).send(err.message)
   }
 })
+
+router.post('/api/section-chart', async (req, res) => {
+  try {
+    const body = JSON.parse(JSON.stringify(req.body))
+    let filter = `AND e.[section] = '${body.section}'
+                  AND s.[fy_quarter] = '${quarters[0]}'
+                  AND e.[gjs] LIKE 'T%'`
+
+    let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()
+    query = query.replace('###ADDITIONAL_FILTER_HERE###', filter)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
+    let data = result.recordset
+    let rawByGjs = {'TA': [], 'T1': [], 'T2': [], 'T3': [], 'T4': []}
+    let final = []
+
+    data.forEach(d => {
+      rawByGjs[d.gjs].push(d.total_score)
+      rawByGjs[d.gjs].sort()
+    })
+
+    /* 
+    // for test purposes
+    rawByGjs = {
+      'TA': [3.5, 4, 5, 5.5, 7],
+      'T1': [2, 4, 5, 7.5, 7.5, 9.5],
+      'T2': [1, 3, 4.5, 6, 6, 6, 7.25, 7.5, 7.5, 7.5, 8, 10, 10, 10.5, 10.5, 10.5, 10.75, 10.75, 11, 11.5, 12.75],
+      'T3': [8.5, 10.5, 10.75, 13, 13.5, 13.5, 15.5],
+      'T4': []
+    }
+    */
+
+    for (const gjs in rawByGjs) {
+      let arrNormDist = []
+      if (rawByGjs[gjs].length) {
+        const mean = calcMean(rawByGjs[gjs])
+        const stdev = calcStdev(rawByGjs[gjs])
+        let dist = gaussian(mean, Math.pow(stdev, 2)) // gaussian(mean, variance)
+        rawByGjs[gjs].forEach(x => {
+          let y = dist.pdf(x)
+          arrNormDist.push([x, y])
+        })
+      }
+      final.push({name: gjs, data: arrNormDist})
+    }
+
+    res.send(final)
+
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+})
+
+// normal distribution calculator
+function calcMean(arr) {
+  const n = arr.length
+  const mean = arr.reduce((a, b) => a + b) / n
+  return mean
+}
+
+function calcStdev(arr) {
+  const n = arr.length
+  const mean = arr.reduce((a, b) => a + b) / n
+  const stdev = Math.sqrt(arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+  return stdev
+}
+
 module.exports = router

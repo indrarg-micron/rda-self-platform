@@ -39,6 +39,22 @@ $(document).ready(function () {
         throwAlert('#indiv-chart-container', 'Unable to load chart')
       }
     })
+
+    $.ajax({
+      url:'/api/section-chart',
+      type: 'POST',
+      data: {
+        section: user.section
+      },
+  
+      success: function(msg) {
+        chartSection(msg, 'indiv-section-container', user.section + ' Normal Distribution for current Quarter')
+      },
+  
+      error: function(err) {
+        throwAlert('#indiv-section-container', 'Unable to load chart')
+      }
+    })
   }
 
   // section - eng proc
@@ -59,6 +75,22 @@ $(document).ready(function () {
   
       error: function(err) {
         throwAlert('#engoroc-table-container', 'Unable to load table')
+      }
+    })
+
+    $.ajax({
+      url:'/api/section-chart',
+      type: 'POST',
+      data: {
+        section: 'Eng Proc'
+      },
+  
+      success: function(msg) {
+        chartSection(msg, 'engproc-chart-container', 'Eng Process Normal Distribution')
+      },
+  
+      error: function(err) {
+        throwAlert('#engproc-chart-container', 'Unable to load chart')
       }
     })
   }
@@ -83,6 +115,22 @@ $(document).ready(function () {
         throwAlert('#equip-table-container', 'Unable to load table')
       }
     })
+
+    $.ajax({
+      url:'/api/section-chart',
+      type: 'POST',
+      data: {
+        section: 'Equipment'
+      },
+  
+      success: function(msg) {
+        chartSection(msg, 'equip-chart-container', 'Equipment Normal Distribution')
+      },
+  
+      error: function(err) {
+        throwAlert('#equip-chart-container', 'Unable to load chart')
+      }
+    })
   }
 
   // section - process
@@ -103,6 +151,22 @@ $(document).ready(function () {
   
       error: function(err) {
         throwAlert('#proc-table-container', 'Unable to load table')
+      }
+    })
+
+    $.ajax({
+      url:'/api/section-chart',
+      type: 'POST',
+      data: {
+        section: 'Process'
+      },
+  
+      success: function(msg) {
+        chartSection(msg, 'proc-chart-container', 'Process Normal Distribution')
+      },
+  
+      error: function(err) {
+        throwAlert('#proc-chart-container', 'Unable to load chart')
       }
     })
   }
@@ -127,30 +191,24 @@ $(document).ready(function () {
         throwAlert('#ops-table-container', 'Unable to load table')
       }
     })
+
+    $.ajax({
+      url:'/api/section-chart',
+      type: 'POST',
+      data: {
+        section: 'Ops'
+      },
+  
+      success: function(msg) {
+        chartSection(msg, 'ops-chart-container', 'Ops Normal Distribution')
+      },
+  
+      error: function(err) {
+        throwAlert('#ops-chart-container', 'Unable to load chart')
+      }
+    })
   }
-
-
-  /*
-  var example = [{
-    name: 'Installation',
-    data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-  }, {
-    name: 'Manufacturing',
-    data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-  }, {
-    name: 'Sales & Distribution',
-    data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-  }, {
-    name: 'Project Development',
-    data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-  }, {
-    name: 'Other',
-    data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-  }]
-  generateChart(example, 'engproc-container', 'Eng Process Overall')
-  generateChart(example, 'equip-container', 'Equipment Overall')
-
-  */
+  
 })
 
 // Generate column chart
@@ -204,12 +262,9 @@ function chartIndiv(data, location, title) {
 
 }
 
-/*
-// Generate chart
-function generateChart(data, location, title) {
-  // prepare the data
+// Generate line chart
+function chartSection(data, location, title) {
   
-  // Highcharts proper
   Highcharts.chart(location, {
 
     chart: {
@@ -229,28 +284,28 @@ function generateChart(data, location, title) {
 
     yAxis: {
       title: {
-        text: 'Number of Employees'
+        text: ''
+      },
+      labels: {
+        enabled: false
       }
     },
-
+    /*
     xAxis: {
-      accessibility: {
-        rangeDescription: 'Range: 2010 to 2017'
-      }
+      lineWidth: 0,
+      minorGridLineWidth: 0,
+      labels: {
+          enabled: false
+      },
+      minorTickLength: 0,
+      tickLength: 0
     },
-
-    legend: {
-      layout: 'vertical',
-      align: 'right',
-      verticalAlign: 'middle'
-    },
-
+    */
     plotOptions: {
       series: {
         label: {
           connectorAllowed: false
         },
-        pointStart: 2010,
         marker: {
           enabled: false,
           states: {
@@ -266,25 +321,11 @@ function generateChart(data, location, title) {
       enabled: false
     },
 
-    series: data,
+    series: data
 
-    responsive: {
-      rules: [{
-        condition: {
-          maxWidth: 500
-        },
-        chartOptions: {
-          legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'bottom'
-          }
-        }
-      }]
-    }
   })
 }
-*/
+
 
 // display alert
 function throwAlert(loc, msg) {

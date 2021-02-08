@@ -29,7 +29,7 @@
             {{#contains @root.skip @key}}
               <td{{#eq @key 'item'}} class="head-col"{{/eq}}>
             {{else unlessEq this null}}
-              <td class="traffic-{{this}}">
+              <td class="text-center traffic-{{this}}">
             {{/contains}}
             {{this}}</td>
           {{/each}}
