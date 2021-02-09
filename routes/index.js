@@ -17,7 +17,7 @@ let quarters = [ -4, -1, 2, 5 ].map(i =>
 let quarterList = `('${quarters[3]}', '${quarters[2]}', '${quarters[1]}', '${quarters[0]}')`
 let quarterColumn = `([${quarters[3]}], [${quarters[2]}], [${quarters[1]}], [${quarters[0]}])`
 
-/* GET home page. */
+// GET home page
 router.get('/', function(req, res) {
   let params = {
     title: 'Home',
@@ -165,7 +165,7 @@ router.post('/api/section-chart', async (req, res) => {
       rawByGjs[d.gjs].sort()
     })
 
-    /* 
+    /*
     // for test purposes
     rawByGjs = {
       'TA': [3.5, 4, 5, 5.5, 7],
@@ -176,12 +176,13 @@ router.post('/api/section-chart', async (req, res) => {
     }
     */
 
+    // calculate the normal distribution
     for (const gjs in rawByGjs) {
       let arrNormDist = []
       if (rawByGjs[gjs].length) {
         const mean = calcMean(rawByGjs[gjs])
-        const stdev = calcStdev(rawByGjs[gjs])
-        let dist = gaussian(mean, Math.pow(stdev, 2)) // gaussian(mean, variance)
+        const stdDev = calcStdDev(rawByGjs[gjs])
+        let dist = gaussian(mean, Math.pow(stdDev, 2)) // gaussian(mean, variance)
         rawByGjs[gjs].forEach(x => {
           let y = dist.pdf(x)
           arrNormDist.push([x, y])
@@ -197,18 +198,21 @@ router.post('/api/section-chart', async (req, res) => {
   }
 })
 
-// normal distribution calculator
+// mean and std dev calculator, norm dist use gaussian module
 function calcMean(arr) {
   const n = arr.length
   const mean = arr.reduce((a, b) => a + b) / n
   return mean
 }
 
-function calcStdev(arr) {
+// std dev with population, match excel stdev.p
+// with population, use n-1 for stdDev formula, no pop (i.e. stdev.s) use n only
+function calcStdDev(arr) {
   const n = arr.length
+  if ( n == 1 ) { return 0 } // return 0 if array consists of only 1 value to trigger error in norm dist
   const mean = arr.reduce((a, b) => a + b) / n
-  const stdev = Math.sqrt(arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
-  return stdev
+  const stdDev = Math.sqrt(arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / (n - 1) )
+  return stdDev
 }
 
 module.exports = router
