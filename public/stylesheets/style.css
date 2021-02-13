@@ -80,15 +80,24 @@ tbody tr td.head-col {
 
 /* traffic light */
 .traffic-0, .traffic-1 {
+  /*height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;*/
   color: white;
   background-color: deeppink !important;
 }
 
 .traffic-2 {
+  /*height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;*/
   background-color: navajowhite !important;
 }
 
 .traffic-3 {
+  /*height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;*/
   background-color: springgreen !important;
 }
 

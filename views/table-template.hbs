@@ -30,6 +30,7 @@
               <td{{#eq @key 'item'}} class="head-col"{{/eq}}>
             {{else unlessEq this null}}
               <td class="text-center traffic-{{this}}">
+                {{!-- <td class="text-center"><div class="d-inline-block align-text-bottom traffic-{{this}}"></div> --}}
             {{/contains}}
             {{this}}</td>
           {{/each}}
