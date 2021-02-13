@@ -1,5 +1,7 @@
 # RDA Self 2.0
 
+Link: <http://rda-self-platform-f10-rda-projects.bo-ose-test.micron.com/>
+
 Source code for RDA Self 2.0
 
 SQL database schema:  
