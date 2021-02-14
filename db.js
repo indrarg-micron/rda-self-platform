@@ -13,7 +13,8 @@ const configProd535 = {
     server: process.env.DB_SERVER,
     database: process.env.DB_DATABASE,
     options: {
-        enableArithAbort: true, // needed to silence tedious
+        abortTransactionOnError: true, // <-- SET XACT_ABORT ON to auto rollback transaction upon error
+        enableArithAbort: true // needed to silence tedious
     }
 }
 
