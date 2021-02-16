@@ -45,9 +45,18 @@ $(document).ready(function() {
   })
 
   // custom searchbar casts to datatable searchbar
+  // on enter
+  $('#custom-search').keypress(function(e) {
+    if(e.which == 13){ // enter key pressed
+      table.search($(this).val()).draw()
+    }
+  })
+
+  /* // on input change
   $('#custom-search').on('input', function(){
     table.search($(this).val()).draw()
   })
+  */
 
   // append export button to specified location, with export options
   var buttons = new $.fn.dataTable.Buttons(table, {
