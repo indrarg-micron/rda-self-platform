@@ -18,7 +18,7 @@ let quarterList = `('${quarters[3]}', '${quarters[2]}', '${quarters[1]}', '${qua
 let quarterColumn = `([${quarters[3]}], [${quarters[2]}], [${quarters[1]}], [${quarters[0]}])`
 
 // GET home page
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
   let params = {
     title: 'Home',
     active: { home: true },
@@ -49,7 +49,7 @@ router.get('/', function(req, res) {
 })
 
 // indiv
-router.post('/api/indiv-table', async (req, res) => {
+router.post('/api/indiv-table', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let username = `'${body.username}'`
@@ -80,7 +80,7 @@ router.post('/api/indiv-table', async (req, res) => {
   }
 })
 
-router.post('/api/indiv-chart', async (req, res) => {
+router.post('/api/indiv-chart', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let filter = `AND e.[username] = '${body.username}'
@@ -112,7 +112,7 @@ router.post('/api/indiv-chart', async (req, res) => {
 })
 
 // section
-router.post('/api/section-table', async (req, res) => {
+router.post('/api/section-table', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let section = body.section
@@ -142,7 +142,7 @@ router.post('/api/section-table', async (req, res) => {
   }
 })
 
-router.post('/api/section-chart', async (req, res) => {
+router.post('/api/section-chart', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let filter = `AND e.[section] = '${body.section}'

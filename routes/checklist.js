@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { poolProd535, sqlPath } = require('../db')
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'checklist-view.sql')).toString()
 
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
