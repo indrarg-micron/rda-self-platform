@@ -32,7 +32,7 @@ $(document).ready(function () {
       },
   
       success: function(msg) {
-        chartIndiv(msg, 'indiv-chart-container', 'Q-on-Q Progress')
+        chartIndiv(msg, 'indiv-chart-container', 'Q-to-Q Progress')
       },
   
       error: function(err) {

@@ -34,6 +34,7 @@ SELECT * FROM (
 	  WHERE c.section = '''+ @section +'''
 	  AND s.fy_quarter = '''+ @currQ +'''
 	  AND e.[status] = ''active''
+    AND c.[status] = ''active''
 ) t
 PIVOT (
 	SUM(t.score)

@@ -9,6 +9,7 @@ SELECT
 FROM 
     [RDA_IMP_INFO].[dbo].[employee] e
 WHERE e.[username] = ###YOUR_USERNAME_HERE###
+AND e.[status] = 'active'
 
 SELECT * FROM (
 	-- generate indiv list (indiv list w/ score + section list w/o score)
