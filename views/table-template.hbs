@@ -18,7 +18,12 @@
     <thead class="thead-light">
       <tr>
         {{#each keys}}
-          <th class="text-capitalize {{#eq this 'item'}}head-col{{/eq}}" scope="col">{{this}}</th>
+          {{#contains @root.skip this}}
+            <th class="text-capitalize {{#eq this 'item'}}head-col min-width{{/eq}}" scope="col">
+          {{else}}
+            <th class="rotate" scope="col">
+          {{/contains}}
+          <div>{{this}}</div></th>
         {{/each}}
       </tr>
     </thead>
