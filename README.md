@@ -7,6 +7,9 @@ Source code for RDA Self 2.0
 SQL database schema:  
 ![schema](readme/schema.png "Database Schema")
 
+SQL tables created using stored procedures in `sql > create` folder, including the log table  
+SQL trigger for the main 3 tables are set using the stored procedure in `sql > trigger` folder, all records to the log table
+
 ---
 
 ## Prerequisite
