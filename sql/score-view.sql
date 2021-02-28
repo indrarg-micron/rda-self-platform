@@ -14,4 +14,4 @@ SELECT s.[id]
   JOIN [RDA_IMP_INFO].[dbo].[checklist] c
   ON s.[checklist_id] = c.[id]
   ###PERMISSION_FILTER_HERE###
-  ORDER BY e.[username]
+  ORDER BY s.[fy_quarter] DESC, e.[section], e.[username]

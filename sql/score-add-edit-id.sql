@@ -1,5 +1,10 @@
 BEGIN TRANSACTION
 
+-- Declare username for Trigger usage
+DECLARE @username VARBINARY(128)
+SET @username = CAST(N'###YOUR_USERNAME_HERE###' AS VARBINARY(128))
+SET CONTEXT_INFO @username
+
 -- Temporary table with edited/new data
 CREATE TABLE #temp_score (
 	id INT,

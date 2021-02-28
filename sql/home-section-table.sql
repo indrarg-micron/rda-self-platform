@@ -13,7 +13,7 @@ FROM
 	AND e.[gjs] LIKE 'T%'
 	AND e.[status] = 'active'
 ORDER BY 
-    RIGHT([shift], 1), [username]
+    /*RIGHT([shift], 1), */[username]
 
 -- remove the last comma
 SET @columns = LEFT(@columns, LEN(@columns) - 1)

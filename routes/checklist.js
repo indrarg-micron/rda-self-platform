@@ -39,12 +39,15 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
+  let username = res.locals.ntlm.UserName.toLowerCase()
+
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
 
     let query = fs.readFileSync(path.join(sqlPath, 'checklist-add-edit.sql')).toString()
     query = query.replace('###INSERT_VALUE_STRING_HERE###', content)
+    query = query.replace('###YOUR_USERNAME_HERE###', username)
 
     const pool = await poolProd535
     const result = await pool.request()
@@ -58,12 +61,15 @@ router.post('/', async (req, res, next) => {
 })
 
 router.delete('/', async (req, res) => {
+  let username = res.locals.ntlm.UserName.toLowerCase()
+
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
 
     let query = fs.readFileSync(path.join(sqlPath, 'checklist-delete.sql')).toString()
     query = query.replace('###INSERT_VALUE_STRING_HERE###', content)
+    query = query.replace('###YOUR_USERNAME_HERE###', username)
 
     const pool = await poolProd535
     const result = await pool.request()
