@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const moment = require('moment-timezone')
+const cron = require('node-cron')
 const gaussian = require('gaussian')
 const fs = require('fs')
 const path = require('path')
@@ -9,13 +10,28 @@ const { poolProd535, sqlPath } = require('../db')
 // set default timezone to SGT
 moment.tz.setDefault('Asia/Singapore')
 
-// last 4 Micron Financial Quarters (FQs) ~more or less~
+// last 4 Micron Financial Quarters (FQs) and next 1 FQ ~more or less~
 // accurate up to month (too troublesome to be accurate up to WW)
-let quarters = [ -4, -1, 2, 5 ].map(i => 
-  moment().subtract(i, 'M').format('[FY]YY[Q]Q')
-)
-let quarterList = `('${quarters[3]}', '${quarters[2]}', '${quarters[1]}', '${quarters[0]}')`
-let quarterColumn = `([${quarters[3]}], [${quarters[2]}], [${quarters[1]}], [${quarters[0]}])`
+let quarters = [], currQ = '', quarterList = '', quarterColumn = ''
+function getQuarters() {
+  quarters = [ -7, -4, -1, 2, 5 ].map(i => 
+    moment().subtract(i, 'M').format('[FY]YY[Q]Q')
+  )
+  currQ = quarters[1]
+  quarterList = `('${quarters[4]}', '${quarters[3]}', '${quarters[2]}', '${quarters[1]}')`
+  quarterColumn = `([${quarters[4]}], [${quarters[3]}], [${quarters[2]}], [${quarters[1]}])`
+}
+
+// get quarters when the app start
+getQuarters()
+
+// update quarters every 1st day of month of FQ, 00:01 AM SGT
+cron.schedule('1 0 1 Mar,Jun,Sep,Dec *', () => {
+  getQuarters()
+}, {
+  scheduled: true,
+  timezone: "Asia/Singapore"
+})
 
 // GET home page
 router.get('/', function(req, res, next) {
@@ -119,7 +135,7 @@ router.post('/api/section-table', async (req, res, next) => {
     let tablename = body.tablename
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-section-table.sql')).toString()
-    query = query.replace('###CURRENT_QUARTER_HERE###', quarters[0])
+    query = query.replace('###CURRENT_QUARTER_HERE###', currQ)
     query = query.replace('###YOUR_SECTION_HERE###', section)
 
     const pool = await poolProd535
@@ -146,7 +162,7 @@ router.post('/api/section-chart', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let filter = `AND e.[section] = '${body.section}'
-                  AND s.[fy_quarter] = '${quarters[0]}'
+                  AND s.[fy_quarter] = '${currQ}'
                   AND e.[gjs] LIKE 'T%'`
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()

@@ -17,6 +17,7 @@ $(document).ready(function() {
       autoWidth: false,
       order: [],
       select: true,
+      columnDefs: [{}],
       // scrollX: true,
 
       // highlight bookmarked row upon page and table load
