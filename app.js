@@ -110,6 +110,8 @@ async function authHome(req, res, next) {
       } else if (res.locals.user.permission == 'section') {
         res.locals.elevation = { section: true }
       }
+
+      next()
     }
   
   } catch (err) {
@@ -122,16 +124,27 @@ async function authHome(req, res, next) {
     return res.render('error', { title: 'Error'})
   }
 
-  next()
+  
 }
 
 // pseudo-authentication process for inner links, after authHome has been performed
-function authInner(req, res, next) {
-  if (res.locals.user.permission != 'admin' && res.locals.user.permission != 'section') {
-    return res.redirect('/')
-  }
+async function authInner(req, res, next) {
+  try {
+    if (res.locals.user.permission != 'admin' && res.locals.user.permission != 'section') {
+      return res.redirect('/')
+    }
 
-  next()
+    next()
+
+  } catch (err) {
+    // set locals, only providing error in development
+    res.locals.message = err.message
+    res.locals.error = req.app.get('env') === 'development' ? err : {}
+
+    // render the error page
+    res.status(err.status || 500)
+    return res.render('error', { title: 'Error'})
+  }
 }
 
 // catch 404 and forward to error handler
