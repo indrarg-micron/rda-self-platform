@@ -6,6 +6,8 @@ const hbs = require('express-handlebars')
 const helpers = require('handlebars-helpers')()
 const logger = require('morgan')
 const ntlm = require('express-ntlm')
+const cron = require('node-cron')
+const moment = require('moment-timezone')
 const fs = require('fs')
 const { poolProd535, sqlPath } = require('./db')
 
@@ -16,6 +18,36 @@ const scoreRouter = require('./routes/score')
 
 const app = express()
 app.use( ntlm() ) // to get windows username
+
+// set default timezone to SGT and set default format
+moment.tz.setDefault('Asia/Singapore')
+moment.defaultFormat = 'MMM D, YYYY h:mm a z'
+
+// port every 1st day of month of FQ, 00:05 AM SGT
+cron.schedule('5 0 1 Mar,Jun,Sep,Dec *', async () => {
+  let currQ = moment().add(4, 'M').format('[FY]YY[Q]Q')
+  let nextQ = moment().add(7, 'M').format('[FY]YY[Q]Q')
+  let timestamp = moment().format()
+  console.log(`Porting ${currQ} score data to ${nextQ} on ${timestamp}`)
+
+  try {
+    let query = fs.readFileSync(path.join(sqlPath, 'port-to-next-q.sql')).toString()
+    query = query.replace('###NEXT_QUARTER###', nextQ)
+    query = query.replace('###CURRENT_QUARTER###', currQ)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)      
+    
+    console.log(result.rowsAffected.pop() + ' rows copied to ' + nextQ)
+  
+  } catch (err) {
+    console.log(err.message)
+  }
+}, {
+  scheduled: true,
+  timezone: "Asia/Singapore"
+})
 
 // view engine setup, with helpers
 // app.set('views', path.join(__dirname, 'views'))
