@@ -6,7 +6,7 @@ const { poolProd535, sqlPath } = require('../db')
 const { moment, fyq } = require('../misc')
 
 router.get('/', async (req, res, next) => {
-  let qFilter = req.query.q || fyq.currQ
+  let qFilter = req.query.q || fyq.nextQ
 
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'score-view.sql')).toString()
