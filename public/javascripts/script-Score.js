@@ -1,3 +1,11 @@
+// refresh page with new FQ filter
+$('#select-fq').on('change', function() {
+  var url = $(this).val() // get selected value
+  if (url) { // require a URL
+    window.location = url // redirect
+  }
+})
+
 // add button - show modal by id
 $('#score-add-modal-id').click(function() {
   $('#score-add-edit-id').show()

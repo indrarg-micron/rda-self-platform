@@ -13,5 +13,6 @@ SELECT s.[id]
   ON s.[employee_id] = e.[id]
   JOIN [RDA_IMP_INFO].[dbo].[checklist] c
   ON s.[checklist_id] = c.[id]
+  WHERE s.[fy_quarter] = '###QUARTER_TO_LOOK_FOR###'
   ###PERMISSION_FILTER_HERE###
   ORDER BY s.[fy_quarter] DESC, e.[section], e.[username]

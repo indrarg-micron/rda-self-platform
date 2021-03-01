@@ -21,16 +21,24 @@
       </div>
       <button id="score-delete-modal" class="btn" data-toggle="modal" data-target="#delete-modal" title="Delete"><i class="fas fa-trash-alt fa-lg"></i></button>
     </div>
-    {{!-- Custom rounded search bars with input group --}}
-    <div class="col search-bar bg-light rounded rounded-pill shadow-sm mb-2 align-self-end">
-      <div class="input-group">
-        <input id="custom-search" type="search" placeholder="What're you searching for?" class="form-control input-sm border-0 bg-light">
-        <div class="input-group-append">
-          <button class="btn btn-link text-primary" title="Search"><i class="fa fa-search"></i></button>
+    <div class="form-inline d-flex justify-content-end">
+      {{!-- Dropdown to select FQ --}}
+      <select name="select-fq" id="select-fq" class="form-control mb-2">
+        {{#each quarters}}
+          <option {{#eq this @root.selQ}}selected{{/eq}} value="/score?q={{this}}">{{this}}</option>
+        {{/each}}
+      </select>
+      {{!-- Custom rounded search bars with input group --}}
+      <div class="col search-bar bg-light rounded rounded-pill shadow-sm ml-2 mb-2 align-self-end">
+        <div class="input-group">
+          <input id="custom-search" type="search" placeholder="What're you searching for?" class="form-control input-sm border-0 bg-light">
+          <div class="input-group-append">
+            <button class="btn btn-link text-primary" title="Search"><i class="fa fa-search"></i></button>
+          </div>
         </div>
       </div>
+      {{!-- End --}}
     </div>
-    {{!-- End --}}
   </div>
 </div>
 
