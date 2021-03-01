@@ -1,43 +1,18 @@
 const express = require('express')
 const router = express.Router()
-const moment = require('moment-timezone')
-const cron = require('node-cron')
 const gaussian = require('gaussian')
 const fs = require('fs')
 const path = require('path')
 const { poolProd535, sqlPath } = require('../db')
-
-// set default timezone to SGT
-moment.tz.setDefault('Asia/Singapore')
-
-// last 4 Micron Financial Quarters (FQs) and next 1 FQ ~more or less~
-// accurate up to month (too troublesome to be accurate up to WW)
-let quarters = [], currQ = '', quarterList = '', quarterColumn = ''
-function getQuarters() {
-  quarters = [ -7, -4, -1, 2, 5 ].map(i => 
-    moment().subtract(i, 'M').format('[FY]YY[Q]Q')
-  )
-  currQ = quarters[1]
-  quarterList = `('${quarters[4]}', '${quarters[3]}', '${quarters[2]}', '${quarters[1]}')`
-  quarterColumn = `([${quarters[4]}], [${quarters[3]}], [${quarters[2]}], [${quarters[1]}])`
-}
-
-// get quarters when the app start
-getQuarters()
-
-// update quarters every 1st day of month of FQ, 00:01 AM SGT
-cron.schedule('1 0 1 Mar,Jun,Sep,Dec *', () => {
-  getQuarters()
-}, {
-  scheduled: true,
-  timezone: "Asia/Singapore"
-})
+const { moment, fyq } = require('../misc')
 
 // GET home page
 router.get('/', function(req, res, next) {
   let params = {
     title: 'Home',
     active: { home: true },
+    quarters: fyq.quarters,
+    currQ: fyq.currQ,
     show: {}
   }
 
@@ -73,8 +48,8 @@ router.post('/api/indiv-table', async (req, res, next) => {
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-indiv-table.sql')).toString()
     query = query.replace('###YOUR_USERNAME_HERE###', username)
-    query = query.replace('###FY_QUARTER_LIST_HERE###', quarterList)
-    query = query.replace('###FY_QUARTER_COLUMN_HERE###', quarterColumn)
+    query = query.replace('###FY_QUARTER_LIST_HERE###', fyq.quarterList)
+    query = query.replace('###FY_QUARTER_COLUMN_HERE###', fyq.quarterColumn)
 
     const pool = await poolProd535
     const result = await pool.request()
@@ -100,7 +75,7 @@ router.post('/api/indiv-chart', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
     let filter = `AND e.[username] = '${body.username}'
-                  AND s.[fy_quarter] IN ${quarterList}`
+                  AND s.[fy_quarter] IN ${fyq.quarterList}`
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()
     query = query.replace('###ADDITIONAL_FILTER_HERE###', filter)
@@ -133,9 +108,10 @@ router.post('/api/section-table', async (req, res, next) => {
     const body = JSON.parse(JSON.stringify(req.body))
     let section = body.section
     let tablename = body.tablename
+    let quarter = body.quarter || fyq.currQ
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-section-table.sql')).toString()
-    query = query.replace('###CURRENT_QUARTER_HERE###', currQ)
+    query = query.replace('###CURRENT_QUARTER_HERE###', quarter)
     query = query.replace('###YOUR_SECTION_HERE###', section)
 
     const pool = await poolProd535
@@ -161,8 +137,11 @@ router.post('/api/section-table', async (req, res, next) => {
 router.post('/api/section-chart', async (req, res, next) => {
   try {
     const body = JSON.parse(JSON.stringify(req.body))
-    let filter = `AND e.[section] = '${body.section}'
-                  AND s.[fy_quarter] = '${currQ}'
+    let section = body.section
+    let quarter = body.quarter || fyq.currQ
+
+    let filter = `AND e.[section] = '${section}'
+                  AND s.[fy_quarter] = '${quarter}'
                   AND e.[gjs] LIKE 'T%'`
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()

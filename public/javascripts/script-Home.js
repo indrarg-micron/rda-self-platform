@@ -57,159 +57,79 @@ $(document).ready(function () {
     })
   }
 
+  // load section
+  sectionLoader()
+})
+
+// Section loader
+function sectionLoader() {
   // section - eng proc
   if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Eng Proc') ) {
-    let tablename = 'EngProc'
-    $.ajax({
-      url:'/api/section-table',
-      type: 'POST',
-      data: {
-        section: 'Eng Proc',
-        tablename: tablename
-      },
-  
-      success: function(msg) {
-        $('#engproc-table-container').html(msg)
-        tableInit(tablename)
-      },
-  
-      error: function(err) {
-        throwAlert('#engoroc-table-container', 'Unable to load table')
-      }
-    })
-
-    $.ajax({
-      url:'/api/section-chart',
-      type: 'POST',
-      data: {
-        section: 'Eng Proc'
-      },
-  
-      success: function(msg) {
-        chartSection(msg, 'engproc-chart-container', 'Eng Process Normal Distribution')
-      },
-  
-      error: function(err) {
-        throwAlert('#engproc-chart-container', 'Unable to load chart')
-      }
-    })
+    sectionAjax('EngProc', 'Eng Proc', 'engproc')
   }
 
   // section - equipment
   if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Equipment') ) {
-    let tablename = 'Equipment'
-    $.ajax({
-      url:'/api/section-table',
-      type: 'POST',
-      data: {
-        section: 'Equipment',
-        tablename: tablename
-      },
-  
-      success: function(msg) {
-        $('#equip-table-container').html(msg)
-        tableInit(tablename)
-      },
-  
-      error: function(err) {
-        throwAlert('#equip-table-container', 'Unable to load table')
-      }
-    })
-
-    $.ajax({
-      url:'/api/section-chart',
-      type: 'POST',
-      data: {
-        section: 'Equipment'
-      },
-  
-      success: function(msg) {
-        chartSection(msg, 'equip-chart-container', 'Equipment Normal Distribution')
-      },
-  
-      error: function(err) {
-        throwAlert('#equip-chart-container', 'Unable to load chart')
-      }
-    })
+    sectionAjax('Equipment', 'Equipment', 'equip')
   }
 
   // section - process
   if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Process') ) {
-    let tablename = 'Process'
-    $.ajax({
-      url:'/api/section-table',
-      type: 'POST',
-      data: {
-        section: 'Process',
-        tablename: tablename
-      },
-  
-      success: function(msg) {
-        $('#proc-table-container').html(msg)
-        tableInit(tablename)
-      },
-  
-      error: function(err) {
-        throwAlert('#proc-table-container', 'Unable to load table')
-      }
-    })
-
-    $.ajax({
-      url:'/api/section-chart',
-      type: 'POST',
-      data: {
-        section: 'Process'
-      },
-  
-      success: function(msg) {
-        chartSection(msg, 'proc-chart-container', 'Process Normal Distribution')
-      },
-  
-      error: function(err) {
-        throwAlert('#proc-chart-container', 'Unable to load chart')
-      }
-    })
+    sectionAjax('Process', 'Process', 'proc')
   }
 
   // section - ops
   if ( user.permission == 'admin' || (user.permission == 'section' && user.section == 'Ops') ) {
-    let tablename = 'Ops'
-    $.ajax({
-      url:'/api/section-table',
-      type: 'POST',
-      data: {
-        section: 'Ops',
-        tablename: tablename
-      },
-  
-      success: function(msg) {
-        $('#ops-table-container').html(msg)
-        tableInit(tablename)
-      },
-  
-      error: function(err) {
-        throwAlert('#ops-table-container', 'Unable to load table')
-      }
-    })
-
-    $.ajax({
-      url:'/api/section-chart',
-      type: 'POST',
-      data: {
-        section: 'Ops'
-      },
-  
-      success: function(msg) {
-        chartSection(msg, 'ops-chart-container', 'Ops Normal Distribution')
-      },
-  
-      error: function(err) {
-        throwAlert('#ops-chart-container', 'Unable to load chart')
-      }
-    })
+    sectionAjax('Ops', 'Ops', 'ops')
   }
-  
+}
+
+// Section generator
+function sectionAjax(tablename, sectionname, divname) {
+  let quarter = $('#select-fq').val()
+  $.ajax({
+    url:'/api/section-table',
+    type: 'POST',
+    data: {
+      section: sectionname,
+      tablename: tablename,
+      quarter: quarter
+    },
+
+    success: function(msg) {
+      $(`#${divname}-table-container`).html(msg)
+      tableInit(tablename)
+    },
+
+    error: function(err) {
+      throwAlert(`#${divname}-table-container`, `Unable to load ${sectionname} table`)
+    }
+  })
+
+  $.ajax({
+    url:'/api/section-chart',
+    type: 'POST',
+    data: {
+      section: sectionname,
+      quarter: quarter
+    },
+
+    success: function(msg) {
+      chartSection(msg, `${divname}-chart-container`, `${sectionname} Normal Distribution`)
+    },
+
+    error: function(err) {
+      throwAlert(`#${divname}-chart-container`, `Unable to load ${sectionname} chart`)
+    }
+  })
+}
+
+// select FQ from dropdown
+$('#select-fq').on('change', function() {
+  sectionLoader()
+  $('#selected-fq').html( this.value )
 })
+
 
 // Generate column chart
 function chartIndiv(data, location, title) {
