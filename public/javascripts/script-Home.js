@@ -127,7 +127,7 @@ function sectionAjax(tablename, sectionname, divname) {
 // select FQ from dropdown
 $('#select-fq').on('change', function() {
   sectionLoader()
-  $('#selected-fq').html( this.value )
+  $('.selected-fq').html( this.value )
 })
 
 

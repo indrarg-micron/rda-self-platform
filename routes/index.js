@@ -171,6 +171,11 @@ router.post('/api/section-chart', async (req, res, next) => {
     }
     */
 
+    // return error if all data is empty
+    if ( checkProp(rawByGjs) ) {
+      throw new TypeError('No Data')
+    }
+
     // calculate the normal distribution
     for (const gjs in rawByGjs) {
       let arrNormDist = []
@@ -208,6 +213,16 @@ function calcStdDev(arr) {
   const mean = arr.reduce((a, b) => a + b) / n
   const stdDev = Math.sqrt(arr.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / (n - 1) )
   return stdDev
+}
+
+
+// check if all attributes of an object are all null or empty string
+function checkProp(obj) {
+  for (var key in obj) {
+    if (obj[key] !== null && obj[key] != "")
+      { return false }
+  }
+  return true
 }
 
 module.exports = router
