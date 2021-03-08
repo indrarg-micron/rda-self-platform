@@ -41,13 +41,15 @@ router.get('/', function(req, res, next) {
 
 // indiv
 router.post('/api/indiv-table', async (req, res, next) => {
+  let username = res.locals.user.name
+
   try {
     const body = JSON.parse(JSON.stringify(req.body))
-    let username = `'${body.username}'`
+    let user = `'${username}'`
     let tablename = body.tablename
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-indiv-table.sql')).toString()
-    query = query.replace('###YOUR_USERNAME_HERE###', username)
+    query = query.replace('###YOUR_USERNAME_HERE###', user)
     query = query.replace('###FY_QUARTER_LIST_HERE###', fyq.quarterList)
     query = query.replace('###FY_QUARTER_COLUMN_HERE###', fyq.quarterColumn)
 
@@ -72,9 +74,11 @@ router.post('/api/indiv-table', async (req, res, next) => {
 })
 
 router.post('/api/indiv-chart', async (req, res, next) => {
+  let username = res.locals.user.name
+
   try {
     const body = JSON.parse(JSON.stringify(req.body))
-    let filter = `AND e.[username] = '${body.username}'
+    let filter = `AND e.[username] = '${username}'
                   AND s.[fy_quarter] IN ${fyq.quarterList}`
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()
@@ -105,6 +109,10 @@ router.post('/api/indiv-chart', async (req, res, next) => {
 // section
 router.post('/api/section-table', async (req, res, next) => {
   try {
+    if (!res.locals.elevation) {
+      return res.status(403).send('No Access')
+    }
+
     const body = JSON.parse(JSON.stringify(req.body))
     let section = body.section
     let tablename = body.tablename

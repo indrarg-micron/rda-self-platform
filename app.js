@@ -98,7 +98,7 @@ async function authHome(req, res, next) {
 // pseudo-authentication process for inner links, after authHome has been performed
 async function authInner(req, res, next) {
   try {
-    if (res.locals.user.permission != 'admin' && res.locals.user.permission != 'section') {
+    if (!res.locals.elevation) {
       return res.redirect('/')
     }
 

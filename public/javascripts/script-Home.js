@@ -10,7 +10,6 @@ $(document).ready(function () {
       url:'/api/indiv-table',
       type: 'POST',
       data: {
-        username: user.name,
         tablename: tablename
       },
   
@@ -27,9 +26,6 @@ $(document).ready(function () {
     $.ajax({
       url:'/api/indiv-chart',
       type: 'POST',
-      data: {
-        username: user.name
-      },
   
       success: function(msg) {
         chartIndiv(msg, 'indiv-chart-container', 'Q-to-Q Progress')
