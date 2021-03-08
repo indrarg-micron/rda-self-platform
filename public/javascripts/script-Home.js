@@ -243,14 +243,11 @@ function chartSection(data, location, title) {
 }
 
 
-// display alert
+// display alert, should not be dismissable
 function throwAlert(loc, msg) {
   $(loc).html(
-    `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    `<div class="alert alert-danger" role="alert">
       <strong>Error</strong>: ${msg}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
     </div>`
   )
 }
