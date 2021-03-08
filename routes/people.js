@@ -28,13 +28,7 @@ router.get('/', async (req, res, next) => {
     res.render('people', params)
   
   } catch (err) {
-    // set locals, only providing error in development
-    res.locals.message = err.message
-    res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-    // render the error page
-    res.status(err.status || 500)
-    res.render('error', { title: 'Error'})
+    next(err)
   }
 })
 
@@ -56,7 +50,7 @@ router.post('/', async (req, res, next) => {
     res.send(result)
   
   } catch (err) {
-    res.status(500).send(err.message)
+    next(err)
   }
 })
 
@@ -78,7 +72,7 @@ router.delete('/', async (req, res, next) => {
     res.send(result)
   
   } catch (err) {
-    res.status(500).send(err.message)
+    next(err)
   }
 })
 

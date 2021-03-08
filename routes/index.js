@@ -1,3 +1,4 @@
+const createError = require('http-errors')
 const express = require('express')
 const router = express.Router()
 const gaussian = require('gaussian')
@@ -69,7 +70,7 @@ router.post('/api/indiv-table', async (req, res, next) => {
     res.render('table-template', params)
   
   } catch (err) {
-    res.status(500).send(err.message)
+    next(err)
   }
 })
 
@@ -102,15 +103,16 @@ router.post('/api/indiv-chart', async (req, res, next) => {
     res.send(final)
 
   } catch (err) {
-    res.status(500).send(err.message)
+    next(err)
   }
 })
 
 // section
 router.post('/api/section-table', async (req, res, next) => {
   try {
+    // check user permission before executing
     if (!res.locals.elevation) {
-      return res.status(403).send('No Access')
+      throw new createError(403)
     }
 
     const body = JSON.parse(JSON.stringify(req.body))
@@ -124,7 +126,13 @@ router.post('/api/section-table', async (req, res, next) => {
 
     const pool = await poolProd535
     const result = await pool.request()
-        .query(query)      
+        .query(query)
+    
+    // throw error if no data returned
+    let noOfRows = result.rowsAffected
+    if (noOfRows.pop() == 0) {
+      throw new createError(404, 'No data returned')
+    }
     
     let data = result.recordset
     let keys = Object.keys(data[0])
@@ -138,7 +146,7 @@ router.post('/api/section-table', async (req, res, next) => {
     res.render('table-template', params)
   
   } catch (err) {
-    res.status(500).send(err.message)
+    next(err)
   }
 })
 
@@ -179,9 +187,9 @@ router.post('/api/section-chart', async (req, res, next) => {
     }
     */
 
-    // return error if all data is empty
+    // throw error if all data is empty
     if ( checkProp(rawByGjs) ) {
-      throw new TypeError('No Data')
+      throw new createError(404, 'No data returned')
     }
 
     // calculate the normal distribution
@@ -202,7 +210,7 @@ router.post('/api/section-chart', async (req, res, next) => {
     res.send(final)
 
   } catch (err) {
-    res.status(500).send(err.message)
+    next(err)
   }
 })
 

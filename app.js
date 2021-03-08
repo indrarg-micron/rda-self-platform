@@ -56,13 +56,7 @@ async function authHome(req, res, next) {
         .query(query)      
     
     if (result.rowsAffected == 0) {
-      // set locals
-      res.locals.message = 'Forbidden'
-      res.locals.error = {stack: 'You are not authorized to view this page.\nPlease contact the site administrator.'}
-
-      // render the error page
-      res.status(403)
-      return res.render('error', { title: 'Error'})
+      throw new createError(403, `${username} is not authorized to view this page`)
 
     } else {
       // set locals of user
@@ -83,13 +77,7 @@ async function authHome(req, res, next) {
     }
   
   } catch (err) {
-    // set locals, only providing error in development
-    res.locals.message = err.message
-    res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-    // render the error page
-    res.status(err.status || 500)
-    return res.render('error', { title: 'Error'})
+    next(err)
   }
 
   
@@ -102,16 +90,8 @@ async function authInner(req, res, next) {
       return res.redirect('/')
     }
 
-    next()
-
   } catch (err) {
-    // set locals, only providing error in development
-    res.locals.message = err.message
-    res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-    // render the error page
-    res.status(err.status || 500)
-    return res.render('error', { title: 'Error'})
+    next(err)
   }
 }
 
@@ -120,7 +100,7 @@ app.use(function(req, res, next) {
   next(createError(404))
 })
 
-// error handler
+// error handler (because it has 4 arguments)
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message
