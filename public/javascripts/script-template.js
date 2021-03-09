@@ -35,6 +35,12 @@ function tableInit(tablename) {
 
   // append export button to specified location, with export options
   var buttons = new $.fn.dataTable.Buttons(table, {
+    dom: {
+      button: {
+        tag: 'button',
+        className: '' // clear button class name from default ones 
+      }
+    },
     buttons: [
         {
             extend: 'copyHtml5',

@@ -17,8 +17,6 @@ $(document).ready(function() {
       autoWidth: false,
       order: [],
       select: true,
-      columnDefs: [{}],
-      // scrollX: true,
 
       // highlight bookmarked row upon page and table load
       initComplete: function(settings, json) {
@@ -61,6 +59,12 @@ $(document).ready(function() {
 
   // append export button to specified location, with export options
   var buttons = new $.fn.dataTable.Buttons(table, {
+    dom: {
+      button: {
+        tag: 'button',
+        className: '' // clear button class name from default ones 
+      }
+    },
     buttons: [
         {
             extend: 'copyHtml5',
