@@ -41,20 +41,14 @@ function tableInit(tablename) {
             text: '<i class="fas fa-copy fa-lg"></i>',
             title: tablename + ' - RDA Self 2.0',
             titleAttr: 'Copy',
-            className: 'btn',
-            exportOptions: {
-                columns: ':visible'
-            }
+            className: 'btn'
         },
         {
             extend: 'excelHtml5',
             text: '<i class="fas fa-file-excel fa-lg"></i>',
             title: tablename + ' - RDA Self 2.0',
             titleAttr: 'Excel',
-            className: 'btn',
-            exportOptions: {
-                columns: ':visible'
-            }
+            className: 'btn'
         }
   ]
   }).container().appendTo($(`#datatables-buttons-${tablename}`))

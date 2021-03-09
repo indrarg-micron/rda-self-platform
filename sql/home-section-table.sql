@@ -25,6 +25,7 @@ SELECT * FROM (
 		  ,c.[level]
 		  ,c.[category]
 		  ,c.[item]
+      ,c.[link]
 		  ,s.[score]
 	  FROM [RDA_IMP_INFO].[dbo].[employee_checklist_score] s
 	  JOIN [RDA_IMP_INFO].[dbo].[employee] e

@@ -19,7 +19,11 @@
       <tr>
         {{#each keys}}
           {{#contains @root.skip this}}
-            <th class="text-capitalize {{#eq this 'item'}}head-col min-width{{/eq}}" scope="col">
+            {{#eq this 'link'}}
+              <th class="hide-this" scope="col">
+            {{else}}
+              <th class="text-capitalize {{#eq this 'item'}}head-col min-width{{/eq}}" scope="col">
+            {{/eq}}
           {{else}}
             <th class="rotate" scope="col">
           {{/contains}}
@@ -32,12 +36,16 @@
         <tr>
           {{#each this}}
             {{#contains @root.skip @key}}
-              <td{{#eq @key 'item'}} class="head-col"{{/eq}}>
-            {{else unlessEq this null}}
+              {{#eq @key 'item'}}
+                <td class="head-col">{{#if ../this.link}}<a href="{{../this.link}}" target="_blank">{{/if}}
+              {{else}}
+                <td>
+              {{/eq}}
+            {{else}}
               <td class="text-center traffic-{{this}}">
-                {{!-- <td class="text-center"><div class="d-inline-block align-text-bottom traffic-{{this}}"></div> --}}
+              {{!-- <td class="text-center"><div class="d-inline-block align-text-bottom traffic-{{this}}"></div> --}}
             {{/contains}}
-            {{this}}</td>
+            {{this}}</a></td>
           {{/each}}
         </tr>
       {{/each}}

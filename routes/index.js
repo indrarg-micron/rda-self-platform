@@ -64,7 +64,7 @@ router.post('/api/indiv-table', async (req, res, next) => {
       tablename: tablename,
       data: data,
       keys: keys,
-      skip: ['section', 'level', 'category', 'item'],
+      skip: ['section', 'level', 'category', 'item', 'link'],
       layout: false
     }
     res.render('table-template', params)
@@ -140,7 +140,7 @@ router.post('/api/section-table', async (req, res, next) => {
       tablename: tablename,
       data: data,
       keys: keys,
-      skip: ['section', 'level', 'category', 'item'],
+      skip: ['section', 'level', 'category', 'item', 'link'],
       layout: false
     }
     res.render('table-template', params)

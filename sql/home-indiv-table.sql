@@ -17,6 +17,7 @@ SELECT * FROM (
 		  ,u.[level]
 		  ,u.[category]
 		  ,u.[item]
+      ,u.[link]
 		  ,s.[score]
 		  ,s.[fy_quarter]
 	FROM (
@@ -26,6 +27,7 @@ SELECT * FROM (
 			  ,c.[level]
 			  ,c.[category]
 			  ,c.[item]
+        ,c.[link]
 		  FROM [RDA_IMP_INFO].[dbo].[employee_checklist_score] s
 		  JOIN [RDA_IMP_INFO].[dbo].[checklist] c
 		  ON s.[checklist_id] = c.[id]
@@ -41,6 +43,7 @@ SELECT * FROM (
 			  ,c.[level]
 			  ,c.[category]
 			  ,c.[item]
+        ,c.[link]
 		  FROM [RDA_IMP_INFO].[dbo].[checklist] c
 		  WHERE c.[section] = @section
 		  AND c.[status] = 'active'
