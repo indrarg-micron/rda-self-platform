@@ -33,6 +33,7 @@
         <th scope="col">Category</th>
         <th scope="col">Item</th>
         <th scope="col">Status</th>
+        <th scope="col" class="hide-this">Link</th>
       </tr>
     </thead>
     <tbody>
@@ -42,8 +43,9 @@
           <td>{{this.section}}</td>
           <td>{{this.level}}</td>
           <td>{{this.category}}</td>
-          <td>{{this.item}}</td>
+          <td>{{#if this.link}}<a href="{{this.link}}" target="_blank">{{/if}}{{this.item}}</a></td>
           <td>{{this.status}}</td>
+          <td>{{this.link}}</td>
         </tr>
       {{/each}}
     </tbody>

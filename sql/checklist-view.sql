@@ -4,6 +4,7 @@ SELECT c.[id]
       ,c.[category]
       ,c.[item]
       ,c.[status]
+      ,c.[link]
   FROM [RDA_IMP_INFO].[dbo].[checklist] c
   --###PERMISSION_FILTER_HERE###
   ORDER BY c.section, c.level, c.category

@@ -5,4 +5,5 @@ CREATE TABLE checklist (
 	category NVARCHAR(50),
 	item NVARCHAR(255),
 	status NVARCHAR(50) NOT NULL,
+  link NVARCHAR(MAX)
 );

@@ -66,19 +66,13 @@ $(document).ready(function() {
             extend: 'copyHtml5',
             text: '<i class="fas fa-copy fa-lg"></i>',
             titleAttr: 'Copy',
-            className: 'btn',
-            exportOptions: {
-                columns: ':visible'
-            }
+            className: 'btn'
         },
         {
             extend: 'excelHtml5',
             text: '<i class="fas fa-file-excel fa-lg"></i>',
             titleAttr: 'Excel',
-            className: 'btn',
-            exportOptions: {
-                columns: ':visible'
-            }
+            className: 'btn'
         }
   ]
   }).container().appendTo($('#datatables-buttons'))
