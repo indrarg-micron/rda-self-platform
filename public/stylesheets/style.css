@@ -122,6 +122,14 @@ th.rotate > div {
   transform: rotate(-180deg);
 }
 
+/* table cell ellipsis (for log) */
+td.ellipsis {
+ max-width: 15rem;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ white-space: nowrap;
+}
+
 /* cut padding on table */
 table.dataTable tbody td,
 table.dataTable thead th,

@@ -3,6 +3,6 @@ CREATE TABLE log(
 	tablename NVARCHAR(64) NOT NULL,
     before NVARCHAR(MAX),
     after NVARCHAR(MAX),
-    timestamp DATETIME NOT NULL,
+    timestamp DATETIME2 NOT NULL,
     username NVARCHAR(64)
 );

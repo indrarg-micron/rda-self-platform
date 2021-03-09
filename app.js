@@ -13,6 +13,7 @@ const indexRouter = require('./routes/index')
 const peopleRouter = require('./routes/people')
 const checklistRouter = require('./routes/checklist')
 const scoreRouter = require('./routes/score')
+const logRouter = require('./routes/log')
 
 const app = express()
 app.use( ntlm() ) // to get windows username
@@ -42,6 +43,7 @@ app.use('/', authHome, indexRouter)
 app.use('/people', authInner, peopleRouter)
 app.use('/checklist', authInner, checklistRouter)
 app.use('/score', authInner, scoreRouter)
+app.use('/log', authInner, logRouter)
 
 // pseudo-authentication process to root (all routes)
 async function authHome(req, res, next) {
@@ -89,6 +91,8 @@ async function authInner(req, res, next) {
     if (!res.locals.elevation) {
       return res.redirect('/')
     }
+
+    next()
 
   } catch (err) {
     next(err)

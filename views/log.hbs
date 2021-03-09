@@ -1,0 +1,56 @@
+<div id="first-heading" class="d-flex justify-content-md-between p-0">
+  <div class="d-flex flex-fill align-items-center">
+    <h1>{{title}}</h1>
+  </div>
+  <div class="d-flex flex-fill flex-column my-0">
+    <div class="d-flex justify-content-end">
+      <div id="datatables-buttons" class="d-flex align-items-center m-0 p-0"></div>
+      {{!-- Custom rounded search bars with input group --}}
+      <div class="col search-bar bg-light rounded rounded-pill shadow-sm my-2 align-self-end">
+        <div class="input-group">
+          <input id="custom-search" type="search" placeholder="What're you searching for?" class="form-control input-sm border-0 bg-light">
+          <div class="input-group-append">
+            <button class="btn btn-link text-primary" title="Search"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+      {{!-- End --}}
+    </div>
+    {{!-- Date input --}}
+    <div class="form-inline d-flex justify-content-end mb-2">
+      <label for="from">From:&nbsp;</label>
+      <input type="date" id="from" name="from" value="{{from}}">
+      <span>&nbsp;</span>
+      <label for="to">To:&nbsp;</label>
+      <input type="date" id="to" name="to" value="{{to}}">
+      <span>&nbsp;</span>
+      <button type="button" class="btn btn-outline-primary btn-sm" id="date-range">Go</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="container m-0 p-0 overflow-auto">
+  <table id="the-table" class="table table-bordered table-hover table-sm">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Table Name</th>
+        <th scope="col">Before</th>
+        <th scope="col">After</th>
+        <th scope="col">Timestamp (SGT)</th>
+        <th scope="col">Username</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data}}
+        <tr>
+          <td>{{this.tablename}}</td>
+          <td class="ellipsis">{{this.before}}</td>
+          <td class="ellipsis">{{this.after}}</td>
+          <td>{{this.timestamp}}</td>
+          <td>{{this.username}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
