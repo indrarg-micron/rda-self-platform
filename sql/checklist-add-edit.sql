@@ -13,6 +13,7 @@ CREATE TABLE #temp_checklist (
 	category NVARCHAR(50),
 	item NVARCHAR(255),
 	status NVARCHAR(50) NOT NULL,
+  link NVARCHAR(MAX)
 );
 
 -- Insert edited/new data into temp table
@@ -31,18 +32,21 @@ WHEN MATCHED THEN									                  -- On match update
            ,t1.[category] = t2.[category]
            ,t1.[item] = t2.[item]
 		       ,t1.[status] = t2.[status]
+		       ,t1.[link] = t2.[link]
 
 WHEN NOT MATCHED THEN								                 -- Add missing
      INSERT ([section]
            ,[level]
            ,[category]
            ,[item]
-           ,[status])
+           ,[status]
+           ,[link])
      VALUES (t2.[section]
            ,t2.[level]
            ,t2.[category]
            ,t2.[item]
-           ,t2.[status]);
+           ,t2.[status]
+           ,t2.[link]);
 
 DROP TABLE #temp_checklist
 

@@ -43,6 +43,9 @@ $('#checklist-edit-modal').click(function() {
 
     var txt = random[i][5]
     $('#checklist-status').val($('#checklist-status').val() + txt + '\n')
+
+    var txt = $('<div>').html(random[i][6]).text()
+    $('#checklist-link').val($('#checklist-link').val() + txt + '\n')
   }
 })
 
@@ -160,6 +163,7 @@ function bulkOfFunction() {
   var category = parser($('#checklist-category').val())
   var item = parser($('#checklist-item').val())
   var status = parser($('#checklist-status').val().toLowerCase())
+  var link = parser($('#checklist-link').val())
 
   // check input length
   var inputLength = []
@@ -167,6 +171,7 @@ function bulkOfFunction() {
   inputLength.push(category.length)
   inputLength.push(item.length)
   inputLength.push(status.length)
+  inputLength.push(link.length)
   if (user.name == 'admin') {
     inputLength.push(section.length)
   }
@@ -204,6 +209,8 @@ function bulkOfFunction() {
       throwAlert('#add-edit-throw-alert', 'Error', 'Status should be either "active" or "inactive"')
       return false
     }
+
+    var dataLink = link[i]
         
     valueString = valueString + "("
     + dataId + ", '"
@@ -211,7 +218,8 @@ function bulkOfFunction() {
     + dataLevel + ", '"
     + dataCategory + "', '"
     + dataItem + "', '"
-    + dataStatus + "'), "
+    + dataStatus + "', '"
+    + dataLink + "'), "
   }
   valueString = valueString.slice(0, -2)
   valueString = valueString + ";"
