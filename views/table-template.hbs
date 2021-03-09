@@ -42,8 +42,16 @@
                 <td>
               {{/eq}}
             {{else}}
-              <td class="text-center traffic-{{this}}">
-              {{!-- <td class="text-center"><div class="d-inline-block align-text-bottom traffic-{{this}}"></div> --}}
+              {{#isFalsey this}}
+                {{#eq this 0}}
+                  <td class="text-center traffic-{{this}}">
+                {{else}}
+                  <td class="text-center">
+                {{/eq}}
+              {{else}}
+                <td class="text-center traffic-{{this}}">
+                {{!-- <td class="text-center"><div class="d-inline-block align-text-bottom traffic-{{this}}"></div> --}}
+              {{/isFalsey}}
             {{/contains}}
             {{this}}</a></td>
           {{/each}}
