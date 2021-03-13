@@ -1,6 +1,9 @@
 SELECT * FROM (
 	SELECT e.[username]
-		  ,RIGHT(e.[shift], 1) AS shift
+		  ,CASE
+        WHEN RIGHT(e.[shift], 1) = 'Y' THEN 'N'
+        ELSE RIGHT(e.[shift], 1) 
+       END AS shift
 		  ,s.[fy_quarter]
 		  ,SUM(s.[score]) total_score
 		FROM [RDA_IMP_INFO].[dbo].[employee_checklist_score] s
@@ -17,4 +20,4 @@ PIVOT (
 	SUM(t.total_score)
 	FOR t.fy_quarter IN ###FY_QUARTER_COLUMN_HERE###
 ) AS pivot_table
- ORDER BY username
+ ORDER BY shift, username

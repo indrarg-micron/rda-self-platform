@@ -236,9 +236,12 @@ function chartSum(data, location, title) {
 
     tooltip: {
       formatter: function () {
+        var stackName = this.series.userOptions.stack
+
         return '<b>' + this.x + '</b><br/>' +
           this.series.name + ': ' + this.y + '<br/>' +
-          'Total: ' + this.point.stackTotal;
+          'Total: ' + this.point.stackTotal + '<br/>' +
+          'Shift: ' + stackName
       }
     },
 
@@ -329,5 +332,5 @@ function throwAlert(loc, msg) {
 // array remove duplicates
 // usage: var unique = a.filter(onlyUnique); // where a is array
 function onlyUnique(value, index, self) {
-  return self.indexOf(value) === index;
+  return self.indexOf(value) === index
 }
