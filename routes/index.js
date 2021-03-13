@@ -129,7 +129,7 @@ router.post('/api/section-table', async (req, res, next) => {
         .query(query)
     
     // throw error if no data returned
-    let noOfRows = result.rowsAffected
+    let noOfRows = JSON.parse(JSON.stringify(result.rowsAffected))
     if (noOfRows.pop() == 0) {
       throw new createError(404, 'No data returned')
     }
@@ -145,6 +145,76 @@ router.post('/api/section-table', async (req, res, next) => {
     }
     res.render('table-template', params)
   
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/api/section-sum', async (req, res, next) => {
+  try {
+    // check user permission before executing
+    if (!res.locals.elevation) {
+      throw new createError(403)
+    }
+
+    const body = JSON.parse(JSON.stringify(req.body))
+    let section = body.section
+
+    // craft the needed quarters
+    // need to deep copy to leave the original intact
+    // Careful: reverse is destructive -- it changes the original array.
+    let quarterArr = JSON.parse(JSON.stringify(fyq.quarters))
+    quarterArr.reverse()
+    let quarterList = '(', quarterColumn = '('
+    quarterArr.forEach(q => {
+      quarterList = quarterList + `'${q}', `
+      quarterColumn = quarterColumn + `[${q}], `
+    })
+    quarterList = quarterList.slice(0, -2)
+    quarterColumn = quarterColumn.slice(0, -2)
+    quarterList = quarterList + ')'
+    quarterColumn = quarterColumn + ')'
+
+    // start query
+    let query = fs.readFileSync(path.join(sqlPath, 'home-section-sum.sql')).toString()
+    query = query.replace('###YOUR_SECTION_HERE###', section)
+    query = query.replace('###FY_QUARTER_LIST_HERE###', quarterList)
+    query = query.replace('###FY_QUARTER_COLUMN_HERE###', quarterColumn)
+
+    const pool = await poolProd535
+    const result = await pool.request()
+        .query(query)
+
+    // throw error if no data returned
+    let noOfRows = JSON.parse(JSON.stringify(result.rowsAffected))
+    if (noOfRows.pop() == 0) {
+      throw new createError(404, 'No data returned')
+    }
+
+    let data = result.recordset
+    let final = []
+
+    // craft final data to send
+    data.forEach(d => {
+      arr = []
+      quarterArr.forEach(q => {
+        arr.push(d[q])
+      })
+
+      final.push({
+        name: d.username, 
+        data: arr,
+        stack: d.shift
+      })
+    })
+
+    let actual = {
+      xCategories: quarterArr,
+      ySeries: final
+    }
+
+    res.send(actual)
+
   } catch (err) {
     next(err)
   }
@@ -167,6 +237,12 @@ router.post('/api/section-chart', async (req, res, next) => {
     const result = await pool.request()
         .query(query)      
     
+    // throw error if no data returned
+    let noOfRows = JSON.parse(JSON.stringify(result.rowsAffected))
+    if (noOfRows.pop() == 0) {
+      throw new createError(404, 'No data returned')
+    }
+
     let data = result.recordset
     let rawByGjs = {'TA': [], 'T1': [], 'T2': [], 'T3': [], 'T4': []}
     let final = []
@@ -186,11 +262,6 @@ router.post('/api/section-chart', async (req, res, next) => {
       'T4': []
     }
     */
-
-    // throw error if all data is empty
-    if ( checkProp(rawByGjs) ) {
-      throw new createError(404, 'No data returned')
-    }
 
     // calculate the normal distribution
     for (const gjs in rawByGjs) {
@@ -231,14 +302,5 @@ function calcStdDev(arr) {
   return stdDev
 }
 
-
-// check if all attributes of an object are all null or empty string
-function checkProp(obj) {
-  for (var key in obj) {
-    if (obj[key] !== null && obj[key] != "")
-      { return false }
-  }
-  return true
-}
 
 module.exports = router

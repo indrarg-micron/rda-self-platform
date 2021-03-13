@@ -83,6 +83,7 @@ function sectionLoader() {
 // Section generator
 function sectionAjax(tablename, sectionname, divname) {
   let quarter = $('#select-fq').val()
+
   $.ajax({
     url:'/api/section-table',
     type: 'POST',
@@ -103,6 +104,22 @@ function sectionAjax(tablename, sectionname, divname) {
   })
 
   $.ajax({
+    url:'/api/section-sum',
+    type: 'POST',
+    data: {
+      section: sectionname
+    },
+
+    success: function(msg) {
+      chartSum(msg, `${divname}-sum-container`, `${sectionname} Total Score Q-on-Q by Shift`)
+    },
+
+    error: function(err) {
+      throwAlert(`#${divname}-sum-container`, `Unable to load ${sectionname} chart`)
+    }
+  })
+
+  $.ajax({
     url:'/api/section-chart',
     type: 'POST',
     data: {
@@ -111,7 +128,7 @@ function sectionAjax(tablename, sectionname, divname) {
     },
 
     success: function(msg) {
-      chartSection(msg, `${divname}-chart-container`, `${sectionname} Normal Distribution`)
+      chartSection(msg, `${divname}-chart-container`, `${sectionname} Normal Distribution for ${$('.selected-fq').html()}`)
     },
 
     error: function(err) {
@@ -176,6 +193,63 @@ function chartIndiv(data, location, title) {
     }]
   })
 
+}
+
+// Generate stacked column chart
+function chartSum(data, location, title) {
+
+  Highcharts.chart(location, {
+
+    chart: {
+      type: 'column',
+      borderColor: '#39CCCC',
+      borderRadius: 5,
+      borderWidth: 1,
+      height: (9 / 16 * 100) + '%' // 16:9 ratio
+    },
+
+    title: {
+      text: title
+    },
+
+    credits: {
+      enabled: false
+    },
+
+    legend: {
+      align: 'right',
+      verticalAlign: 'middle',
+      layout: 'vertical'
+    },
+
+    xAxis: {
+      categories: data.xCategories
+    },
+
+    yAxis: {
+      allowDecimals: false,
+      min: 0,
+      title: {
+          text: 'Score'
+      }
+    },
+
+    tooltip: {
+      formatter: function () {
+        return '<b>' + this.x + '</b><br/>' +
+          this.series.name + ': ' + this.y + '<br/>' +
+          'Total: ' + this.point.stackTotal;
+      }
+    },
+
+    plotOptions: {
+      column: {
+        stacking: 'normal'
+      }
+    },
+
+    series: data.ySeries
+  })
 }
 
 // Generate line chart
