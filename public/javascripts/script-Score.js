@@ -38,7 +38,7 @@ $('#score-edit-modal-id').click(function() {
 
     var txt = random[i][5].substring(
       random[i][5].indexOf('#') + 1, 
-      random[i][5].lastIndexOf('"'))
+      random[i][5].indexOf('"', random[i][5].indexOf('#'))) // get ID between # and "
     $('#score-checklistId').val($('#score-checklistId').val() + txt + '\n')
 
     var txt = random[i][6]
