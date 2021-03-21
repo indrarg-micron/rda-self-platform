@@ -103,7 +103,7 @@ router.post('/api/indiv-chart', async (req, res, next) => {
     res.send(final)
 
   } catch (err) {
-    next(err)
+    res.status(err.status).send(err.message)
   }
 })
 
@@ -146,7 +146,7 @@ router.post('/api/section-table', async (req, res, next) => {
     res.render('table-template', params)
   
   } catch (err) {
-    next(err)
+    res.status(err.status).send(err.message)
   }
 })
 
@@ -216,7 +216,7 @@ router.post('/api/section-sum', async (req, res, next) => {
     res.send(actual)
 
   } catch (err) {
-    next(err)
+    res.status(err.status).send(err.message)
   }
 })
 
@@ -293,7 +293,7 @@ router.post('/api/section-chart', async (req, res, next) => {
     res.send(final)
 
   } catch (err) {
-    next(err)
+    res.status(err.status).send(err.message)
   }
 })
 

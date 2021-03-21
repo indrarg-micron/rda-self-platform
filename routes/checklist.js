@@ -50,7 +50,7 @@ router.post('/', async (req, res, next) => {
     res.send(result)
   
   } catch (err) {
-    next(err)
+    res.status(500).send(err.message)
   }
 })
 
@@ -72,7 +72,7 @@ router.delete('/', async (req, res) => {
     res.send(result)
   
   } catch (err) {
-    next(err)
+    res.status(500).send(err.message)
   }
 })
 
