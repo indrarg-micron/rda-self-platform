@@ -240,16 +240,16 @@ router.post('/api/section-chart', async (req, res, next) => {
     // throw error if no data returned
     let noOfRows = JSON.parse(JSON.stringify(result.rowsAffected))
     if (noOfRows.pop() == 0) {
-      throw new createError(404, 'No data returned')
+      throw new createError(404, 'No data returned from query')
     }
 
     let data = result.recordset
     let rawByGjs = {'TA': [], 'T1': [], 'T2': [], 'T3': [], 'T4': []}
     let final = []
 
-    data.forEach(d => {
+    data.forEach(d => { // this will filter out null
       rawByGjs[d.gjs].push(d.total_score)
-      rawByGjs[d.gjs].sort()
+      rawByGjs[d.gjs].sort( function(a, b) {return a-b} ) // sort number in ascending order
     })
 
     /*
@@ -263,10 +263,21 @@ router.post('/api/section-chart', async (req, res, next) => {
     }
     */
 
+    // check if all have more than 1 data point
+    let arrLen = 0
+    for (const gjs in rawByGjs) {
+      if (rawByGjs[gjs].length > 1) {
+        arrLen = arrLen + 1
+      }
+    }
+    if (!arrLen) {
+      throw new createError(404, 'Datasets contain no more than 1 data point each')
+    }
+
     // calculate the normal distribution
     for (const gjs in rawByGjs) {
       let arrNormDist = []
-      if (rawByGjs[gjs].length) {
+      if (rawByGjs[gjs].length > 1) { // ignore if data point is 1 or less
         const mean = calcMean(rawByGjs[gjs])
         const stdDev = calcStdDev(rawByGjs[gjs])
         let dist = gaussian(mean, Math.pow(stdDev, 2)) // gaussian(mean, variance)
@@ -277,6 +288,7 @@ router.post('/api/section-chart', async (req, res, next) => {
       }
       final.push({name: gjs, data: arrNormDist})
     }
+    
 
     res.send(final)
 
