@@ -231,6 +231,16 @@ function chartSum(data, location, title) {
       min: 0,
       title: {
           text: 'Score'
+      },
+      stackLabels: {
+        enabled: true,
+        style: {
+          fontWeight: 'bold',
+          color: ( // theme
+            Highcharts.defaultOptions.title.style &&
+            Highcharts.defaultOptions.title.style.color
+          ) || 'gray'
+        }
       }
     },
 

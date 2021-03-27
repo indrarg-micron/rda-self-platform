@@ -32,7 +32,7 @@ app.engine(
 )
 app.set('view engine', 'hbs')
 
-app.use(logger('dev')) // logger for dev purposes
+// app.use(logger('dev')) // logger for dev purposes
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())

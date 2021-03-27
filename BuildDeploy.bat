@@ -5,7 +5,7 @@ SET openShift=https://%targetUrlPortion%.micron.com:8443
 SET registry=docker-registry-default.%targetUrlPortion%.micron.com
 
 REM TODO: CHANGE MAYBE UI images do not have to be deployed to this OpenShift workspace.
-SET OS_WORKSPACE=f10-rda-projects
+SET OS_WORKSPACE=f10-rda
 SET namespace=docker-registry-default.%targetUrlPortion%.micron.com/%OS_WORKSPACE%
 
 REM TODO: CHANGE 'quickstart' to your app. NOTE: this needs to be lower case and no spaces. You can use dashes.
