@@ -1,13 +1,13 @@
 // add button - show modal
-$('#checklist-add-modal').click(function() {
+$('#checklist-add-modal').click(function () {
   $('#checklist-add-edit').show()
 })
 
 // edit button - show modal and fill in textarea
-$('#checklist-edit-modal').click(function() {
+$('#checklist-edit-modal').click(function () {
   $('#checklist-add-edit').show()
-  
-  var random = $('#the-table').DataTable().rows( { selected: true } ).data()
+
+  var random = $('#the-table').DataTable().rows({ selected: true }).data()
   if (random.length == 0) {
     $('#checklist-add-edit').hide()
     return throwAlert('#add-edit-throw-alert', 'Warning', 'Please select the rows to edit')
@@ -15,10 +15,10 @@ $('#checklist-edit-modal').click(function() {
 
   // fill in the selected rows to textarea
   var skipCount = 0 // for section checking
-  for ( var i=0; i < random.length; i++) {
+  for (var i = 0; i < random.length; i++) {
 
     // check if checklist item is their section's
-    if ( user.permission == 'section' && random[i][1] != user.section ) {
+    if (user.permission == 'section' && random[i][1] != user.section) {
       skipCount++
       if (skipCount == random.length) {
         return throwAlert('#add-edit-throw-alert', 'Warning', 'Please select items of your section to edit')
@@ -50,10 +50,10 @@ $('#checklist-edit-modal').click(function() {
 })
 
 // delete button - show modal and fill in list
-$('#checklist-delete-modal').click(function() {
+$('#checklist-delete-modal').click(function () {
   $('#checklist-delete').show()
-  
-  var random = $('#the-table').DataTable().rows( { selected: true } ).data()
+
+  var random = $('#the-table').DataTable().rows({ selected: true }).data()
   if (random.length == 0) {
     $('#checklist-delete').hide()
     return throwAlert('#delete-throw-alert', 'Warning', 'Please select the rows to delete')
@@ -77,7 +77,7 @@ $('#checklist-delete-modal').click(function() {
     </table>
   `)
 
-  for ( var i=0; i < random.length; i++) {
+  for (var i = 0; i < random.length; i++) {
     var id = $('<div>').html(random[i][0]).text() // to get innerHTML text
     var section = random[i][1]
     var level = random[i][2]
@@ -98,32 +98,32 @@ $('#checklist-delete-modal').click(function() {
 })
 
 // add-edit button - sql execution
-$('#checklist-add-edit').click(function() {
+$('#checklist-add-edit').click(function () {
 
   // the main function outside
   var valueString = bulkOfFunction()
   if (!valueString) { return }
 
   $.ajax({
-    url:'/checklist',
+    url: '/checklist',
     type: 'POST',
-    data: {valueString},
+    data: { valueString },
 
-    success: function(msg) {
+    success: function (msg) {
       throwAlert('#add-edit-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
-    error: function(err) {
+    error: function (err) {
       throwAlert('#add-edit-throw-alert', 'Error', err.responseText)
     }
   })
 })
 
 // delete button - sql execution
-$('#checklist-delete').click(function() {
+$('#checklist-delete').click(function () {
   // get the list of IDs for deletion in an array
-  var deleteIDs = $('#delete-content > table > tbody input:checkbox:checked').map(function(){
+  var deleteIDs = $('#delete-content > table > tbody input:checkbox:checked').map(function () {
     return $(this).val()
   }).get() // <-- to transform into true array
 
@@ -139,16 +139,16 @@ $('#checklist-delete').click(function() {
   valueString = valueString + ";"
 
   $.ajax({
-    url:'/checklist',
+    url: '/checklist',
     type: 'DELETE',
-    data: {valueString},
+    data: { valueString },
 
-    success: function(msg) {
+    success: function (msg) {
       throwAlert('#delete-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
-    error: function(err) {
+    error: function (err) {
       throwAlert('#delete-throw-alert', 'Error', err.responseText)
     }
   })
@@ -176,12 +176,12 @@ function bulkOfFunction() {
     inputLength.push(section.length)
   }
 
-  if ( inputLength.every( (val, i, arr) => val === 0 ) ) {
+  if (inputLength.every((val, i, arr) => val === 0)) {
     throwAlert('#add-edit-throw-alert', 'Error', 'No input detected, please try again')
     return false
   }
 
-  if ( !(inputLength.every( (val, i, arr) => val === arr[0] )) ) {
+  if (!(inputLength.every((val, i, arr) => val === arr[0]))) {
     throwAlert('#add-edit-throw-alert', 'Error', 'Inputs are not of the same length')
     return false
   }
@@ -193,7 +193,7 @@ function bulkOfFunction() {
     var dataId = id[i] ? id[i] : null
     var dataSection = section[i] ? section[i] : user.section
 
-    if ( Number.isInteger(parseInt(level[i])) ) {
+    if (Number.isInteger(parseInt(level[i]))) {
       var dataLevel = level[i]
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Level should be an integer')
@@ -202,24 +202,29 @@ function bulkOfFunction() {
 
     var dataCategory = category[i]
     var dataItem = item[i]
-    
-    if ( status[i] === 'active' || status[i] === 'inactive') {
+
+    if (status[i] === 'active' || status[i] === 'inactive') {
       var dataStatus = status[i]
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Status should be either "active" or "inactive"')
       return false
     }
 
-    var dataLink = link[i]
-        
+    if (isUrlValid(link[i]) || link[i] == '') {
+      var dataLink = link[i]
+    } else {
+      throwAlert('#add-edit-throw-alert', 'Error', 'Please insert a valid link')
+      return false
+    }
+
     valueString = valueString + "("
-    + dataId + ", '"
-    + dataSection + "', "
-    + dataLevel + ", '"
-    + dataCategory + "', '"
-    + dataItem + "', '"
-    + dataStatus + "', '"
-    + dataLink + "'), "
+      + dataId + ", '"
+      + dataSection + "', "
+      + dataLevel + ", '"
+      + dataCategory + "', '"
+      + dataItem + "', '"
+      + dataStatus + "', '"
+      + dataLink + "'), "
   }
   valueString = valueString.slice(0, -2)
   valueString = valueString + ";"
@@ -245,7 +250,7 @@ function parser(input) {
 
 // display alert
 function throwAlert(loc, type, msg) {
-  switch(type) {
+  switch (type) {
     case 'Error': alertClass = 'danger'; break;
     case 'Success': alertClass = 'success'; break;
     case 'Warning': alertClass = 'warning'; break;
@@ -268,4 +273,9 @@ function allcb() {
   } else {
     $('#allcb').closest('table').find('input[type="checkbox"]').prop('checked', false)
   }
+}
+
+// check if url is valid
+function isUrlValid(url) {
+  return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=\{\}]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=\{\}]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=\{\}]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=\{\}]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=\{\}]|:|@)|\/|\?)*)?$/i.test(url);
 }
