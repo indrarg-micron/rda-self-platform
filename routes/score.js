@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
     if (res.locals.user.permission == 'admin') {
       var content = ""
     } else if (res.locals.user.permission == 'section'){
-      var content = "AND e.[section] = '" + res.locals.user.section + "'"
+      var content = "AND p.[section] = '" + res.locals.user.section + "'"
     }
     
     query = query.replace('###QUARTER_TO_LOOK_FOR###', qFilter)

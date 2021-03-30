@@ -79,7 +79,7 @@ router.post('/api/indiv-chart', async (req, res, next) => {
 
   try {
     const body = JSON.parse(JSON.stringify(req.body))
-    let filter = `AND e.[username] = '${username}'
+    let filter = `AND p.[username] = '${username}'
                   AND s.[fy_quarter] IN ${fyq.quarterList}`
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()
@@ -103,7 +103,7 @@ router.post('/api/indiv-chart', async (req, res, next) => {
     res.send(final)
 
   } catch (err) {
-    res.status(err.status).send(err.message)
+    res.status(err.status || 500).send(err.message)
   }
 })
 
@@ -146,7 +146,7 @@ router.post('/api/section-table', async (req, res, next) => {
     res.render('table-template', params)
   
   } catch (err) {
-    res.status(err.status).send(err.message)
+    res.status(err.status || 500).send(err.message)
   }
 })
 
@@ -216,7 +216,7 @@ router.post('/api/section-sum', async (req, res, next) => {
     res.send(actual)
 
   } catch (err) {
-    res.status(err.status).send(err.message)
+    res.status(err.status || 500).send(err.message)
   }
 })
 
@@ -226,9 +226,9 @@ router.post('/api/section-chart', async (req, res, next) => {
     let section = body.section
     let quarter = body.quarter || fyq.currQ
 
-    let filter = `AND e.[section] = '${section}'
+    let filter = `AND p.[section] = '${section}'
                   AND s.[fy_quarter] = '${quarter}'
-                  AND e.[gjs] LIKE 'T%'`
+                  AND p.[gjs] LIKE 'T%'`
 
     let query = fs.readFileSync(path.join(sqlPath, 'home-sum-score.sql')).toString()
     query = query.replace('###ADDITIONAL_FILTER_HERE###', filter)
@@ -293,7 +293,7 @@ router.post('/api/section-chart', async (req, res, next) => {
     res.send(final)
 
   } catch (err) {
-    res.status(err.status).send(err.message)
+    res.status(err.status || 500).send(err.message)
   }
 })
 

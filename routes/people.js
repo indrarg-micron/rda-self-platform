@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
     if (res.locals.user.permission == 'admin') {
       var content = ""
     } else if (res.locals.user.permission == 'section'){
-      var content = "WHERE e.[section] = '" + res.locals.user.section + "'"
+      var content = "WHERE p.[section] = '" + res.locals.user.section + "'"
     }
     query = query.replace('###PERMISSION_FILTER_HERE###', content)
 
