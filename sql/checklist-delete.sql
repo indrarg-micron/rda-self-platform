@@ -7,7 +7,7 @@ SET CONTEXT_INFO @username
 
 -- Temporary table with list of items to delete
 CREATE TABLE #temp_checklist (
-	id INT NOT NULL UNIQUE,
+  id INT NOT NULL UNIQUE,
 );
 
 -- Insert edited/new data into temp table

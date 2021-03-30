@@ -6,18 +6,18 @@ SET @username = CAST(N'###YOUR_USERNAME_HERE###' AS VARBINARY(128))
 SET CONTEXT_INFO @username
 
 -- Temporary table with list of items to delete
-CREATE TABLE #temp_employee (
-	id INT NOT NULL UNIQUE,
+CREATE TABLE #temp_people (
+  id INT NOT NULL UNIQUE,
 );
 
 -- Insert edited/new data into temp table
-INSERT INTO #temp_employee
+INSERT INTO #temp_people
 VALUES ###INSERT_VALUE_STRING_HERE###
 
 DELETE t1 
-  FROM [RDA_IMP_INFO].[dbo].[employee] t1
-  JOIN #temp_employee t2 ON t1.id = t2.id;
+  FROM [RDA_IMP_INFO].[dbo].[people] t1
+  JOIN #temp_people t2 ON t1.id = t2.id;
 
-DROP TABLE #temp_employee
+DROP TABLE #temp_people
 
 COMMIT TRANSACTION

@@ -12,19 +12,19 @@ BEGIN
   IF EXISTS(SELECT 1 FROM deleted)
   OR EXISTS(SELECT 1 FROM inserted)
   BEGIN
-	INSERT INTO [RDA_IMP_INFO].[dbo].[log](
-	[tablename]
-	,[before]
-	,[after]
-	,[timestamp]
-	,[username]
-	)
-	SELECT
-	'checklist'
-	,( SELECT * FROM deleted FOR XML AUTO )
-	,( SELECT * FROM inserted FOR XML AUTO )
-	,GETDATE()
-	,@username
+  INSERT INTO [RDA_IMP_INFO].[dbo].[log](
+    [tablename]
+    ,[before]
+    ,[after]
+    ,[timestamp]
+    ,[username]
+  )
+  SELECT
+    'checklist'
+    ,( SELECT * FROM deleted FOR XML AUTO )
+    ,( SELECT * FROM inserted FOR XML AUTO )
+    ,GETDATE()
+    ,@username
   END
 
 END
