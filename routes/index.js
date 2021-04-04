@@ -42,9 +42,9 @@ router.get('/', function(req, res, next) {
 
 // indiv
 router.post('/api/indiv-table', async (req, res, next) => {
-  let username = res.locals.user.name
-
   try {
+    let username = await res.locals.user.name
+
     const body = JSON.parse(JSON.stringify(req.body))
     let user = `'${username}'`
     let tablename = body.tablename
@@ -75,9 +75,9 @@ router.post('/api/indiv-table', async (req, res, next) => {
 })
 
 router.post('/api/indiv-chart', async (req, res, next) => {
-  let username = res.locals.user.name
-
   try {
+    let username = await res.locals.user.name
+
     const body = JSON.parse(JSON.stringify(req.body))
     let filter = `AND p.[username] = '${username}'
                   AND s.[fy_quarter] IN ${fyq.quarterList}`

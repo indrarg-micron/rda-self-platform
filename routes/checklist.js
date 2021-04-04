@@ -33,9 +33,9 @@ router.get('/', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
-  let username = res.locals.ntlm.UserName.toLowerCase()
-
   try {
+    let username = await res.locals.ntlm.UserName.toLowerCase()
+
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
 
@@ -55,9 +55,9 @@ router.post('/', async (req, res, next) => {
 })
 
 router.delete('/', async (req, res) => {
-  let username = res.locals.ntlm.UserName.toLowerCase()
-
   try {
+    let username = await res.locals.ntlm.UserName.toLowerCase()
+
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
 

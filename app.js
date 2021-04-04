@@ -47,9 +47,9 @@ app.use('/log', authInner, logRouter)
 
 // pseudo-authentication process to root (all routes)
 async function authHome(req, res, next) {
-  let username = res.locals.ntlm.UserName.toLowerCase()
-
   try {
+    let username = await res.locals.ntlm.UserName.toLowerCase()
+
     let query = fs.readFileSync(path.join(sqlPath, 'auth-home.sql')).toString()
     query = query.replace('###WHO_ARE_YOU###', `'${username}'`)
 
@@ -88,7 +88,9 @@ async function authHome(req, res, next) {
 // pseudo-authentication process for inner links, after authHome has been performed
 async function authInner(req, res, next) {
   try {
-    if (!res.locals.elevation) {
+    let elevation = await res.locals.elevation
+    
+    if (!elevation) {
       return res.redirect('/')
     }
 
