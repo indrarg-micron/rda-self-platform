@@ -52,13 +52,21 @@
             {{/if}}
           </ul>
 
-          {{#if ntlm.UserName}}
-            <ul class="navbar-nav navbar-right">
+          <ul class="navbar-nav justify-content-end">
+            {{#if elevation}}
+              <li class="nav-item">
+                <a class="nav-link" href="https://microncorp-my.sharepoint.com/:p:/g/personal/indrarg_micron_com/Eai_wmHzselJu3p-d4iG254BbyqQJ7blYDM72KRImUHuoQ" target="_blank">
+                  <i class="fas fa-external-link-alt mr-1"></i>Docs
+                </a>
+              </li>
+            {{/if}}
+
+            {{#if ntlm.UserName}}
               <li class="nav-item">
                 <span class="nav-link text-lowercase"><i class="fas fa-user"></i> {{ntlm.UserName}}</span>
               </li>
-            </ul>
-          {{/if}}
+            {{/if}}
+          </ul>
         </div>
       </div>
     </nav>
