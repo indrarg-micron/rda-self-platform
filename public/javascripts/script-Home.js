@@ -99,7 +99,7 @@ function sectionAjax(tablename, sectionname, divname) {
     },
 
     error: function(err) {
-      throwAlert(`#${divname}-table-container`, `Unable to load ${sectionname} table`)
+      throwAlert(`#${divname}-table-container`, `Unable to load ${sectionname} table for ${quarter}`)
     }
   })
 
@@ -115,7 +115,7 @@ function sectionAjax(tablename, sectionname, divname) {
     },
 
     error: function(err) {
-      throwAlert(`#${divname}-sum-container`, `Unable to load ${sectionname} chart`)
+      throwAlert(`#${divname}-sum-container`, `Unable to load ${sectionname} chart for ${quarter}`)
     }
   })
 
@@ -128,11 +128,11 @@ function sectionAjax(tablename, sectionname, divname) {
     },
 
     success: function(msg) {
-      chartSection(msg, `${divname}-chart-container`, `${sectionname} Normal Distribution for ${$('.selected-fq').html()}`)
+      chartSection(msg, `${divname}-chart-container`, `${sectionname} Normal Distribution for ${quarter}`)
     },
 
     error: function(err) {
-      throwAlert(`#${divname}-chart-container`, `Unable to load ${sectionname} chart`)
+      throwAlert(`#${divname}-chart-container`, `Unable to load ${sectionname} chart for ${quarter}`)
     }
   })
 }
