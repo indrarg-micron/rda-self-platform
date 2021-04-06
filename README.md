@@ -47,3 +47,15 @@ Before building the image for deployment, comment out `app.use(logger('dev'))` t
 Check the contents of `dockerfile` and `BuildDeploy.bat` if they are set according to your needs (e.g. project name, workspace name, etc.)  
 Ensure you have `oc.exe` in the root folder and have Docker Desktop running  
 From terminal, run `BuildDeploy.bat` to build and deploy your image to OpenShift, it will prompt for login credentials once  
+For rollback purposes, please push a stable image tagged with version number (e.g. `1.0.0`) instead of `latest` from time to time  
+This can be done by changing the tag in the `BuildDeploy.bat` file after the app name (format: `appname:tag`)  
+
+---
+
+### Miscellaneous
+
+How to change git password in Windows:  
+1. Go to `Control Panel > All Control Panel Items`
+2. Then to `Credential Manager > Windows Credentials`
+3. Find the credential to change (e.g. BitBucket)
+4. Change and apply
