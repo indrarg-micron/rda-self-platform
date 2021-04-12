@@ -70,6 +70,8 @@ $(document).ready(function() {
             extend: 'copyHtml5',
             text: '<i class="fas fa-copy fa-lg"></i>',
             titleAttr: 'Copy',
+            title: '',
+            header: false,
             className: 'btn'
         },
         {

@@ -47,6 +47,8 @@ function tableInit(tablename) {
             text: '<i class="fas fa-copy fa-lg"></i>',
             title: tablename + ' - RDA Self 2.0',
             titleAttr: 'Copy',
+            title: '',
+            header: false,
             className: 'btn'
         },
         {
