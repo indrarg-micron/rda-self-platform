@@ -1,14 +1,14 @@
 $(document).ready(function() {
   // offset for navbar - ideally should recalculate on window resize
-  var navHeight = $('#navbar-menu').outerHeight()
-  var firstHeight = $('#first-heading').outerHeight()
-  var theadHeight = $('thead tr').outerHeight() 
+  let navHeight = $('#navbar-menu').outerHeight()
+  let firstHeight = $('#first-heading').outerHeight()
+  let theadHeight = $('thead tr').outerHeight() 
   $('body').css('padding-top', navHeight)
   $('#first-heading').css('top', navHeight)
   $('a.anchor').css('top', (navHeight + firstHeight + theadHeight) * -1.05)
 
   // initiate data table
-  var table = $('#the-table').DataTable({
+  let table = $('#the-table').DataTable({
       fixedHeader: { headerOffset: navHeight + firstHeight },
       stateSave: false,
       paging: false,
@@ -20,7 +20,7 @@ $(document).ready(function() {
 
       // highlight bookmarked row upon page and table load
       initComplete: function(settings, json) {
-        var bookmark = window.location.hash
+        let bookmark = window.location.hash
         if (bookmark) {
           $(document).scrollTop( $(bookmark).offset().top )
           $(bookmark).parent().parent().addClass('highlighted')
@@ -35,8 +35,8 @@ $(document).ready(function() {
 
   // highlight bookmarked row upon click
   $('.bookmark-link').click(function() {
-    var url = $(this).attr("href")
-    var bookmark = url.substring(url.indexOf("#"))
+    let url = $(this).attr("href")
+    let bookmark = url.substring(url.indexOf("#"))
     $(bookmark).parent().parent().addClass('highlighted')
     setTimeout(function () {
       $(bookmark).parent().parent().removeClass('highlighted')
@@ -58,7 +58,7 @@ $(document).ready(function() {
   */
 
   // append export button to specified location, with export options
-  var buttons = new $.fn.dataTable.Buttons(table, {
+  let buttons = new $.fn.dataTable.Buttons(table, {
     dom: {
       button: {
         tag: 'button',

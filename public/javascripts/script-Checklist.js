@@ -7,15 +7,15 @@ $('#checklist-add-modal').click(function () {
 $('#checklist-edit-modal').click(function () {
   $('#checklist-add-edit').show()
 
-  var random = $('#the-table').DataTable().rows({ selected: true }).data()
+  let random = $('#the-table').DataTable().rows({ selected: true }).data()
   if (random.length == 0) {
     $('#checklist-add-edit').hide()
     return throwAlert('#add-edit-throw-alert', 'Warning', 'Please select the rows to edit')
   }
 
   // fill in the selected rows to textarea
-  var skipCount = 0 // for section checking
-  for (var i = 0; i < random.length; i++) {
+  let skipCount = 0 // for section checking
+  for (let i = 0; i < random.length; i++) {
 
     // check if checklist item is their section's
     if (user.permission == 'section' && random[i][1] != user.section) {
@@ -26,25 +26,27 @@ $('#checklist-edit-modal').click(function () {
       continue
     }
 
-    var txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
+    let txt
+
+    txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
     $('#checklist-id').val($('#checklist-id').val() + txt + '\n')
 
-    var txt = random[i][1]
+    txt = random[i][1]
     $('#checklist-section').val($('#checklist-section').val() + txt + '\n')
 
-    var txt = random[i][2]
+    txt = random[i][2]
     $('#checklist-level').val($('#checklist-level').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][3]).text() // to get special char like '&' instead of '&amp;'
+    txt = $('<div>').html(random[i][3]).text() // to get special char like '&' instead of '&amp;'
     $('#checklist-category').val($('#checklist-category').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][4]).text() // to get special char like '&' instead of '&amp;'
+    txt = $('<div>').html(random[i][4]).text() // to get special char like '&' instead of '&amp;'
     $('#checklist-item').val($('#checklist-item').val() + txt + '\n')
 
-    var txt = random[i][5]
+    txt = random[i][5]
     $('#checklist-status').val($('#checklist-status').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][6]).text()
+    txt = $('<div>').html(random[i][6]).text()
     $('#checklist-link').val($('#checklist-link').val() + txt + '\n')
   }
 })
@@ -53,7 +55,7 @@ $('#checklist-edit-modal').click(function () {
 $('#checklist-delete-modal').click(function () {
   $('#checklist-delete').show()
 
-  var random = $('#the-table').DataTable().rows({ selected: true }).data()
+  let random = $('#the-table').DataTable().rows({ selected: true }).data()
   if (random.length == 0) {
     $('#checklist-delete').hide()
     return throwAlert('#delete-throw-alert', 'Warning', 'Please select the rows to delete')
@@ -77,12 +79,12 @@ $('#checklist-delete-modal').click(function () {
     </table>
   `)
 
-  for (var i = 0; i < random.length; i++) {
-    var id = $('<div>').html(random[i][0]).text() // to get innerHTML text
-    var section = random[i][1]
-    var level = random[i][2]
-    var category = random[i][3]
-    var item = random[i][4]
+  for (let i = 0; i < random.length; i++) {
+    let id = $('<div>').html(random[i][0]).text() // to get innerHTML text
+    let section = random[i][1]
+    let level = random[i][2]
+    let category = random[i][3]
+    let item = random[i][4]
 
     $('#delete-content > table > tbody:last-child').append(`
       <tr>
@@ -101,7 +103,7 @@ $('#checklist-delete-modal').click(function () {
 $('#checklist-add-edit').click(function () {
 
   // the main function outside
-  var valueString = bulkOfFunction()
+  let valueString = bulkOfFunction()
   if (!valueString) { return }
 
   $.ajax({
@@ -123,7 +125,7 @@ $('#checklist-add-edit').click(function () {
 // delete button - sql execution
 $('#checklist-delete').click(function () {
   // get the list of IDs for deletion in an array
-  var deleteIDs = $('#delete-content > table > tbody input:checkbox:checked').map(function () {
+  let deleteIDs = $('#delete-content > table > tbody input:checkbox:checked').map(function () {
     return $(this).val()
   }).get() // <-- to transform into true array
 
@@ -131,7 +133,7 @@ $('#checklist-delete').click(function () {
     return throwAlert('#delete-throw-alert', 'Warning', 'Please select the rows to delete')
   }
 
-  var valueString = ""
+  let valueString = ""
   deleteIDs.forEach(id => {
     valueString = valueString + "(" + id + "), "
   })
@@ -157,16 +159,16 @@ $('#checklist-delete').click(function () {
 // bulk of the function for add and edit
 function bulkOfFunction() {
   // abstract data from form
-  var id = parser($('#checklist-id').val())
-  var section = parser($('#checklist-section').val())
-  var level = parser($('#checklist-level').val())
-  var category = parser($('#checklist-category').val())
-  var item = parser($('#checklist-item').val())
-  var status = parser($('#checklist-status').val().toLowerCase())
-  var link = parser($('#checklist-link').val())
+  let id = parser($('#checklist-id').val())
+  let section = parser($('#checklist-section').val())
+  let level = parser($('#checklist-level').val())
+  let category = parser($('#checklist-category').val())
+  let item = parser($('#checklist-item').val())
+  let status = parser($('#checklist-status').val().toLowerCase())
+  let link = parser($('#checklist-link').val())
 
   // check input length
-  var inputLength = []
+  let inputLength = []
   inputLength.push(level.length)
   inputLength.push(category.length)
   inputLength.push(item.length)
@@ -188,30 +190,32 @@ function bulkOfFunction() {
 
   // iterate through every row and check for input sanity
   // then concatenate to sql value string
-  var valueString = ""
-  for (var i = 0; i < inputLength[0]; i++) {
-    var dataId = id[i] ? id[i] : null
-    var dataSection = section[i] ? section[i] : user.section
+  let valueString = ""
+  for (let i = 0; i < inputLength[0]; i++) {
+    let dataId, dataSection, dataLevel, dataCategory, dataItem, dataStatus, dataLink 
+
+    dataId = id[i] ? id[i] : null
+    dataSection = section[i] ? section[i] : user.section
 
     if (Number.isInteger(parseInt(level[i]))) {
-      var dataLevel = level[i]
+      dataLevel = level[i]
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Level should be an integer')
       return false
     }
 
-    var dataCategory = category[i]
-    var dataItem = item[i]
+    dataCategory = category[i]
+    dataItem = item[i]
 
     if (status[i] === 'active' || status[i] === 'inactive') {
-      var dataStatus = status[i]
+      dataStatus = status[i]
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Status should be either "active" or "inactive"')
       return false
     }
 
     if (isUrlValid(link[i]) || link[i] == '') {
-      var dataLink = link[i]
+      dataLink = link[i]
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Please insert a valid link')
       return false
@@ -235,7 +239,7 @@ function bulkOfFunction() {
 // parse input from textarea
 function parser(input) {
   // parse newlines regardless of the platform (operation system)
-  var array = input.split(/\r?\n/)
+  let array = input.split(/\r?\n/)
   // remove trailing white spaces
   array = array.map(s => s.trim())
   // filter empty string in the array

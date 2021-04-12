@@ -1,6 +1,6 @@
 // refresh page with new FQ filter
 $('#select-fq').on('change', function() {
-  var url = $(this).val() // get selected value
+  let url = $(this).val() // get selected value
   if (url) { // require a URL
     window.location = url // redirect
   }
@@ -20,31 +20,33 @@ $('#score-add-modal-content').click(function() {
 $('#score-edit-modal-id').click(function() {
   $('#score-add-edit-id').show()
   
-  var random = $('#the-table').DataTable().rows( { selected: true } ).data()
+  let random = $('#the-table').DataTable().rows( { selected: true } ).data()
   if (random.length == 0) {
     $('#score-add-edit-id').hide()
     return throwAlert('#add-edit-id-throw-alert', 'Warning', 'Please select the rows to edit')
   }
 
   // fill in the selected rows to textarea
-  for ( var i=0; i < random.length; i++) {
-    var txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
+  for ( let i=0; i < random.length; i++) {
+    let txt
+    
+    txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
     $('#score-id-id').val($('#score-id-id').val() + txt + '\n')
 
-    var txt = random[i][1].substring(
+    txt = random[i][1].substring(
       random[i][1].indexOf('#') + 1, 
       random[i][1].lastIndexOf('"'))
     $('#score-userId').val($('#score-userId').val() + txt + '\n')
 
-    var txt = random[i][5].substring(
+    txt = random[i][5].substring(
       random[i][5].indexOf('#') + 1, 
       random[i][5].indexOf('"', random[i][5].indexOf('#'))) // get ID between # and "
     $('#score-checklistId').val($('#score-checklistId').val() + txt + '\n')
 
-    var txt = random[i][6]
+    txt = random[i][6]
     $('#score-score-id').val($('#score-score-id').val() + txt + '\n')
 
-    var txt = random[i][7]
+    txt = random[i][7]
     $('#score-quarter-id').val($('#score-quarter-id').val() + txt + '\n')
   }
 })
@@ -53,36 +55,38 @@ $('#score-edit-modal-id').click(function() {
 $('#score-edit-modal-content').click(function() {
   $('#score-add-edit-content').show()
   
-  var random = $('#the-table').DataTable().rows( { selected: true } ).data()
+  let random = $('#the-table').DataTable().rows( { selected: true } ).data()
   if (random.length == 0) {
     $('#score-add-edit-content').hide()
     return throwAlert('#add-edit-content-throw-alert', 'Warning', 'Please select the rows to edit')
   }
 
   // fill in the selected rows to textarea
-  for ( var i=0; i < random.length; i++) {
-    var txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
+  for ( let i=0; i < random.length; i++) {
+    let txt
+
+    txt = $('<div>').html(random[i][0]).text() // to get innerHTML text
     $('#score-id-content').val($('#score-id-content').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][1]).text() // to get innerHTML text
+    txt = $('<div>').html(random[i][1]).text() // to get innerHTML text
     $('#score-username').val($('#score-username').val() + txt + '\n')
 
-    var txt = random[i][2]
+    txt = random[i][2]
     $('#score-section').val($('#score-section').val() + txt + '\n')
 
-    var txt = random[i][3]
+    txt = random[i][3]
     $('#score-level').val($('#score-level').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][4]).text() // to get special char like '&' instead of '&amp;'
+    txt = $('<div>').html(random[i][4]).text() // to get special char like '&' instead of '&amp;'
     $('#score-category').val($('#score-category').val() + txt + '\n')
 
-    var txt = $('<div>').html(random[i][5]).text() // to get special char like '&' instead of '&amp;'
+    txt = $('<div>').html(random[i][5]).text() // to get special char like '&' instead of '&amp;'
     $('#score-item').val($('#score-item').val() + txt + '\n')
 
-    var txt = random[i][6]
+    txt = random[i][6]
     $('#score-score-content').val($('#score-score-content').val() + txt + '\n')
 
-    var txt = random[i][7]
+    txt = random[i][7]
     $('#score-quarter-content').val($('#score-quarter-content').val() + txt + '\n')
   }
 })
@@ -91,7 +95,7 @@ $('#score-edit-modal-content').click(function() {
 $('#score-delete-modal').click(function() {
   $('#score-delete').show()
   
-  var random = $('#the-table').DataTable().rows( { selected: true } ).data()
+  let random = $('#the-table').DataTable().rows( { selected: true } ).data()
   if (random.length == 0) {
     $('#score-delete').hide()
     return throwAlert('#delete-throw-alert', 'Warning', 'Please select the rows to delete')
@@ -118,15 +122,15 @@ $('#score-delete-modal').click(function() {
     </table>
   `)
 
-  for ( var i=0; i < random.length; i++) {
-    var id = $('<div>').html(random[i][0]).text() // to get innerHTML text
-    var username = random[i][1]
-    var section = random[i][2]
-    var level = random[i][3]
-    var category = random[i][4]
-    var item = random[i][5]
-    var score = random[i][6]
-    var quarter = random[i][7]
+  for ( let i=0; i < random.length; i++) {
+    let id = $('<div>').html(random[i][0]).text() // to get innerHTML text
+    let username = random[i][1]
+    let section = random[i][2]
+    let level = random[i][3]
+    let category = random[i][4]
+    let item = random[i][5]
+    let score = random[i][6]
+    let quarter = random[i][7]
 
     $('#delete-content > table > tbody:last-child').append(`
       <tr>
@@ -148,7 +152,7 @@ $('#score-delete-modal').click(function() {
 $('#score-add-edit-id').click(function() {
 
   // the main function outside
-  var valueString = bulkOfFunctionById()
+  let valueString = bulkOfFunctionById()
   if (!valueString) { return }
 
   $.ajax({
@@ -171,7 +175,7 @@ $('#score-add-edit-id').click(function() {
 $('#score-add-edit-content').click(function() {
 
   // the main function outside
-  var valueString = bulkOfFunctionByContent()
+  let valueString = bulkOfFunctionByContent()
   if (!valueString) { return }
 
   $.ajax({
@@ -193,7 +197,7 @@ $('#score-add-edit-content').click(function() {
 // delete button - sql execution
 $('#score-delete').click(function() {
   // get the list of IDs for deletion in an array
-  var deleteIDs = $('#delete-content > table > tbody input:checkbox:checked').map(function(){
+  let deleteIDs = $('#delete-content > table > tbody input:checkbox:checked').map(function(){
     return $(this).val()
   }).get() // <-- to transform into true array
 
@@ -201,7 +205,7 @@ $('#score-delete').click(function() {
     return throwAlert('#delete-throw-alert', 'Warning', 'Please select the rows to delete')
   }
 
-  var valueString = ""
+  let valueString = ""
   deleteIDs.forEach(id => {
     valueString = valueString + "(" + id + "), "
   })
@@ -227,14 +231,14 @@ $('#score-delete').click(function() {
 // bulk of the function for add and edit by id
 function bulkOfFunctionById() {
   // abstract data from form
-  var id = parser($('#score-id-id').val())
-  var userId = parser($('#score-userId').val())
-  var checklistId = parser($('#score-checklistId').val())
-  var score = parser($('#score-score-id').val())
-  var quarter = parser($('#score-quarter-id').val())
+  let id = parser($('#score-id-id').val())
+  let userId = parser($('#score-userId').val())
+  let checklistId = parser($('#score-checklistId').val())
+  let score = parser($('#score-score-id').val())
+  let quarter = parser($('#score-quarter-id').val())
 
   // check input length
-  var inputLength = []
+  let inputLength = []
   inputLength.push(userId.length)
   inputLength.push(checklistId.length)
   inputLength.push(score.length)
@@ -252,33 +256,35 @@ function bulkOfFunctionById() {
 
   // iterate through every row and check for input sanity
   // then concatenate to sql value string
-  var valueString = ""
-  for (var i = 0; i < inputLength[0]; i++) {
-    var dataId = id[i] ? id[i] : null
+  let valueString = ""
+  for (let i = 0; i < inputLength[0]; i++) {
+    let dataId, dataUserId, dataChecklistId, dataScore, dataQuarter
+
+    dataId = id[i] ? id[i] : null
 
     if ( Number.isInteger(parseInt(userId[i])) ) {
-      var dataUserId = userId[i]
+      dataUserId = userId[i]
     } else {
       throwAlert('#add-edit-id-throw-alert', 'Error', 'Worker No should be an integer, please check people page')
       return false
     }
 
     if ( Number.isInteger(parseInt(checklistId[i])) ) {
-      var dataChecklistId = checklistId[i]
+      dataChecklistId = checklistId[i]
     } else {
       throwAlert('#add-edit-id-throw-alert', 'Error', 'Checklist ID should be an integer, please check checklist page')
       return false
     }
 
     if ( Number.isInteger(parseInt(score[i])) ) {
-      var dataScore = score[i]
+      dataScore = score[i]
     } else {
       throwAlert('#add-edit-id-throw-alert', 'Error', 'Score should be an integer')
       return false
     }
 
     if ( quarter[i].length === 6) {
-      var dataQuarter = quarter[i]
+      dataQuarter = quarter[i]
     } else {
       throwAlert('#add-edit-id-throw-alert', 'Error', 'FY Quarter should contain exactly 6 characters')
       return false
@@ -300,17 +306,17 @@ function bulkOfFunctionById() {
 // bulk of the function for add and edit by content
 function bulkOfFunctionByContent() {
   // abstract data from form
-  var id = parser($('#score-id-content').val())
-  var username = parser($('#score-username').val().toLowerCase())
-  var section = parser($('#score-section').val())
-  var level = parser($('#score-level').val())
-  var category = parser($('#score-category').val())
-  var item = parser($('#score-item').val())
-  var score = parser($('#score-score-content').val())
-  var quarter = parser($('#score-quarter-content').val().toUpperCase())
+  let id = parser($('#score-id-content').val())
+  let username = parser($('#score-username').val().toLowerCase())
+  let section = parser($('#score-section').val())
+  let level = parser($('#score-level').val())
+  let category = parser($('#score-category').val())
+  let item = parser($('#score-item').val())
+  let score = parser($('#score-score-content').val())
+  let quarter = parser($('#score-quarter-content').val().toUpperCase())
 
   // check input length
-  var inputLength = []
+  let inputLength = []
   inputLength.push(username.length)
   inputLength.push(section.length)
   inputLength.push(level.length)
@@ -331,38 +337,40 @@ function bulkOfFunctionByContent() {
 
   // iterate through every row and check for input sanity
   // then concatenate to sql value string
-  var valueString = ""
-  for (var i = 0; i < inputLength[0]; i++) {
-    var dataId = id[i] ? id[i] : null
+  let valueString = ""
+  for (let i = 0; i < inputLength[0]; i++) {
+    let dataId, dataUsername, dataSection, dataLevel, dataCategory, dataItem, dataScore, dataQuarter
+
+    dataId = id[i] ? id[i] : null
     
     if ( !/[^a-z]/.test(username[i]) ) {
-      var dataUsername = username[i]
+      dataUsername = username[i]
     } else {
       throwAlert('#add-edit-content-throw-alert', 'Error', 'Username should only contain letters, please check people page')
       return false
     }
 
-    var dataSection = section[i]
+    dataSection = section[i]
 
     if ( Number.isInteger(parseInt(level[i])) ) {
-      var dataLevel = level[i]
+      dataLevel = level[i]
     } else {
       throwAlert('#add-edit-content-throw-alert', 'Error', 'Level should be an integer')
       return false
     }
 
-    var dataCategory = category[i]
-    var dataItem = item[i]
+    dataCategory = category[i]
+    dataItem = item[i]
     
     if ( Number.isInteger(parseInt(score[i])) ) {
-      var dataScore = score[i]
+      dataScore = score[i]
     } else {
       throwAlert('#add-edit-content-throw-alert', 'Error', 'Score should be an integer')
       return false
     }
 
     if ( quarter[i].length === 6) {
-      var dataQuarter = quarter[i]
+      dataQuarter = quarter[i]
     } else {
       throwAlert('#add-edit-content-throw-alert', 'Error', 'FY Quarter should contain exactly 6 characters')
       return false
@@ -387,7 +395,7 @@ function bulkOfFunctionByContent() {
 // parse input from textarea
 function parser(input) {
   // parse newlines regardless of the platform (operation system)
-  var array = input.split(/\r?\n/)
+  let array = input.split(/\r?\n/)
   // remove trailing white spaces
   array = array.map(s => s.trim())
   // filter empty string in the array

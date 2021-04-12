@@ -1,14 +1,14 @@
 // go to the selected date range
 $('#date-range').on('click', function() {
-  var from = $('#from').val()
-  var to = $('#to').val()
+  let from = $('#from').val()
+  let to = $('#to').val()
 
   // check if from date is before or the same as to date
   if (new Date(from) > new Date(to)) {
     return throwAlert('#alert-box','End date should be later than or on Start date')
   }
 
-  var url = `/log?from=${from}&to=${to}`
+  let url = `/log?from=${from}&to=${to}`
   if (url) { // require a URL
     window.location = url // redirect
   }

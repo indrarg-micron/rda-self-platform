@@ -8,10 +8,12 @@ router.get('/', async (req, res, next) => {
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'checklist-view.sql')).toString()
 
-    /*if (res.locals.user.permission == 'admin') {
-      var content = ""
+    /*
+    let content
+    if (res.locals.user.permission == 'admin') {
+      content = ""
     } else if (res.locals.user.permission == 'section'){
-      var content = "WHERE c.[section] = '" + res.locals.user.section + "'"
+      content = "WHERE c.[section] = '" + res.locals.user.section + "'"
     }
     query = query.replace('###PERMISSION_FILTER_HERE###', content)*/
 

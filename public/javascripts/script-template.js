@@ -1,6 +1,6 @@
 function tableInit(tablename) {
   // initiate data table
-  var table = $(`#${tablename}-the-table`).DataTable({
+  let table = $(`#${tablename}-the-table`).DataTable({
       stateSave: false,
       paging: false,
       info: false,
@@ -34,7 +34,7 @@ function tableInit(tablename) {
   */
 
   // append export button to specified location, with export options
-  var buttons = new $.fn.dataTable.Buttons(table, {
+  let buttons = new $.fn.dataTable.Buttons(table, {
     dom: {
       button: {
         tag: 'button',

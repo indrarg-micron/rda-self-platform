@@ -1,6 +1,6 @@
 $(document).ready(function () {
   // offset for navbar
-  var navHeight = $('#navbar-menu').outerHeight()
+  let navHeight = $('#navbar-menu').outerHeight()
   $('body').css('padding-top', navHeight)
 
   // individual
@@ -246,7 +246,7 @@ function chartSum(data, location, title) {
 
     tooltip: {
       formatter: function () {
-        var stackName = this.series.userOptions.stack
+        let stackName = this.series.userOptions.stack
 
         return '<b>' + this.x + '</b><br/>' +
           this.series.name + ': ' + this.y + '<br/>' +
@@ -340,7 +340,7 @@ function throwAlert(loc, msg) {
 }
 
 // array remove duplicates
-// usage: var unique = a.filter(onlyUnique); // where a is array
+// usage: let unique = a.filter(onlyUnique); // where a is array
 function onlyUnique(value, index, self) {
   return self.indexOf(value) === index
 }

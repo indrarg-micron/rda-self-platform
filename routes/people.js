@@ -8,10 +8,11 @@ router.get('/', async (req, res, next) => {
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'people-view.sql')).toString()
 
+    let content
     if (res.locals.user.permission == 'admin') {
-      var content = ""
+      content = ""
     } else if (res.locals.user.permission == 'section'){
-      var content = "WHERE p.[section] = '" + res.locals.user.section + "'"
+      content = "WHERE p.[section] = '" + res.locals.user.section + "'"
     }
     query = query.replace('###PERMISSION_FILTER_HERE###', content)
 

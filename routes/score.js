@@ -11,10 +11,11 @@ router.get('/', async (req, res, next) => {
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'score-view.sql')).toString()
 
+    let content
     if (res.locals.user.permission == 'admin') {
-      var content = ""
+      content = ""
     } else if (res.locals.user.permission == 'section'){
-      var content = "AND p.[section] = '" + res.locals.user.section + "'"
+      content = "AND p.[section] = '" + res.locals.user.section + "'"
     }
     
     query = query.replace('###QUARTER_TO_LOOK_FOR###', qFilter)
