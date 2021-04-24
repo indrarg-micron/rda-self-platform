@@ -1,7 +1,7 @@
 /*jumbotron background image*/
 .jumbotron {
   color: white;
-  background-image: url("https://drscdn.500px.org/photo/1026186880/q%3D80_m%3D2000/v2?sig=55e5816da635cc71aa730a83f74cc547d8f2d87989fc81660af90ba9f1091b9f");
+  background-image: url('../images/jumbotron.jpg');
   background-size: cover;
   background-position: center;
 }
