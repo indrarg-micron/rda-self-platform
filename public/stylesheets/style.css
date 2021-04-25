@@ -1,6 +1,5 @@
 /*jumbotron background image*/
 .jumbotron {
-  color: white;
   background-image: url('../images/jumbotron.jpg');
   background-size: cover;
   background-position: center;
