@@ -99,12 +99,18 @@ $('#people-add-edit').click(function() {
     type: 'POST',
     data: {valueString},
 
+    beforeSend: function(){ 
+      $('#people-add-edit, #people-delete').prop('disabled', true)
+    },
+
     success: function(msg) {
+      $('#people-add-edit, #people-delete').prop('disabled', false)
       throwAlert('#add-edit-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
+      $('#people-add-edit, #people-delete').prop('disabled', false)
       throwAlert('#add-edit-throw-alert', 'Error', err.responseText)
     }
   })
@@ -133,12 +139,18 @@ $('#people-delete').click(function() {
     type: 'DELETE',
     data: {valueString},
 
+    beforeSend: function(){ 
+      $('#people-add-edit, #people-delete').prop('disabled', true)
+    },
+
     success: function(msg) {
+      $('#people-add-edit, #people-delete').prop('disabled', false)
       throwAlert('#delete-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
+      $('#people-add-edit, #people-delete').prop('disabled', false)
       throwAlert('#delete-throw-alert', 'Error', err.responseText)
     }
   })

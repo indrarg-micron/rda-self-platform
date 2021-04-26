@@ -160,12 +160,18 @@ $('#score-add-edit-id').click(function() {
     type: 'POST',
     data: {valueString},
 
+    beforeSend: function(){ 
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', true)
+    },
+
     success: function(msg) {
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', false)
       throwAlert('#add-edit-id-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', false)
       throwAlert('#add-edit-id-throw-alert', 'Error', err.responseText)
     }
   })
@@ -183,12 +189,18 @@ $('#score-add-edit-content').click(function() {
     type: 'PATCH',
     data: {valueString},
 
+    beforeSend: function(){ 
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', true)
+    },
+
     success: function(msg) {
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', false)
       throwAlert('#add-edit-content-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', false)
       throwAlert('#add-edit-content-throw-alert', 'Error', err.responseText)
     }
   })
@@ -217,12 +229,18 @@ $('#score-delete').click(function() {
     type: 'DELETE',
     data: {valueString},
 
+    beforeSend: function(){ 
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', true)
+    },
+
     success: function(msg) {
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', false)
       throwAlert('#delete-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function(err) {
+      $('#score-add-edit-id, #score-add-edit-content, #score-delete').prop('disabled', false)
       throwAlert('#delete-throw-alert', 'Error', err.responseText)
     }
   })

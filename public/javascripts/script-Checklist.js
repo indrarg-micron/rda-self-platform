@@ -111,12 +111,18 @@ $('#checklist-add-edit').click(function () {
     type: 'POST',
     data: { valueString },
 
+    beforeSend: function(){ 
+      $('#checklist-add-edit, #checklist-delete').prop('disabled', true)
+    },
+
     success: function (msg) {
+      $('#checklist-add-edit, #checklist-delete').prop('disabled', false)
       throwAlert('#add-edit-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function (err) {
+      $('#checklist-add-edit, #checklist-delete').prop('disabled', false)
       throwAlert('#add-edit-throw-alert', 'Error', err.responseText)
     }
   })
@@ -145,12 +151,18 @@ $('#checklist-delete').click(function () {
     type: 'DELETE',
     data: { valueString },
 
+    beforeSend: function(){ 
+      $('#checklist-add-edit, #checklist-delete').prop('disabled', true)
+    },
+
     success: function (msg) {
+      $('#checklist-add-edit, #checklist-delete').prop('disabled', false)
       throwAlert('#delete-throw-alert', 'Success', msg.rowsAffected.pop() + ' row(s) affected')
       setTimeout(window.location.reload(), 750)
     },
 
     error: function (err) {
+      $('#checklist-add-edit, #checklist-delete').prop('disabled', false)
       throwAlert('#delete-throw-alert', 'Error', err.responseText)
     }
   })
