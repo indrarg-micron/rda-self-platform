@@ -6,7 +6,7 @@ const { poolProd535, sqlPath } = require('../db')
 const { moment, fyq } = require('../misc')
 
 router.get('/', async (req, res, next) => {
-  let qFilter = req.query.q || fyq.nextQ
+  let qFilter = req.query.q || fyq.currQ
 
   try {
     let query = fs.readFileSync(path.join(sqlPath, 'score-view.sql')).toString()
@@ -42,7 +42,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    let username = await res.locals.ntlm.UserName.toLowerCase()
+    let username = req.ntlm.UserName.toLowerCase()
 
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
@@ -64,7 +64,7 @@ router.post('/', async (req, res, next) => {
 
 router.patch('/', async (req, res, next) => {
   try {
-    let username = await res.locals.ntlm.UserName.toLowerCase()
+    let username = req.ntlm.UserName.toLowerCase()
 
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
@@ -86,7 +86,7 @@ router.patch('/', async (req, res, next) => {
 
 router.delete('/', async (req, res, next) => {
   try {
-    let username = await res.locals.ntlm.UserName.toLowerCase()
+    let username = req.ntlm.UserName.toLowerCase()
 
     const body = JSON.parse(JSON.stringify(req.body))
     let content = body.valueString
