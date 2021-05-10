@@ -206,7 +206,7 @@ function bulkOfFunction() {
       return false
     }
 
-    dataFirstName = firstName[i]
+    dataFirstName = firstName[i].replace(/'/g, "''")
     
     if ( !/[^a-z]/.test(username[i]) ) {
       dataUsername = username[i]

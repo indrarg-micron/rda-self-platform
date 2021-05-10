@@ -377,8 +377,8 @@ function bulkOfFunctionByContent() {
       return false
     }
 
-    dataCategory = category[i]
-    dataItem = item[i]
+    dataCategory = category[i].replace(/'/g, "''")
+    dataItem = item[i].replace(/'/g, "''")
     
     if ( Number.isInteger(parseInt(score[i])) ) {
       dataScore = score[i]

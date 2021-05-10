@@ -216,8 +216,8 @@ function bulkOfFunction() {
       return false
     }
 
-    dataCategory = category[i]
-    dataItem = item[i]
+    dataCategory = category[i].replace(/'/g, "''")
+    dataItem = item[i].replace(/'/g, "''")
 
     if (status[i] === 'active' || status[i] === 'inactive') {
       dataStatus = status[i]
@@ -226,12 +226,16 @@ function bulkOfFunction() {
       return false
     }
 
+    dataLink = encodeURI(link[i])
+
+    /*
     if (isUrlValid(link[i]) || link[i] == '') {
-      dataLink = link[i]
+      dataLink = encodeURI(link[i])
     } else {
       throwAlert('#add-edit-throw-alert', 'Error', 'Please insert a valid link')
       return false
     }
+    */
 
     valueString = valueString + "("
       + dataId + ", '"
